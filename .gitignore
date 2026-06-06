@@ -1,0 +1,28 @@
+# Project Materials (Homework and Study Material)
+homework/
+material/
+software_submission_guidelines-V3.pdf
+
+# Sensitive Information
+.env
+
+# LaTeX Build Junk (MikTeX)
+*.aux
+*.log
+*.out
+*.toc
+*.bbl
+*.blg
+*.fdb_latexmk
+*.fls
+*.synctex.gz
+*.pdf
+
+# Python Junk
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+env/
+.env/
