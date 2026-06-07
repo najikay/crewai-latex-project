@@ -1,6 +1,13 @@
 # Multi-Phase Implementation Plan
-## Assignment 3: ResearchCrew — Personal AI Agent
-**Version**: 1.0 | **Date**: 2026-06-06 | **Deadline**: 2026-06-20
+## Assignment 3: NavigatorCrew — Biomimetic Navigation Research Platform
+**Version**: 2.0 | **Date**: 2026-06-07 | **Deadline**: 2026-06-20
+
+> **Architecture decision (v2.0)**: Switched from `Process.sequential` to
+> `Process.hierarchical`. NavigationResearchDirector is the `manager_agent`
+> and is NOT listed in `agents=[]` (CrewAI hierarchical requirement). Tasks
+> use granular factory functions (`create_task_outline`, `create_task_research`,
+> `create_task_figures`, `create_task_latex`, `create_task_review`) defined in
+> `src/tasks/research_tasks.py` with `create_all_tasks()` as the assembler.
 
 ---
 

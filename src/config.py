@@ -71,11 +71,18 @@ EMBEDDING_FALLBACK_MODEL: str = "all-MiniLM-L6-v2"
 # ---------------------------------------------------------------------------
 # 5. Agent / Crew Runtime Constants
 # ---------------------------------------------------------------------------
+# Pricing per 1M tokens (Claude 3.5 Sonnet: $3.00 input / $15.00 output)
+PRICE_PER_1M_INPUT_TOKENS: float = 3.00
+PRICE_PER_1M_OUTPUT_TOKENS: float = 15.00
+
+# Pricing for OpenAI Embeddings (text-embedding-3-small: $0.02 per 1M)
+EMBEDDING_PRICE_PER_1M: float = 0.02
+
 # Maximum LLM iterations per agent before CrewAI raises MaxIterationsError
 AGENT_MAX_ITER: dict[str, int] = {
     "research_director": 5,
-    "deep_researcher":   10,
-    "data_visualizer":   8,
+    "deep_researcher":   12,   # PRD: SLAMAndFusionResearcher max_iter=12
+    "data_visualizer":   10,   # PRD: VisualizationEngineer max_iter=10
     "latex_author":      15,
     "quality_editor":    5,
 }

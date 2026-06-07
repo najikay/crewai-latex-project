@@ -2,6 +2,12 @@
 ## Hyper-Granular Micro-Task Checklist | Deadline: 2026-06-20
 ## Total tasks: ~620 atomic checkboxes across 7 modules
 
+> **Architecture note (updated 2026-06-07)**: Crew uses `Process.hierarchical`
+> with NavigationResearchDirector as `manager_agent`. Tasks are defined as 5
+> granular factory functions in `src/tasks/research_tasks.py` with explicit
+> context (dependency) wiring: outline → research → figures → latex → review.
+> Single source of truth is `src/` (root). `assignment3/` has been removed.
+
 > **Rule**: Each checkbox is ONE atomic action. Never check a box until that exact action is done.
 > **[SS]** = Screenshot required; save to `docs/evidence/`.
 > **[COMPILE]** = Run `xelatex main.tex` after this change; fix any errors before proceeding.
