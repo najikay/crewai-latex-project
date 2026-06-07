@@ -1,345 +1,308 @@
-# TODO.md — Assignment 3: ResearchCrew
+# TODO.md — Assignment 3: NavigatorCrew (Biomimetic Navigation Platform)
 ## Hyper-Granular Micro-Task Checklist | Deadline: 2026-06-20
-## Target: 500-800 atomic tasks across 7 modules
+## Total tasks: ~620 atomic checkboxes across 7 modules
 
-> **Rule**: Every checkbox is ONE atomic action. Never check a box until that exact action is complete.
-> **Evidence**: Items marked [SCREENSHOT] require a screenshot saved to `docs/evidence/`.
+> **Rule**: Each checkbox is ONE atomic action. Never check a box until that exact action is done.
+> **[SS]** = Screenshot required; save to `docs/evidence/`.
+> **[COMPILE]** = Run `xelatex main.tex` after this change; fix any errors before proceeding.
 
 ---
 
 # MODULE 1: Environment & Setup
-## 1.1 Operating System & Base Tools
 
-- [ ] Open Windows Terminal or WSL2 terminal
-- [ ] Run `python --version` and confirm output is Python 3.11 or higher
-- [ ] If Python < 3.11: download Python 3.11 installer from python.org
-- [ ] If Python < 3.11: run the installer with "Add to PATH" checked
-- [ ] If Python < 3.11: restart terminal and confirm `python --version` shows 3.11+
-- [ ] Run `git --version` and confirm Git is installed
-- [ ] If Git missing: download Git from git-scm.com and install
-- [ ] Run `pip --version` and confirm pip is accessible
-- [ ] Run `pip install --upgrade pip` to update pip to latest
-- [ ] Confirm pip version is 24.0 or higher
+## 1.1 System Prerequisites
 
-## 1.2 MikTeX Installation
+- [ ] Open terminal (WSL2, PowerShell, or Windows Terminal)
+- [ ] Run `python --version` — confirm Python 3.11 or higher
+- [ ] Run `git --version` — confirm Git is installed
+- [ ] Run `pip --version` — confirm pip ≥ 24.0
+- [ ] Run `pip install --upgrade pip`
 
-- [ ] Open browser and navigate to miktex.org/download
-- [ ] Download the MikTeX installer for Windows (64-bit)
-- [ ] Run the installer as Administrator
-- [ ] Select "Install for all users" option
-- [ ] Select installation directory (default is fine)
-- [ ] Check "Install missing packages on-the-fly: Yes" option
-- [ ] Complete MikTeX installation
-- [ ] Open MikTeX Console from Start Menu
-- [ ] Click "Check for updates" and install all available updates
-- [ ] Open MikTeX Package Manager (from MikTeX Console)
-- [ ] Search for and install package: `IEEEtran`
-- [ ] Search for and install package: `babel-hebrew`
-- [ ] Search for and install package: `polyglossia`
-- [ ] Search for and install package: `fontenc`
-- [ ] Search for and install package: `inputenc`
-- [ ] Search for and install package: `booktabs`
-- [ ] Search for and install package: `fancyhdr`
-- [ ] Search for and install package: `hyperref`
-- [ ] Search for and install package: `amsmath`
-- [ ] Search for and install package: `amssymb`
-- [ ] Search for and install package: `graphicx`
-- [ ] Search for and install package: `listings`
-- [ ] Search for and install package: `xcolor`
-- [ ] Search for and install package: `geometry`
-- [ ] Search for and install package: `biblatex` (or confirm natbib is available)
-- [ ] Search for and install package: `caption`
-- [ ] Search for and install package: `subcaption`
-- [ ] Search for and install package: `float`
-- [ ] Open a command prompt and run `pdflatex --version` to confirm MikTeX is in PATH
-- [ ] Run `bibtex --version` to confirm BibTeX is accessible [SCREENSHOT]
+## 1.2 MikTeX / XeLaTeX Installation
 
-## 1.3 VS Code Setup
+- [ ] Download MikTeX installer from miktex.org/download (Windows 64-bit)
+- [ ] Run installer as Administrator
+- [ ] Select "Install for all users"
+- [ ] Enable "Install missing packages on-the-fly: Yes"
+- [ ] Complete installation
+- [ ] Open MikTeX Console → click "Check for updates" → install all updates
+- [ ] Open MikTeX Package Manager
+- [ ] Install package: `IEEEtran`
+- [ ] Install package: `polyglossia`
+- [ ] Install package: `fontspec`
+- [ ] Install package: `bidi`
+- [ ] Install package: `booktabs`
+- [ ] Install package: `fancyhdr`
+- [ ] Install package: `hyperref`
+- [ ] Install package: `amsmath`
+- [ ] Install package: `amssymb`
+- [ ] Install package: `mathtools`
+- [ ] Install package: `graphicx`
+- [ ] Install package: `listings`
+- [ ] Install package: `xcolor`
+- [ ] Install package: `caption`
+- [ ] Install package: `subcaption`
+- [ ] Install package: `float`
+- [ ] Install package: `geometry`
+- [ ] Install package: `microtype`
+- [ ] Install package: `enumitem`
+- [ ] Install package: `tabularx`
+- [ ] Install package: `multirow`
+- [ ] Run `xelatex --version` in terminal — confirm XeLaTeX is in PATH [SS]
+- [ ] Run `bibtex --version` — confirm BibTeX is accessible [SS]
 
-- [ ] Install VS Code if not already installed (code.visualstudio.com)
-- [ ] Open VS Code
-- [ ] Install extension: "LaTeX Workshop" by James Yu
-- [ ] Install extension: "Python" by Microsoft
-- [ ] Install extension: "GitLens" (optional but helpful)
-- [ ] Open VS Code Settings (Ctrl+,)
-- [ ] Set `latex-workshop.latex.tools` to use pdflatex as the default tool
-- [ ] Set `latex-workshop.view.pdf.viewer` to "tab"
-- [ ] Confirm LaTeX Workshop can compile a minimal .tex file
+## 1.3 Hebrew Font Installation (Critical for XeLaTeX)
+
+- [ ] Open MikTeX Package Manager → search "culmus" → install (provides David CLM, Miriam CLM)
+- [ ] Alternatively: download Culmus fonts from culmus.sourceforge.net
+- [ ] Install font files (.ttf) by right-clicking → "Install for all users"
+- [ ] Run `fc-list | grep -i david` — confirm "David CLM" is visible to fontconfig
+- [ ] If David CLM missing: open `latex/main.tex` and change `\hebrewfont` to `\hebrewfont[Script=Hebrew]{Arial}` as fallback
+- [ ] Create file `latex/test_hebrew.tex`:
+  ```tex
+  \documentclass{article}
+  \usepackage{fontspec}
+  \usepackage{polyglossia}
+  \setmainlanguage{hebrew}
+  \setotherlanguage{english}
+  \newfontfamily\hebrewfont[Script=Hebrew]{David CLM}
+  \begin{document}
+  שלום עולם — Hello World
+  \end{document}
+  ```
+- [ ] Run `xelatex test_hebrew.tex` in `latex/` folder
+- [ ] Confirm PDF contains both Hebrew and English text [SS]
+- [ ] Delete `test_hebrew.tex` and `test_hebrew.pdf`
 
 ## 1.4 GitHub Repository
 
 - [ ] Log in to github.com
-- [ ] Click "New repository"
-- [ ] Set repository name: `assignment3-researchcrew`
+- [ ] Create new repository: `assignment3-navigatorcrew`
 - [ ] Set visibility: Public
-- [ ] Check "Add a README file"
-- [ ] Select .gitignore template: Python
-- [ ] Click "Create repository"
-- [ ] Copy the HTTPS clone URL
-- [ ] Open terminal in your working directory
-- [ ] Run `git clone <your-repo-url> assignment3`
-- [ ] Run `cd assignment3`
-- [ ] Confirm `.git/` folder exists inside the directory
+- [ ] Add Python .gitignore template
+- [ ] Add a README
+- [ ] Copy HTTPS clone URL
+- [ ] Run `git clone <url> assignment3` in working directory
+- [ ] `cd assignment3`
+- [ ] Confirm `.git/` folder exists
 - [ ] Run `git config user.name "Your Name"`
 - [ ] Run `git config user.email "your@email.com"`
 
 ## 1.5 Python Virtual Environment
 
-- [ ] Inside `assignment3/`, run `python -m venv venv`
-- [ ] Confirm `venv/` folder was created
-- [ ] Activate venv: run `venv\Scripts\activate` (Windows) or `source venv/bin/activate` (Linux/Mac)
-- [ ] Confirm terminal prompt now shows `(venv)` prefix
-- [ ] Run `python --version` inside venv to confirm correct Python version
+- [ ] Inside `assignment3/`: run `python -m venv venv`
+- [ ] Activate: `venv\Scripts\activate` (Windows) or `source venv/bin/activate`
+- [ ] Confirm `(venv)` prefix appears in terminal
+- [ ] Confirm `python --version` inside venv shows correct version
 
-## 1.6 requirements.txt Creation
+## 1.6 requirements.txt
 
-- [ ] Create file `requirements.txt` in project root
-- [ ] Add line: `crewai>=0.80.0`
-- [ ] Add line: `crewai-tools>=0.15.0`
-- [ ] Add line: `anthropic>=0.40.0`
-- [ ] Add line: `streamlit>=1.35.0`
-- [ ] Add line: `python-dotenv>=1.0.0`
-- [ ] Add line: `arxiv>=2.1.0`
-- [ ] Add line: `matplotlib>=3.9.0`
-- [ ] Add line: `plotly>=5.22.0`
-- [ ] Add line: `chromadb>=0.5.0`
-- [ ] Add line: `langchain-openai>=0.1.0`
-- [ ] Add line: `pytest>=8.0.0`
-- [ ] Add line: `numpy>=1.26.0`
-- [ ] Add line: `pandas>=2.2.0`
+- [ ] Confirm `requirements.txt` exists (already written to disk)
 - [ ] Run `pip install -r requirements.txt`
-- [ ] Wait for all packages to install completely
-- [ ] Run `pip list` and verify all packages appear [SCREENSHOT]
-- [ ] Run `python -c "import crewai; print(crewai.__version__)"` to verify crewai installed
-- [ ] Run `python -c "import anthropic; print('anthropic ok')"` to verify anthropic installed
-- [ ] Run `python -c "import streamlit; print('streamlit ok')"` to verify streamlit installed
-- [ ] Run `python -c "import arxiv; print('arxiv ok')"` to verify arxiv installed
-- [ ] Run `python -c "import chromadb; print('chromadb ok')"` to verify chromadb installed
+- [ ] Wait for complete installation
+- [ ] Run `pip list` and save output screenshot [SS]
+- [ ] Run `python -c "import crewai; print(crewai.__version__)"` — verify
+- [ ] Run `python -c "import anthropic; print('ok')"` — verify
+- [ ] Run `python -c "import streamlit; print('ok')"` — verify
+- [ ] Run `python -c "import arxiv; print('ok')"` — verify
+- [ ] Run `python -c "import chromadb; print('ok')"` — verify
+- [ ] Run `python -c "import matplotlib; print('ok')"` — verify
+- [ ] Run `python -c "from mpl_toolkits.mplot3d import Axes3D; print('3D ok')"` — verify
+- [ ] Run `python -c "import scipy; print('ok')"` — verify
 
-## 1.7 API Keys Setup
+## 1.7 API Keys (.env)
 
+- [ ] Confirm `.env.example` exists (already written to disk)
+- [ ] Copy `.env.example` → `.env`
 - [ ] Obtain Anthropic API key from console.anthropic.com
-- [ ] Obtain Serper API key from serper.dev (free tier available)
-- [ ] Obtain OpenAI API key from platform.openai.com (for embeddings)
-- [ ] Create file `.env` in project root
-- [ ] Add line: `ANTHROPIC_API_KEY=your_actual_key_here`
-- [ ] Add line: `SERPER_API_KEY=your_actual_key_here`
-- [ ] Add line: `OPENAI_API_KEY=your_actual_key_here`
-- [ ] Save `.env` file
-- [ ] Create file `.env.example` in project root
-- [ ] Add line: `ANTHROPIC_API_KEY=`
-- [ ] Add line: `SERPER_API_KEY=`
-- [ ] Add line: `OPENAI_API_KEY=`
-- [ ] Save `.env.example`
+- [ ] Paste key as `ANTHROPIC_API_KEY=sk-ant-...` in `.env`
+- [ ] Obtain Serper key from serper.dev
+- [ ] Paste key as `SERPER_API_KEY=...` in `.env`
+- [ ] Obtain OpenAI key from platform.openai.com (for embeddings)
+- [ ] Paste key as `OPENAI_API_KEY=sk-...` in `.env`
+- [ ] Save `.env`
+- [ ] Run `python src/config.py` — confirm "Config validation passed" [SS]
+- [ ] Confirm no keys appear in terminal output (masked to first 8 chars)
 
-## 1.8 .gitignore Setup
+## 1.8 .gitignore Verification
 
-- [ ] Open `.gitignore` file (auto-created by GitHub Python template)
-- [ ] Confirm `.env` line exists (add it if missing)
-- [ ] Add line: `venv/`
-- [ ] Add line: `__pycache__/`
-- [ ] Add line: `*.pyc`
-- [ ] Add line: `*.pyo`
-- [ ] Add line: `outputs/*.pdf`
-- [ ] Add line: `.chroma/`
-- [ ] Add line: `*.aux`
-- [ ] Add line: `*.log`
-- [ ] Add line: `*.out`
-- [ ] Add line: `*.synctex.gz`
-- [ ] Add line: `*.toc`
-- [ ] Add line: `*.bbl`
-- [ ] Add line: `*.blg`
-- [ ] Save `.gitignore`
-- [ ] Run `git status` and confirm `.env` does NOT appear in untracked files
+- [ ] Open `.gitignore` — confirm `.env` is listed
+- [ ] Confirm `venv/` is listed
+- [ ] Confirm `*.pdf` is listed
+- [ ] Confirm `.chroma/` is listed
+- [ ] Confirm `*.aux`, `*.log`, `*.bbl`, `*.blg` are listed
+- [ ] Run `git status` — confirm `.env` does NOT appear in untracked files
 
-## 1.9 Project Directory Structure
+## 1.9 Directory Structure Verification
 
-- [ ] Create folder: `src/`
-- [ ] Create file: `src/__init__.py` (empty)
-- [ ] Create folder: `src/agents/`
-- [ ] Create file: `src/agents/__init__.py` (empty)
-- [ ] Create folder: `src/tasks/`
-- [ ] Create file: `src/tasks/__init__.py` (empty)
-- [ ] Create folder: `src/tools/`
-- [ ] Create file: `src/tools/__init__.py` (empty)
-- [ ] Create folder: `latex/`
-- [ ] Create folder: `latex/chapters/`
-- [ ] Create folder: `latex/figures/`
-- [ ] Create folder: `outputs/`
-- [ ] Create folder: `tests/`
-- [ ] Create folder: `docs/`
-- [ ] Create folder: `docs/evidence/`
-- [ ] Run `ls -la` (or `dir`) and verify all folders exist [SCREENSHOT]
+- [ ] Confirm all directories exist: `src/agents/`, `src/tasks/`, `src/tools/`
+- [ ] Confirm all directories exist: `latex/chapters/`, `latex/figures/`, `outputs/`
+- [ ] Confirm all `__init__.py` files exist in `src/`, `src/agents/`, `src/tasks/`, `src/tools/`
+- [ ] Confirm `latex/main.tex` exists (XeLaTeX master — already written)
+- [ ] Confirm `latex/chapters/ch01_intro.tex` exists (biomimetic intro with formulas)
+- [ ] Confirm `latex/references.bib` exists (5 seed entries)
 
-## 1.10 LaTeX Boilerplate Verification
+## 1.10 LaTeX Boilerplate Compile Test [COMPILE]
 
-- [ ] Create file `latex/test_compile.tex` with content: `\documentclass{article}\begin{document}Hello\end{document}`
 - [ ] Open terminal in `latex/` folder
-- [ ] Run `pdflatex test_compile.tex`
-- [ ] Confirm `test_compile.pdf` is generated with no errors
-- [ ] Open `test_compile.pdf` and confirm "Hello" appears
-- [ ] Delete `test_compile.tex` and `test_compile.pdf` after successful test
-- [ ] Run `pdflatex --version` and note the version number [SCREENSHOT]
+- [ ] Run `xelatex main.tex`
+- [ ] Check for errors (lines starting with `!`)
+- [ ] Fix any font errors (adjust `\hebrewfont` family if David CLM not found)
+- [ ] Fix any package errors (install missing packages via MikTeX Console)
+- [ ] Run `bibtex main`
+- [ ] Run `xelatex main.tex` (second pass)
+- [ ] Run `xelatex main.tex` (third pass — for TOC and cross-refs)
+- [ ] Open `main.pdf` — confirm it opens without errors
+- [ ] Confirm Hebrew text on cover page renders RTL [SS]
+- [ ] Confirm formulas in ch01 render (Eq. 1, 2, 3, 4, 5) [SS]
+- [ ] Confirm placeholder figures appear as boxes (not errors) [SS]
+- [ ] Note page count at this stub stage
 
 ## 1.11 Initial Git Commit
 
-- [ ] Run `git add .gitignore requirements.txt .env.example`
-- [ ] Run `git add src/ latex/ outputs/ tests/ docs/`
-- [ ] Run `git status` to review what will be committed
-- [ ] Confirm `.env` is NOT in the staged list
-- [ ] Run `git commit -m "chore: project skeleton and environment setup"`
+- [ ] Run `git add requirements.txt .env.example .gitignore`
+- [ ] Run `git add src/ latex/ tests/ docs/`
+- [ ] Run `git status` — confirm `.env` NOT staged
+- [ ] Run `git commit -m "feat: Module 1 complete — environment, XeLaTeX boilerplate, biomimetic scaffold"`
 - [ ] Run `git push origin main`
-- [ ] Open GitHub in browser and confirm files appear in repository [SCREENSHOT]
+- [ ] Open GitHub in browser — verify files appear [SS]
 
 ---
 
 # MODULE 2: Agent Development (The "Brain")
 
-## 2.1 Configuration Module
+## 2.1 src/config.py Verification
 
-- [ ] Create file `src/config.py`
-- [ ] Add import: `from dotenv import load_dotenv`
-- [ ] Add import: `import os`
-- [ ] Call `load_dotenv()` at module level
-- [ ] Define `ANTHROPIC_API_KEY = os.getenv("ANTHROPIC_API_KEY")`
-- [ ] Define `SERPER_API_KEY = os.getenv("SERPER_API_KEY")`
-- [ ] Define `OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")`
-- [ ] Define `MODEL_NAME = "claude-sonnet-4-6"`
-- [ ] Define `EMBEDDING_MODEL = "text-embedding-3-small"`
-- [ ] Define `PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))`
-- [ ] Define `OUTPUT_DIR = os.path.join(PROJECT_ROOT, "outputs")`
-- [ ] Define `LATEX_DIR = os.path.join(PROJECT_ROOT, "latex")`
-- [ ] Define `FIGURES_DIR = os.path.join(LATEX_DIR, "figures")`
-- [ ] Write a `validate_config()` function that checks all keys are non-empty
-- [ ] In `validate_config()`: raise `EnvironmentError` if `ANTHROPIC_API_KEY` is missing
-- [ ] In `validate_config()`: raise `EnvironmentError` if `SERPER_API_KEY` is missing
-- [ ] In `validate_config()`: print a warning (not error) if `OPENAI_API_KEY` is missing
-- [ ] Call `validate_config()` at bottom of `config.py`
-- [ ] Test: temporarily remove ANTHROPIC_API_KEY from .env, run `python src/config.py`, confirm error appears
-- [ ] Test: restore the key, run `python src/config.py`, confirm no error
+- [ ] Confirm `src/config.py` exists (already written)
+- [ ] Open `src/config.py` and verify 10 sections are present
+- [ ] Confirm `PROJECT_ROOT` is derived from `__file__` (not hardcoded)
+- [ ] Confirm `FIGURES_DIR.mkdir(parents=True, exist_ok=True)` is called at import
+- [ ] Confirm `OUTPUTS_DIR.mkdir(parents=True, exist_ok=True)` is called at import
+- [ ] Confirm `loguru` logger is configured with console + file sinks
+- [ ] Confirm `get_embedder_config()` returns OpenAI config when key is set
+- [ ] Confirm `get_embedder_config()` returns HuggingFace config when key is missing
+- [ ] Confirm `validate_config()` raises `EnvironmentError` with fix instructions on missing key
+- [ ] Run `python src/config.py` with all keys set — confirm all checks pass [SS]
 
-## 2.2 ResearchDirector Agent
+## 2.2 NavigationResearchDirector Agent
 
-- [ ] Create file `src/agents/research_director.py`
+- [ ] Create file `src/agents/navigation_director.py`
 - [ ] Add import: `from crewai import Agent`
-- [ ] Add import: `from src.config import MODEL_NAME`
-- [ ] Define function `create_research_director() -> Agent`
-- [ ] Set `role="Senior Research Director & Paper Architect"`
-- [ ] Write the `goal` string (minimum 3 sentences describing exactly what success looks like)
-- [ ] Confirm goal includes: "decompose topic into 7-9 sub-topics"
-- [ ] Confirm goal includes: "ensure IEEE 25-30 page requirements are met"
-- [ ] Write the `backstory` string — give the agent a name, credentials, personality
-- [ ] Confirm backstory is at least 5 sentences
-- [ ] Confirm backstory establishes authority and rigor
-- [ ] Set `verbose=True`
-- [ ] Set `allow_delegation=True`
-- [ ] Set `llm=f"anthropic/{MODEL_NAME}"`
-- [ ] Set `max_iter=5`
+- [ ] Add import: `from src.config import MODEL_NAME, AGENT_MAX_ITER`
+- [ ] Define function `create_navigation_director() -> Agent`
+- [ ] Set `role = "Senior Research Fellow — Autonomous Navigation Systems"`
+- [ ] Write `goal`: minimum 4 sentences; must specify decompose topic into 7 sub-domains
+- [ ] Confirm goal includes: "every chapter contains formal problem definitions"
+- [ ] Confirm goal includes: "every formula must be derived, not stated"
+- [ ] Confirm goal includes: "IEEE-quality citations from Thrun, Simmons, Kalman lineage"
+- [ ] Write `backstory` as Dr. Yael Cohen — name, institution, publication history
+- [ ] Confirm backstory is at least 5 sentences with concrete credentials
+- [ ] Confirm backstory includes: "incapable of accepting hand-wavy engineering prose"
+- [ ] Set `verbose = True`
+- [ ] Set `allow_delegation = True`
+- [ ] Set `llm = f"anthropic/{MODEL_NAME}"`
+- [ ] Set `max_iter = AGENT_MAX_ITER["research_director"]`
 - [ ] Return the Agent object
-- [ ] Test: import and call `create_research_director()`, confirm no errors
+- [ ] Test: `from src.agents.navigation_director import create_navigation_director; a = create_navigation_director(); print(a.role)` — no errors
 
-## 2.3 DeepResearcher Agent
+## 2.3 SLAMAndFusionResearcher Agent
 
-- [ ] Create file `src/agents/deep_researcher.py`
-- [ ] Add import: `from crewai import Agent`
-- [ ] Add import: `from src.config import MODEL_NAME`
-- [ ] Add import for tools: `from src.tools.search_tools import SerperSearchTool, ArxivSearchTool`
-- [ ] Add import for tools: `from src.tools.web_scraper import WebScraperTool`
-- [ ] Define function `create_deep_researcher() -> Agent`
-- [ ] Set `role="Technical AI Systems Research Specialist"`
-- [ ] Write `goal` emphasizing: find 5+ authoritative sources per sub-topic
-- [ ] Confirm goal includes: "provide structured Hebrew-compatible notes"
-- [ ] Confirm goal includes: "never cite unverified sources"
-- [ ] Write `backstory` with academic persona — PhD researcher in AI systems
-- [ ] Confirm backstory includes personality traits: meticulous, never approximates
-- [ ] Set `tools=[SerperSearchTool(), ArxivSearchTool(), WebScraperTool()]`
-- [ ] Set `verbose=True`
-- [ ] Set `allow_delegation=False`
-- [ ] Set `llm=f"anthropic/{MODEL_NAME}"`
-- [ ] Set `max_iter=10`
-- [ ] Return the Agent object
-- [ ] Test: import and call `create_deep_researcher()`, confirm no errors
+- [ ] Create file `src/agents/slam_researcher.py`
+- [ ] Add all necessary imports (Agent, tools, config)
+- [ ] Define function `create_slam_researcher() -> Agent`
+- [ ] Set `role = "SLAM, Sensor Fusion & Signal Processing Research Specialist"`
+- [ ] Write `goal`: find 5+ IEEE/ArXiv sources per sub-domain with BibTeX entries
+- [ ] Confirm goal includes: "extract algorithms AND mathematical formulations"
+- [ ] Confirm goal includes: "produce LaTeX-ready equation skeletons"
+- [ ] Confirm goal includes: "include benchmark results (RMSE, ATE, RPE values)"
+- [ ] Write `backstory` as Prof. Amir Ben-David — Technion PhD, EKF-SLAM implementation experience
+- [ ] Confirm backstory includes: "you never approximate; you cite page numbers"
+- [ ] Set `tools = [SerperSearchTool(), ArxivSearchTool(), WebScraperTool()]`
+- [ ] Confirm ArxivSearchTool is configured to prefer categories: `cs.RO`, `eess.SP`, `cs.CV`
+- [ ] Set `verbose = True`
+- [ ] Set `allow_delegation = False`
+- [ ] Set `llm = f"anthropic/{MODEL_NAME}"`
+- [ ] Set `max_iter = AGENT_MAX_ITER["deep_researcher"]`
+- [ ] Return Agent
+- [ ] Test: import and instantiate — no errors
 
-## 2.4 DataVisualizer Agent
+## 2.4 VisualizationEngineer Agent
 
-- [ ] Create file `src/agents/data_visualizer.py`
-- [ ] Add import: `from crewai import Agent`
-- [ ] Add import: `from src.config import MODEL_NAME`
-- [ ] Add import for tools: `from src.tools.code_executor import PythonCodeExecutorTool`
-- [ ] Add import for tools: `from src.tools.file_tools import SafeFileWriterTool`
-- [ ] Define function `create_data_visualizer() -> Agent`
-- [ ] Set `role="Scientific Data Visualization & Graph Engineering Specialist"`
-- [ ] Write `goal` specifying: generate matplotlib/plotly code, save to 300 DPI PNG
-- [ ] Confirm goal includes: "framework comparison bar chart"
-- [ ] Confirm goal includes: "architecture flowchart"
-- [ ] Confirm goal includes: "security risk heatmap"
-- [ ] Confirm goal includes: "deployment model radar chart"
-- [ ] Write `backstory` with data scientist persona
-- [ ] Confirm backstory establishes peer-reviewed publication experience
-- [ ] Set `tools=[PythonCodeExecutorTool(), SafeFileWriterTool()]`
-- [ ] Set `verbose=True`
-- [ ] Set `allow_delegation=False`
-- [ ] Set `llm=f"anthropic/{MODEL_NAME}"`
-- [ ] Set `max_iter=8`
-- [ ] Return the Agent object
-- [ ] Test: import and call `create_data_visualizer()`, confirm no errors
+- [ ] Create file `src/agents/visualization_engineer.py`
+- [ ] Add all necessary imports
+- [ ] Define function `create_visualization_engineer() -> Agent`
+- [ ] Set `role = "Scientific Visualization & Sensor Data Engineering Specialist"`
+- [ ] Write `goal`: generate all 9 required figures as 300 DPI PNG
+- [ ] Confirm goal lists ALL 9 figures by name:
+  - [ ] `fig_bat_vs_artificial.png`
+  - [ ] `fig_trajectory_3d.png`
+  - [ ] `fig_sensor_fusion_heatmap.png`
+  - [ ] `fig_cochleagram.png`
+  - [ ] `fig_range_doppler.png`
+  - [ ] `fig_ekf_covariance.png`
+  - [ ] `fig_framework_comparison.png`
+  - [ ] `fig_sensor_modalities.png`
+  - [ ] `fig_results_summary.png`
+- [ ] Confirm goal states: "Hebrew axis labels where appropriate"
+- [ ] Confirm goal states: "poorly labeled axis is professional negligence"
+- [ ] Write `backstory` as Noa Shapira — MSc computational neuroscience, ICRA/IROS figures
+- [ ] Set `tools = [PythonCodeExecutorTool(), SafeFileWriterTool()]`
+- [ ] Set `verbose = True`
+- [ ] Set `allow_delegation = False`
+- [ ] Set `llm = f"anthropic/{MODEL_NAME}"`
+- [ ] Set `max_iter = AGENT_MAX_ITER["data_visualizer"]`
+- [ ] Return Agent
+- [ ] Test: import and instantiate — no errors
 
 ## 2.5 LaTeXAuthor Agent
 
 - [ ] Create file `src/agents/latex_author.py`
-- [ ] Add import: `from crewai import Agent`
-- [ ] Add import: `from src.config import MODEL_NAME`
-- [ ] Add imports for tools: `SafeFileWriterTool`, `FileReaderTool`
 - [ ] Define function `create_latex_author() -> Agent`
-- [ ] Set `role="IEEE LaTeX Technical Author (Hebrew/English Bilingual)"`
-- [ ] Write `goal`: convert research summaries to compilable Hebrew LaTeX chapters
-- [ ] Confirm goal includes: "IEEEtran class conventions"
-- [ ] Confirm goal includes: "integrate figures, tables, equations, and code listings"
-- [ ] Confirm goal includes: "every chapter must compile without errors"
-- [ ] Write `backstory` with bilingual academic writer persona
-- [ ] Confirm backstory establishes fluency in both LaTeX and Hebrew
-- [ ] Add to backstory: "You NEVER write LaTeX that does not compile"
-- [ ] Set `tools=[SafeFileWriterTool(), FileReaderTool()]`
-- [ ] Set `verbose=True`
-- [ ] Set `allow_delegation=False`
-- [ ] Set `llm=f"anthropic/{MODEL_NAME}"`
-- [ ] Set `max_iter=15`
-- [ ] Return the Agent object
-- [ ] Test: import and call `create_latex_author()`, confirm no errors
+- [ ] Set `role = "IEEE LaTeX Technical Author (Hebrew/English Bilingual, Robotics Domain)"`
+- [ ] Write `goal`: convert research notes to compilable Hebrew XeLaTeX chapters
+- [ ] Confirm goal explicitly mentions: XeLaTeX (not pdflatex)
+- [ ] Confirm goal states: "every output must compile on the first xelatex run"
+- [ ] Confirm goal states: "every chapter must include: formal definitions, numbered equations, figure references, tables"
+- [ ] Confirm goal states: "Hebrew prose, English technical terms via \en{} command"
+- [ ] Write `backstory` as Yael Mizrahi — bilingual technical writer, robotics IEEE papers
+- [ ] Confirm backstory: "You treat LaTeX syntax errors as personal failures"
+- [ ] Set `tools = [SafeFileWriterTool(), FileReaderTool()]`
+- [ ] Set `verbose = True`
+- [ ] Set `max_iter = AGENT_MAX_ITER["latex_author"]`
+- [ ] Return Agent
+- [ ] Test: import and instantiate — no errors
 
 ## 2.6 QualityEditor Agent
 
 - [ ] Create file `src/agents/quality_editor.py`
-- [ ] Add import: `from crewai import Agent`
-- [ ] Add import: `from src.config import MODEL_NAME`
-- [ ] Add import for tools: `FileReaderTool`
 - [ ] Define function `create_quality_editor() -> Agent`
-- [ ] Set `role="Senior Academic Paper Quality Editor"`
-- [ ] Write `goal`: review assembled paper for completeness, citations, page count
-- [ ] Confirm goal includes: "verify every \cite{} has a matching .bib entry"
-- [ ] Confirm goal includes: "confirm every figure is referenced in the text"
-- [ ] Confirm goal includes: "validate page count is 25-30"
-- [ ] Confirm goal includes: "produce a detailed remediation report"
-- [ ] Write `backstory` with journal editor persona
-- [ ] Confirm backstory establishes high standards and rejection authority
-- [ ] Set `tools=[FileReaderTool()]`
-- [ ] Set `verbose=True`
-- [ ] Set `allow_delegation=False`
-- [ ] Set `llm=f"anthropic/{MODEL_NAME}"`
-- [ ] Set `max_iter=5`
-- [ ] Return the Agent object
-- [ ] Test: import and call `create_quality_editor()`, confirm no errors
+- [ ] Set `role = "Senior IEEE Journal Technical Editor — Robotics & Autonomous Systems"`
+- [ ] Write `goal`: verify mathematical notation consistency, citation completeness, page count
+- [ ] Confirm goal includes: check every `\cite{}` key exists in .bib
+- [ ] Confirm goal includes: flag any section below 400 words
+- [ ] Confirm goal includes: verify equation numbering is sequential
+- [ ] Confirm goal includes: check every figure is referenced in text with `\figref` or `\ref`
+- [ ] Write `backstory` as Prof. Daniel Stern — Associate Editor IEEE Transactions on Robotics
+- [ ] Confirm backstory: "rejected 65% of papers submitted to your desk"
+- [ ] Confirm backstory: "find missing equation labels physically upsetting"
+- [ ] Set `tools = [FileReaderTool()]`
+- [ ] Set `verbose = True`
+- [ ] Set `max_iter = AGENT_MAX_ITER["quality_editor"]`
+- [ ] Return Agent
+- [ ] Test: import and instantiate — no errors
 
-## 2.7 Memory Configuration
+## 2.7 Agent Unit Tests
 
-- [ ] Create file `src/memory_config.py`
-- [ ] Define `get_embedder_config()` function
-- [ ] If `OPENAI_API_KEY` is set: return OpenAI embedder config with `text-embedding-3-small`
-- [ ] If `OPENAI_API_KEY` is missing: return HuggingFace embedder config with `all-MiniLM-L6-v2`
-- [ ] Define `MEMORY_CONFIG = {"memory": True, "embedder": get_embedder_config()}`
-- [ ] Test: call `get_embedder_config()`, confirm it returns a dict with "provider" key
-- [ ] Test: with OpenAI key present, confirm "openai" is the provider
-- [ ] Test: with OpenAI key removed, confirm "huggingface" is the provider
+- [ ] Create file `tests/test_agents.py`
+- [ ] Import all 5 factory functions
+- [ ] Write `test_all_agents_instantiate()`: call all 5 factories, assert no exceptions
+- [ ] Write `test_director_has_delegation()`: assert `director.allow_delegation == True`
+- [ ] Write `test_researcher_has_3_tools()`: assert `len(researcher.tools) == 3`
+- [ ] Write `test_visualizer_has_code_executor()`: assert `PythonCodeExecutorTool` in tools list
+- [ ] Write `test_author_has_file_writer()`: assert `SafeFileWriterTool` in tools list
+- [ ] Write `test_editor_has_no_delegation()`: assert `editor.allow_delegation == False`
+- [ ] Write `test_all_agents_use_correct_model()`: assert each agent's llm contains `MODEL_NAME`
+- [ ] Run `pytest tests/test_agents.py -v` — confirm all pass [SS]
 
 ---
 
@@ -348,797 +311,639 @@
 ## 3.1 SerperSearchTool
 
 - [ ] Create file `src/tools/search_tools.py`
-- [ ] Add import: `from crewai_tools import SerperDevTool`
-- [ ] Add import: `from src.config import SERPER_API_KEY`
-- [ ] Define `SerperSearchTool` as an instance of `SerperDevTool`
-- [ ] Pass `api_key=SERPER_API_KEY` to the constructor
-- [ ] Wrap instantiation in try/except: catch missing key error with clear message
-- [ ] Write inline docstring explaining when to use this tool vs ArxivSearchTool
+- [ ] Add imports: `BaseTool`, `SerperDevTool`, `os`, `config`
+- [ ] Instantiate `SerperSearchTool = SerperDevTool(api_key=SERPER_API_KEY)`
+- [ ] Wrap instantiation in try/except: if key missing, raise `EnvironmentError` with instructions
+- [ ] Write docstring: when to use Serper vs ArXiv
 - [ ] Test: `from src.tools.search_tools import SerperSearchTool`
-- [ ] Test: call `SerperSearchTool.run("CrewAI multi-agent framework 2024")`
-- [ ] Test: confirm result is non-empty string
-- [ ] Test: confirm result contains at least one URL
-- [ ] [SCREENSHOT]: screenshot the test result showing real search output
+- [ ] Test: call `.run("bat echolocation SLAM UAV IEEE")` — confirm non-empty result
+- [ ] Test: result contains at least one URL string
+- [ ] [SS]: screenshot of real Serper search results
 
 ## 3.2 ArxivSearchTool
 
-- [ ] In `src/tools/search_tools.py`, add import: `from crewai import BaseTool`
-- [ ] Add import: `import arxiv`
-- [ ] Add import: `from typing import Optional`
-- [ ] Define class `ArxivSearchTool(BaseTool)`
-- [ ] Set class attribute `name = "arxiv_search"`
-- [ ] Write `description` attribute: 2-3 sentences on when to use it (academic papers, cutting-edge research)
-- [ ] Define `_run(self, query: str, max_results: int = 5) -> str` method
-- [ ] Inside `_run`: create `arxiv.Search(query=query, max_results=max_results)`
-- [ ] Inside `_run`: iterate results and format as: `"Title: {r.title} | Authors: {r.authors[0]} | Year: {r.published.year} | URL: {r.pdf_url}"`
-- [ ] Handle case where results are empty: return "No ArXiv papers found for this query"
-- [ ] Handle `Exception`: catch all, return error message string (do not crash)
-- [ ] Add `max_results` validation: if < 1 or > 20, set to default 5
-- [ ] Add `query` validation: if empty string, return "Query cannot be empty"
-- [ ] Test: instantiate `ArxivSearchTool()`
-- [ ] Test: call `tool.run("LangGraph stateful agents 2024")`
-- [ ] Test: confirm result contains "Title:" and "URL:"
-- [ ] Test: call with empty string, confirm graceful error message
-- [ ] [SCREENSHOT]: screenshot showing real ArXiv results returned
+- [ ] In `src/tools/search_tools.py`, define class `ArxivSearchTool(BaseTool)`
+- [ ] Set `name = "arxiv_search"`
+- [ ] Write `description`: 3 sentences on when to use (peer-reviewed, robotics, signal processing)
+- [ ] Define `_run(self, query: str, max_results: int = 5) -> str`
+- [ ] Clamp `max_results` to range [1, 20] before using
+- [ ] Return empty query error if `query.strip() == ""`
+- [ ] Use `arxiv.Search(query=query, max_results=max_results, sort_by=arxiv.SortCriterion.Relevance)`
+- [ ] Format each result: `"[{i}] {title} | {authors[0]} | {year} | {id} | {pdf_url}"`
+- [ ] Add domain filter hint in prompt: suggest caller append `"cs.RO"` to queries
+- [ ] Handle empty results: return `"No ArXiv papers found for query: {query}"`
+- [ ] Catch all exceptions: return error string (no crash)
+- [ ] Test: search `"EKF SLAM LiDAR autonomous navigation cs.RO"` — confirm ≥ 3 results
+- [ ] Test: search `"bat echolocation signal processing"` — confirm results
+- [ ] Test: empty string query — confirm graceful error message [SS]
 
-## 3.3 PythonCodeExecutorTool
+## 3.3 PythonCodeExecutorTool — Core
 
 - [ ] Create file `src/tools/code_executor.py`
-- [ ] Add import: `from crewai import BaseTool`
-- [ ] Add import: `import subprocess`
-- [ ] Add import: `import tempfile`
-- [ ] Add import: `import os`
-- [ ] Add import: `import ast`
-- [ ] Add import: `from src.config import FIGURES_DIR`
+- [ ] Add imports: `BaseTool`, `subprocess`, `tempfile`, `os`, `ast`, `pathlib`, `config`
 - [ ] Define class `PythonCodeExecutorTool(BaseTool)`
 - [ ] Set `name = "python_code_executor"`
-- [ ] Write `description`: explain it runs Python code and saves PNG to latex/figures/
-- [ ] Define `ALLOWED_IMPORTS = {"matplotlib", "numpy", "pandas", "plotly", "scipy", "math", "random", "collections"}`
-- [ ] Define `BLOCKED_IMPORTS = {"os", "sys", "subprocess", "shutil", "socket", "requests", "urllib", "http", "ftplib"}`
-- [ ] Implement `_validate_imports(self, code: str) -> bool` using `ast.parse()`
-- [ ] In `_validate_imports`: walk the AST and find all `Import` and `ImportFrom` nodes
-- [ ] In `_validate_imports`: for each import, check if module name is in BLOCKED_IMPORTS
-- [ ] In `_validate_imports`: return False if any blocked import found, True otherwise
-- [ ] Implement `_run(self, code: str, filename: str = "output") -> dict` method
-- [ ] Call `_validate_imports(code)` first; if False, return security error dict
-- [ ] Create temp directory using `tempfile.mkdtemp()`
-- [ ] Write code to `temp_dir/script.py`
-- [ ] Inject line at top: `import matplotlib; matplotlib.use('Agg')`
-- [ ] Inject line at end: `plt.savefig("{FIGURES_DIR}/{filename}.png", dpi=300, bbox_inches='tight')`
-- [ ] Run via `subprocess.run(["python", script_path], capture_output=True, timeout=30, text=True)`
-- [ ] If returncode == 0: return `{"status": "success", "png_path": png_path, "stdout": result.stdout}`
-- [ ] If returncode != 0: return `{"status": "error", "stderr": result.stderr}`
-- [ ] Handle `subprocess.TimeoutExpired`: return timeout error dict
-- [ ] Handle generic `Exception`: return exception error dict
-- [ ] Clean up temp files in `finally` block
-- [ ] Test: pass simple matplotlib code, confirm PNG appears in `latex/figures/`
-- [ ] Test: pass code with `import os`, confirm SecurityError is returned
-- [ ] Test: pass code that takes 60 seconds, confirm TimeoutError within 30 seconds
-- [ ] Test: pass empty code string, confirm graceful error
-- [ ] [SCREENSHOT]: terminal showing PNG was created successfully
+- [ ] Write `description`: explain it runs matplotlib/scipy code and saves PNG to latex/figures/
+- [ ] Define `ALLOWED_IMPORTS` frozenset: matplotlib, mpl_toolkits, numpy, scipy, pandas, plotly, sklearn, math, random, collections, itertools, colorsys
+- [ ] Define `BLOCKED_IMPORTS` frozenset: os, sys, subprocess, shutil, socket, requests, urllib, http, ftplib, smtplib, pickle, eval, exec
+- [ ] Set `TIMEOUT_SECONDS = 45` (3D plots need more time)
 
-## 3.4 SafeFileWriterTool
+## 3.4 PythonCodeExecutorTool — Import Validator
+
+- [ ] Implement `_validate_imports(self, code: str) -> tuple[bool, str]`
+- [ ] Parse code with `ast.parse(code)` — catch `SyntaxError` and return `(False, "Syntax error: ...")`
+- [ ] Walk AST: find all `ast.Import` nodes — check each `.name` against BLOCKED_IMPORTS
+- [ ] Walk AST: find all `ast.ImportFrom` nodes — check `.module` against BLOCKED_IMPORTS
+- [ ] If any blocked import found: return `(False, f"Blocked import: {module_name}")`
+- [ ] If all clear: return `(True, "OK")`
+- [ ] Test: `_validate_imports("import matplotlib.pyplot as plt")` → `(True, "OK")`
+- [ ] Test: `_validate_imports("import os")` → `(False, "Blocked import: os")`
+- [ ] Test: `_validate_imports("from subprocess import run")` → `(False, ...)`
+- [ ] Test: `_validate_imports("def bad(): import sys")` → `(False, ...)`
+
+## 3.5 PythonCodeExecutorTool — Execution Engine
+
+- [ ] Implement `_build_script(self, code: str, filename: str) -> str`
+- [ ] Prepend: `import matplotlib; matplotlib.use('Agg')` (non-interactive backend)
+- [ ] Prepend: `import matplotlib.pyplot as plt`
+- [ ] Append: ensure `plt.savefig('{FIGURES_DIR}/{filename}.png', dpi=300, bbox_inches='tight')` is called
+- [ ] Append: `plt.close('all')` to free memory
+- [ ] Return complete script as string
+- [ ] Implement `_run(self, code: str, filename: str = "output") -> dict`
+- [ ] Step 1: call `_validate_imports(code)` — if blocked, return security error dict
+- [ ] Step 2: create `tempfile.mkdtemp()` temp directory
+- [ ] Step 3: write built script to `temp_dir/script.py` with UTF-8 encoding
+- [ ] Step 4: run `subprocess.run(["python", script_path], capture_output=True, text=True, timeout=TIMEOUT_SECONDS)`
+- [ ] Step 5: if returncode == 0 AND PNG exists: return success dict with png_path
+- [ ] Step 5: if returncode == 0 AND PNG missing: return error "Code ran but no PNG was saved"
+- [ ] Step 5: if returncode != 0: return error dict with stderr content
+- [ ] Step 6: handle `subprocess.TimeoutExpired` → return timeout error dict
+- [ ] Step 7: `finally` block — clean up temp directory
+- [ ] Test: simple `plt.plot([1,2,3,4,5])` code → PNG appears in latex/figures/ [SS]
+- [ ] Test: `import os` code → returns security error, no execution
+- [ ] Test: infinite loop code → returns timeout error within 50 seconds
+
+## 3.6 3D Trajectory Plot Tool Validation
+
+- [ ] Write a standalone test script `tests/test_3d_plot.py`
+- [ ] Code in test: generate a 3D trajectory with `mpl_toolkits.mplot3d`
+  ```python
+  import numpy as np
+  from mpl_toolkits.mplot3d import Axes3D
+  fig = plt.figure(figsize=(10, 8))
+  ax = fig.add_subplot(111, projection='3d')
+  t = np.linspace(0, 4*np.pi, 200)
+  ax.plot(np.sin(t), np.cos(t), t/10, 'b-', linewidth=2, label='Ground Truth')
+  ax.plot(np.sin(t)+np.random.normal(0,0.05,200), np.cos(t)+np.random.normal(0,0.05,200), t/10, 'r--', linewidth=1.5, label='SLAM Estimate')
+  ax.set_xlabel('X [m]'); ax.set_ylabel('Y [m]'); ax.set_zlabel('Z [m]')
+  ax.legend()
+  ```
+- [ ] Run via `PythonCodeExecutorTool` with filename `"test_trajectory_3d"`
+- [ ] Confirm `latex/figures/test_trajectory_3d.png` appears
+- [ ] Open PNG — confirm it shows a 3D helix with two lines [SS]
+- [ ] Delete test PNG after confirming
+
+## 3.7 Sensor Fusion Heatmap Tool Validation
+
+- [ ] Write test code for a 2D heatmap in `tests/test_heatmap.py`:
+  ```python
+  import numpy as np
+  x = np.linspace(-5, 5, 100); y = np.linspace(-5, 5, 100)
+  X, Y = np.meshgrid(x, y)
+  Z = np.exp(-(X**2 + Y**2)/4) + 0.5*np.exp(-((X-2)**2+(Y-2)**2)/2)
+  plt.figure(figsize=(8,6))
+  plt.imshow(Z, cmap='hot', origin='lower', extent=[-5,5,-5,5])
+  plt.colorbar(label='Sensor Confidence')
+  plt.xlabel('X [m]'); plt.ylabel('Y [m]')
+  plt.title('Sensor Fusion Confidence Heatmap')
+  ```
+- [ ] Run via `PythonCodeExecutorTool` with filename `"test_fusion_heatmap"`
+- [ ] Confirm PNG appears in `latex/figures/` [SS]
+- [ ] Delete test PNG
+
+## 3.8 SafeFileWriterTool
 
 - [ ] Create file `src/tools/file_tools.py`
-- [ ] Add import: `from crewai import BaseTool`
-- [ ] Add import: `import os`
-- [ ] Add import: `from src.config import PROJECT_ROOT`
 - [ ] Define class `SafeFileWriterTool(BaseTool)`
 - [ ] Set `name = "safe_file_writer"`
-- [ ] Write `description`: explains it writes UTF-8 files within allowed project directories
-- [ ] Define `ALLOWED_DIRS = ["latex", "outputs", "docs"]` (relative to PROJECT_ROOT)
-- [ ] Define `BLOCKED_FILES = [".env", ".gitignore", "requirements.txt", "config.py"]`
-- [ ] Implement `_is_safe_path(self, path: str) -> bool`
-- [ ] In `_is_safe_path`: resolve absolute path with `os.path.abspath(path)`
-- [ ] In `_is_safe_path`: check it starts with `PROJECT_ROOT`
-- [ ] In `_is_safe_path`: check the relative portion starts with one of `ALLOWED_DIRS`
-- [ ] In `_is_safe_path`: check filename is not in `BLOCKED_FILES`
-- [ ] Return False if any check fails
+- [ ] Write `description`: writes UTF-8 files to allowed project directories only
+- [ ] Define `ALLOWED_DIRS = ("latex", "outputs", "docs")` relative to PROJECT_ROOT
+- [ ] Define `PROTECTED_FILES = (".env", ".gitignore", "requirements.txt", "src/config.py")`
+- [ ] Implement `_is_safe_path(self, path: str) -> tuple[bool, str]`
+- [ ] Resolve `abs_path = Path(path).resolve()`
+- [ ] Check: `abs_path` starts with `PROJECT_ROOT` → if not: return `(False, "Path outside project")`
+- [ ] Check: relative part starts with one of ALLOWED_DIRS → if not: return `(False, "Directory not allowed")`
+- [ ] Check: filename not in PROTECTED_FILES → if blocked: return `(False, "Protected file")`
+- [ ] Return `(True, "OK")`
 - [ ] Implement `_run(self, path: str, content: str) -> dict`
-- [ ] Call `_is_safe_path(path)`, if False: return security error dict
-- [ ] Create parent directories: `os.makedirs(os.path.dirname(path), exist_ok=True)`
-- [ ] Write content to file with `encoding="utf-8"`
-- [ ] Return `{"status": "success", "path": path, "bytes": len(content.encode())}`
-- [ ] Handle `IOError`: return error dict
-- [ ] Handle `PermissionError`: return error dict
-- [ ] Test: write Hebrew text to `outputs/test_hebrew.txt`, confirm file created
-- [ ] Test: attempt write to `../.env`, confirm security error returned
-- [ ] Test: attempt write to `.env`, confirm security error returned
-- [ ] Test: write to `latex/chapters/test.tex`, confirm file created in correct location
+- [ ] Call `_is_safe_path` — if blocked: return security error dict
+- [ ] `Path(path).parent.mkdir(parents=True, exist_ok=True)`
+- [ ] Write with `open(path, 'w', encoding='utf-8')`
+- [ ] Return `{"status": "success", "path": path, "bytes_written": len(content.encode())}`
+- [ ] Handle `IOError`, `PermissionError` — return error dict
+- [ ] Test: write Hebrew .tex content to `outputs/test.tex` — confirm file created
+- [ ] Test: attempt `../../.env` path — confirm security error returned [SS]
 
-## 3.5 FileReaderTool
+## 3.9 FileReaderTool
 
 - [ ] In `src/tools/file_tools.py`, define class `FileReaderTool(BaseTool)`
 - [ ] Set `name = "file_reader"`
-- [ ] Write `description`: reads any file within the project directory
-- [ ] Define `MAX_FILE_SIZE = 1 * 1024 * 1024` (1MB in bytes)
+- [ ] Write `description`: reads files within the project; returns UTF-8 string
+- [ ] Define `MAX_SIZE = 1 * 1024 * 1024` (1MB)
 - [ ] Implement `_run(self, path: str) -> str`
-- [ ] Validate path is within PROJECT_ROOT (reuse `_is_safe_path` logic)
-- [ ] Check file exists: if not, return helpful error with expected path
-- [ ] Check file size: if > MAX_FILE_SIZE, return first 1MB with truncation note
-- [ ] Read file with `encoding="utf-8"`
-- [ ] If `UnicodeDecodeError`: retry with `encoding="latin-1"` and log warning
-- [ ] Return file content as string
-- [ ] Test: write a file, then read it back, confirm content matches
-- [ ] Test: read a non-existent file, confirm helpful error message
-- [ ] Test: read `src/config.py`, confirm it succeeds
+- [ ] Validate path within PROJECT_ROOT (same logic as SafeFileWriterTool)
+- [ ] Check file exists: if not, return `"File not found: {path}. Check the path."`
+- [ ] Check file size: if > MAX_SIZE, return first 1MB with `"\n[TRUNCATED at 1MB]"`
+- [ ] Read with `encoding='utf-8'`; on `UnicodeDecodeError`: retry with `encoding='latin-1'`, log warning
+- [ ] Return content string
+- [ ] Test: write then read back Hebrew .tex file — confirm content matches
+- [ ] Test: read nonexistent path — confirm helpful error message
 
-## 3.6 WebScraperTool
+## 3.10 WebScraperTool
 
 - [ ] Create file `src/tools/web_scraper.py`
-- [ ] Add import: `from crewai_tools import ScrapeWebsiteTool`
-- [ ] Define `WebScraperTool = ScrapeWebsiteTool()`
-- [ ] Test: call `WebScraperTool.run("https://docs.crewai.com")` (or any accessible URL)
-- [ ] Confirm result is non-empty string containing actual page text
+- [ ] `from crewai_tools import ScrapeWebsiteTool`
+- [ ] `WebScraperTool = ScrapeWebsiteTool()`
+- [ ] Test: scrape a known accessible URL — confirm non-empty text returned
 
-## 3.7 Tool Integration Tests
+## 3.11 Full Tool Test Suite
 
 - [ ] Create file `tests/test_tools.py`
-- [ ] Add import: `import pytest`
-- [ ] Add import: `from src.tools.search_tools import SerperSearchTool, ArxivSearchTool`
-- [ ] Add import: `from src.tools.code_executor import PythonCodeExecutorTool`
-- [ ] Add import: `from src.tools.file_tools import SafeFileWriterTool, FileReaderTool`
-- [ ] Write `test_serper_returns_results()`: search and assert `len(result) > 100`
-- [ ] Write `test_serper_empty_query_graceful()`: pass empty string, assert no exception
-- [ ] Write `test_arxiv_returns_papers()`: search and assert "Title:" in result
-- [ ] Write `test_arxiv_max_results_validation()`: pass max_results=0, assert it uses default
-- [ ] Write `test_arxiv_empty_query_graceful()`: pass empty string, assert graceful message
-- [ ] Write `test_code_executor_creates_png()`: pass matplotlib code, assert PNG file exists
-- [ ] Write `test_code_executor_blocks_os_import()`: pass `import os`, assert "security" in result
-- [ ] Write `test_code_executor_blocks_subprocess()`: pass `import subprocess`, assert security error
-- [ ] Write `test_code_executor_timeout()`: pass `while True: pass`, assert timeout < 35 seconds
-- [ ] Write `test_file_writer_creates_file()`: write to outputs/, assert file exists
-- [ ] Write `test_file_writer_blocks_env()`: attempt `.env`, assert security error
-- [ ] Write `test_file_writer_blocks_traversal()`: attempt `../../.env`, assert security error
-- [ ] Write `test_file_reader_reads_content()`: write then read, assert content matches
-- [ ] Write `test_file_reader_missing_file()`: read nonexistent path, assert helpful message
-- [ ] Run `pytest tests/test_tools.py -v`
-- [ ] Confirm all tests pass [SCREENSHOT]
-- [ ] Fix any failing tests before proceeding
+- [ ] `test_serper_returns_results()`: search "bat SLAM UAV", assert len > 100
+- [ ] `test_serper_empty_query_graceful()`: pass "", assert no exception raised
+- [ ] `test_arxiv_returns_papers()`: search "EKF SLAM", assert "Title:" in result
+- [ ] `test_arxiv_clamps_max_results()`: pass max_results=100, assert runs without crash
+- [ ] `test_arxiv_empty_query()`: pass "", assert graceful error string
+- [ ] `test_code_executor_creates_png()`: simple plt.plot, assert PNG exists in figures/
+- [ ] `test_code_executor_3d_creates_png()`: mpl_toolkits.mplot3d plot, assert PNG exists
+- [ ] `test_code_executor_blocks_os()`: `import os`, assert "Blocked" in result["status"]
+- [ ] `test_code_executor_blocks_subprocess()`: `import subprocess`, assert blocked
+- [ ] `test_code_executor_blocks_nested_import()`: `def f(): import sys`, assert blocked
+- [ ] `test_code_executor_timeout()`: infinite loop, assert completes within 55 seconds
+- [ ] `test_code_executor_syntax_error()`: bad syntax, assert graceful error
+- [ ] `test_file_writer_creates_file()`: write to outputs/, assert exists
+- [ ] `test_file_writer_blocks_env()`: attempt .env, assert security error
+- [ ] `test_file_writer_blocks_traversal()`: attempt ../../.env, assert security error
+- [ ] `test_file_writer_blocks_config()`: attempt src/config.py, assert security error
+- [ ] `test_file_reader_roundtrip()`: write then read, assert content matches
+- [ ] `test_file_reader_missing()`: read nonexistent, assert helpful message
+- [ ] Run `pytest tests/test_tools.py -v` — confirm 0 failures [SS]
 
 ---
 
 # MODULE 4: Research & Content Generation
 
-## 4.1 Task Definitions — Research Phase
+## 4.1 Research Task Definitions
 
 - [ ] Create file `src/tasks/research_tasks.py`
-- [ ] Add import: `from crewai import Task`
+- [ ] Import `Task` from crewai
 - [ ] Define `create_decompose_task(director_agent) -> Task`
-- [ ] Task description: "Analyze topic '{topic}' and produce a structured outline of 7-9 sub-topics..."
-- [ ] Task expected_output: numbered list of sub-topics with estimated page count per sub-topic
-- [ ] Set `output_file="outputs/paper_outline.md"`
-- [ ] Define `create_research_task(researcher_agent, subtopic: str, chapter_num: int) -> Task`
-- [ ] Task description: "Research '{subtopic}' in depth for chapter {chapter_num}..."
-- [ ] Confirm description specifies: find 5+ sources, provide BibTeX entries, summarize in Hebrew-compatible notes
-- [ ] Task expected_output: structured markdown with sections: Summary, Key Findings, Sources (BibTeX), Hebrew Section Titles
-- [ ] Set `output_file=f"outputs/research_ch{chapter_num:02d}.md"`
-- [ ] Test: instantiate each task, confirm no errors
+  - [ ] Description: analyze topic, produce outline of 7 research sub-domains
+  - [ ] Confirm description specifies: include page budget estimate per chapter
+  - [ ] Confirm description specifies: identify key equations needed per chapter
+  - [ ] Expected output: numbered list of sub-domains + equations + sources to target
+  - [ ] `output_file = "outputs/paper_outline.md"`
+- [ ] Define `create_research_task(researcher_agent, subdomain: str, ch_num: int) -> Task`
+  - [ ] Description: research "{subdomain}" for chapter {ch_num}
+  - [ ] Confirm description: find 5+ IEEE/ArXiv papers with full BibTeX entries
+  - [ ] Confirm description: extract algorithm pseudocode or mathematical model
+  - [ ] Confirm description: provide Hebrew-compatible section titles
+  - [ ] Confirm description: include benchmark numbers (RMSE, ATE, RPE if applicable)
+  - [ ] Expected output: structured markdown with: Summary, Algorithms, Equations, BibTeX, Hebrew Titles
+  - [ ] `output_file = f"outputs/research_ch{ch_num:02d}.md"`
+- [ ] Test: instantiate both task types — confirm no errors
 
-## 4.2 Task Definitions — Visualization Phase
+## 4.2 Visualization Task Definitions
 
 - [ ] Create file `src/tasks/visualization_tasks.py`
-- [ ] Add import: `from crewai import Task`
-- [ ] Define `create_framework_comparison_task(visualizer_agent) -> Task`
-- [ ] Task description: "Generate Python matplotlib code for a bar chart comparing CrewAI, LangGraph, AutoGen, PydanticAI on 5 metrics..."
-- [ ] Confirm description specifies: x-axis = frameworks, y-axis = score 1-10, Hebrew axis labels
-- [ ] Confirm description specifies: save as `latex/figures/fig_framework_comparison.png` at 300 DPI
-- [ ] Task expected_output: path to saved PNG file + confirmation of 300 DPI
-- [ ] Set `output_file="outputs/graph_framework_log.md"`
-- [ ] Define `create_architecture_diagram_task(visualizer_agent) -> Task`
-- [ ] Task description: "Generate Python matplotlib code for a flowchart showing Agent Runtime architecture..."
-- [ ] Confirm description specifies: boxes for Planner, Memory, Tools, RAG with arrows
-- [ ] Confirm description specifies: save as `latex/figures/fig_architecture.png` at 300 DPI
-- [ ] Define `create_security_heatmap_task(visualizer_agent) -> Task`
-- [ ] Task description: "Generate Python matplotlib code for a 2D heatmap of OWASP AI security risks..."
-- [ ] Confirm description specifies: x-axis = likelihood, y-axis = impact, Hebrew labels
-- [ ] Confirm description specifies: save as `latex/figures/fig_security_heatmap.png` at 300 DPI
-- [ ] Define `create_deployment_radar_task(visualizer_agent) -> Task`
-- [ ] Task description: "Generate Python code for a radar/spider chart comparing Local vs Cloud vs Hybrid deployment..."
-- [ ] Confirm description specifies: axes = latency, cost, privacy, scalability, maintenance
-- [ ] Confirm description specifies: save as `latex/figures/fig_deployment_radar.png` at 300 DPI
-- [ ] Test: instantiate all tasks, confirm no errors
+- [ ] Define `create_bat_vs_artificial_task(viz_agent) -> Task`
+  - [ ] Description: generate matplotlib flowchart comparing bat biosonar vs artificial pipeline
+  - [ ] Specify: two-column layout, biological on left, artificial on right
+  - [ ] Specify: arrows showing: Emit Pulse → Echo Receive → Cochlea/DSP → Map Update
+  - [ ] Specify: save as `fig_bat_vs_artificial.png` at 300 DPI
+- [ ] Define `create_3d_trajectory_task(viz_agent) -> Task`
+  - [ ] Description: generate 3D trajectory plot using `mpl_toolkits.mplot3d`
+  - [ ] Specify: blue solid = Ground Truth sinusoidal tunnel path
+  - [ ] Specify: red dashed = SLAM estimate with Gaussian noise (sigma=0.05m)
+  - [ ] Specify: gray scatter = synthetic LiDAR point cloud (wall surfaces)
+  - [ ] Specify: Hebrew axis labels: X[מ], Y[מ], Z[מ]
+  - [ ] Specify: legend in Hebrew
+  - [ ] Specify: `output_file = "fig_trajectory_3d"`, 300 DPI, figsize=(12,9)
+- [ ] Define `create_sensor_fusion_heatmap_task(viz_agent) -> Task`
+  - [ ] Description: generate 2D sensor confidence heatmap for a 10m×10m room
+  - [ ] Specify: LiDAR confidence = Gaussian peak at (3,3), sigma=2m
+  - [ ] Specify: Sonar confidence = Gaussian peak at (7,7), sigma=1.5m
+  - [ ] Specify: Vision confidence = Gaussian peak at (5,5), sigma=3m
+  - [ ] Specify: Combined = weighted sum: 0.5*LiDAR + 0.3*Vision + 0.2*Sonar
+  - [ ] Specify: use `seaborn.heatmap` or `plt.imshow` with `cmap='RdYlGn'`
+  - [ ] Specify: colorbar label in Hebrew: "אמינות חיישן [%]"
+  - [ ] Specify: save as `fig_sensor_fusion_heatmap.png`
+- [ ] Define `create_cochleagram_task(viz_agent) -> Task`
+  - [ ] Description: generate FM pulse Cochleagram (spectrogram) using scipy.signal
+  - [ ] Specify: simulate LFM pulse: f0=20kHz, B=80kHz, T=2ms, fs=500kHz
+  - [ ] Specify: use `scipy.signal.spectrogram` with 64-sample window, 75% overlap
+  - [ ] Specify: colormap: 'inferno', frequency axis in kHz, time axis in ms
+  - [ ] Specify: save as `fig_cochleagram.png`
+- [ ] Define `create_range_doppler_task(viz_agent) -> Task`
+  - [ ] Description: generate Range-Doppler map from simulated sonar returns
+  - [ ] Specify: use 2D FFT: range dimension (y-axis 0–5m), Doppler (x-axis -2–2 m/s)
+  - [ ] Specify: add 3 synthetic target returns at (1.5m, 0.3m/s), (3m, -0.5m/s), (4.2m, 0m/s)
+  - [ ] Specify: cmap='jet', with colorbar in dB
+  - [ ] Specify: save as `fig_range_doppler.png`
+- [ ] Define `create_ekf_covariance_task(viz_agent) -> Task`
+  - [ ] Description: generate 2D EKF trajectory with covariance ellipses
+  - [ ] Specify: draw trajectory path (x,y positions)
+  - [ ] Specify: at every 10th step: draw `matplotlib.patches.Ellipse` at 2-sigma
+  - [ ] Specify: ellipse grows with time (increasing uncertainty before measurement update)
+  - [ ] Specify: ellipse shrinks after `\update` step
+  - [ ] Specify: save as `fig_ekf_covariance.png`
+- [ ] Define `create_framework_comparison_task(viz_agent) -> Task`
+  - [ ] Description: generate bar chart comparing SLAM algorithms on 4 metrics
+  - [ ] Specify: algorithms: EKF-SLAM, Graph-SLAM, ORB-SLAM3, BioSLAM (our method)
+  - [ ] Specify: metrics: Localization RMSE [cm], Mapping Accuracy [%], CPU Load [%], Power [W]
+  - [ ] Specify: grouped bar chart, 4 groups of 4 bars
+  - [ ] Specify: save as `fig_framework_comparison.png`
+- [ ] Define `create_sensor_modalities_task(viz_agent) -> Task`
+  - [ ] Description: generate block diagram of multi-modal sensor fusion architecture
+  - [ ] Specify: three input boxes (LiDAR, Sonar, Vision) → Preprocessing → Feature Extraction → EKF Fusion → SLAM Map
+  - [ ] Specify: Hebrew labels inside boxes
+  - [ ] Specify: use matplotlib.patches.FancyArrowPatch for arrows
+  - [ ] Specify: save as `fig_sensor_modalities.png`
+- [ ] Define `create_results_summary_task(viz_agent) -> Task`
+  - [ ] Description: generate 3-panel figure: (1) RMSE over time, (2) ATE bar chart, (3) RPE box plot
+  - [ ] Specify: panel 1: 4 methods × time steps, line plot
+  - [ ] Specify: panel 2: horizontal bar chart of final ATE per method
+  - [ ] Specify: panel 3: box plot of RPE distribution per method
+  - [ ] Specify: save as `fig_results_summary.png`, figsize=(15,5)
+- [ ] Test: instantiate all 9 tasks — confirm no errors
 
-## 4.3 Task Definitions — Writing Phase
+## 4.3 Writing Task Definitions
 
 - [ ] Create file `src/tasks/writing_tasks.py`
-- [ ] Add import: `from crewai import Task`
-- [ ] Define `create_chapter_task(author_agent, chapter_num: int, chapter_title: str, research_file: str) -> Task`
-- [ ] Task description: "Read research from {research_file} and write chapter {chapter_num}: {chapter_title}..."
-- [ ] Confirm description specifies: all prose in Hebrew, technical terms in English inline
-- [ ] Confirm description specifies: must include at least one \begin{figure} environment
-- [ ] Confirm description specifies: must include at least one \begin{table} environment
-- [ ] Confirm description specifies: must include at least one \cite{} reference
-- [ ] Confirm description specifies: must use \section{} and at least two \subsection{}
-- [ ] Confirm description specifies: write to `latex/chapters/ch{num:02d}_{slug}.tex`
-- [ ] Task expected_output: path to saved .tex file + word count confirmation
+- [ ] Define `create_chapter_task(author_agent, ch_num, title_he, title_en, research_file) -> Task`
+  - [ ] Description: "Read {research_file}, write ch{num:02d} in Hebrew XeLaTeX..."
+  - [ ] Confirm: "output must compile with xelatex on first attempt"
+  - [ ] Confirm: "include ≥2 numbered equations using \begin{equation}...\label{eq:...}\end{equation}"
+  - [ ] Confirm: "include ≥1 figure environment referencing a figure from latex/figures/"
+  - [ ] Confirm: "include ≥1 table using booktabs (\toprule, \midrule, \bottomrule)"
+  - [ ] Confirm: "include ≥2 \cite{} citations per subsection"
+  - [ ] Confirm: "all prose in Hebrew; technical terms via \en{term} command"
+  - [ ] Confirm: "use \section{}, ≥3 \subsection{}, ≥1 \subsubsection{}"
+  - [ ] `output_file = f"latex/chapters/ch{ch_num:02d}_{slug}.tex"`
 - [ ] Define `create_bibliography_task(author_agent) -> Task`
-- [ ] Task description: "Compile all citations from chapter research files into references.bib..."
-- [ ] Confirm description specifies: minimum 15 BibTeX entries
-- [ ] Confirm description specifies: at least 5 @article entries, at least 3 @misc entries
-- [ ] Confirm description specifies: verify all entries have title, author, year fields
-- [ ] Task expected_output: content of references.bib file + count of entries
-- [ ] Set `output_file="latex/references.bib"`
-- [ ] Define `create_cover_task(author_agent) -> Task`
-- [ ] Task description: "Write the LaTeX cover sheet for the paper..."
-- [ ] Confirm description specifies: course name in Hebrew, assignment number, submission date
-- [ ] Confirm description specifies: student names placeholder
-- [ ] Set `output_file="latex/chapters/cover.tex"`
-- [ ] Define `create_abstract_task(author_agent) -> Task`
-- [ ] Task description: "Write Hebrew and English abstracts (150-250 words each) and 5-7 keywords..."
-- [ ] Set `output_file="latex/chapters/abstract.tex"`
+  - [ ] Description: compile all citations from research files into references.bib
+  - [ ] Confirm: minimum 15 BibTeX entries
+  - [ ] Confirm: ≥5 @article, ≥3 @misc, ≥2 @inproceedings, ≥1 @book
+  - [ ] Confirm: all entries have: author, title, year, and url or journal
+  - [ ] `output_file = "latex/references.bib"`
+- [ ] Define `create_cover_task(author_agent) -> Task` — writes cover.tex
+- [ ] Define `create_abstract_task(author_agent) -> Task` — writes abstract.tex
 - [ ] Define `create_quality_review_task(editor_agent) -> Task`
-- [ ] Task description: "Review the assembled LaTeX paper for completeness..."
-- [ ] Confirm description specifies: check every \cite{} has matching .bib entry
-- [ ] Confirm description specifies: check every \ref{fig:...} has matching \label
-- [ ] Confirm description specifies: estimate page count
-- [ ] Confirm description specifies: check Hebrew text appears in every chapter
-- [ ] Task expected_output: structured quality report with PASS/FAIL per criterion
-- [ ] Set `output_file="outputs/quality_report.md"`
+  - [ ] Description: read all .tex files, produce structured quality report
+  - [ ] Confirm: check all \cite{} keys against references.bib
+  - [ ] Confirm: check all \label{fig:...} have matching \ref in text
+  - [ ] Confirm: count equations — must be ≥8 total
+  - [ ] Confirm: flag any chapter under 400 words
+  - [ ] `output_file = "outputs/quality_report.md"`
 
 ## 4.4 Crew Assembly
 
 - [ ] Create file `src/crew.py`
-- [ ] Add all necessary imports (crewai, agents, tasks, config)
-- [ ] Define `build_research_crew(topic: str) -> Crew`
-- [ ] Inside function: instantiate all 5 agents by calling their factory functions
-- [ ] Inside function: build task list in correct sequential order:
-- [ ] Task order step 1: decompose_task (director)
-- [ ] Task order step 2: research all sub-topics (researcher, 7 tasks)
-- [ ] Task order step 3: generate all 4 graphs (visualizer)
-- [ ] Task order step 4: write cover.tex (author)
-- [ ] Task order step 5: write abstract.tex (author)
-- [ ] Task order step 6: write ch01_intro.tex (author)
-- [ ] Task order step 7: write ch02_architecture.tex (author)
-- [ ] Task order step 8: write ch03_frameworks.tex (author)
-- [ ] Task order step 9: write ch04_protocols.tex (author)
-- [ ] Task order step 10: write ch05_security.tex (author)
-- [ ] Task order step 11: write ch06_deployment.tex (author)
-- [ ] Task order step 12: write ch07_our_system.tex (author)
-- [ ] Task order step 13: write ch08_results.tex (author)
-- [ ] Task order step 14: write ch09_conclusion.tex (author)
-- [ ] Task order step 15: compile references.bib (author)
-- [ ] Task order step 16: quality review (editor)
-- [ ] Set `process=Process.sequential`
-- [ ] Set `memory=True`
-- [ ] Set `embedder` using `get_embedder_config()` from memory_config
-- [ ] Set `output_log_file="outputs/crew_log.txt"`
-- [ ] Set `verbose=True`
-- [ ] Return the assembled `Crew` object
-- [ ] Test: call `build_research_crew("test topic")`, confirm Crew object returned with no errors
+- [ ] Import: `Crew`, `Process` from crewai
+- [ ] Import: all 5 agent factory functions
+- [ ] Import: all task factory functions
+- [ ] Import: `get_embedder_config`, `OUTPUTS_DIR` from config
+- [ ] Define `build_navigator_crew(topic: str) -> Crew`
+- [ ] Instantiate all 5 agents
+- [ ] Build task list in correct order:
+  - [ ] Step 1: decompose_task
+  - [ ] Steps 2–8: research tasks for each of 7 sub-domains
+  - [ ] Steps 9–17: visualization tasks (all 9 figures)
+  - [ ] Step 18: cover.tex task
+  - [ ] Step 19: abstract.tex task
+  - [ ] Steps 20–27: chapter tasks (ch02 through ch09)
+  - [ ] Step 28: bibliography task
+  - [ ] Step 29: quality review task
+- [ ] Set `process = Process.sequential`
+- [ ] Set `memory = True`
+- [ ] Set `embedder = get_embedder_config()`
+- [ ] Set `output_log_file = str(OUTPUTS_DIR / "crew_log.txt")`
+- [ ] Set `verbose = True`
+- [ ] Return assembled `Crew`
+- [ ] Test: `build_navigator_crew("test")` — confirm Crew object, no errors
 
 ## 4.5 CLI Interface
 
 - [ ] Create file `main.py`
-- [ ] Add import: `import argparse`
-- [ ] Add import: `from src.crew import build_research_crew`
-- [ ] Add import: `from src.config import validate_config`
-- [ ] Define `main()` function
-- [ ] Create `argparse.ArgumentParser` with description
-- [ ] Add argument `--topic` (required=True, help text)
-- [ ] Add argument `--output-dir` (default="outputs", help text)
-- [ ] Add argument `--dry-run` (action="store_true", help="Build crew but don't run it")
-- [ ] Call `validate_config()` at start of main
-- [ ] Call `build_research_crew(args.topic)` to build the crew
+- [ ] Define `argparse` with `--topic`, `--output-dir`, `--dry-run` arguments
+- [ ] Call `validate_config()` first
+- [ ] Build crew via `build_navigator_crew(args.topic)`
+- [ ] If `--dry-run`: print crew summary and exit without calling kickoff
 - [ ] If not dry-run: call `crew.kickoff(inputs={"topic": args.topic})`
-- [ ] Print completion message with output directory path
-- [ ] Add `if __name__ == "__main__": main()` guard
-- [ ] Test: `python main.py --help` — confirm help text appears
-- [ ] Test: `python main.py --topic "test" --dry-run` — confirm no API calls made, crew built
+- [ ] Test: `python main.py --help` — confirm help text [SS]
+- [ ] Test: `python main.py --topic "bat navigation" --dry-run` — no API calls
 
 ## 4.6 Streamlit Interface
 
 - [ ] Create file `app.py`
-- [ ] Add import: `import streamlit as st`
-- [ ] Add import: `from src.crew import build_research_crew`
-- [ ] Add import: `from src.config import validate_config`
-- [ ] Add import: `import os`
-- [ ] Set `st.set_page_config(page_title="ResearchCrew", layout="wide")`
-- [ ] Add `st.title("ResearchCrew — AI Paper Generator")`
-- [ ] Create sidebar with `st.sidebar`
-- [ ] Add `topic = st.text_input("Research Topic", value="AI Agent Architecture 2026")` in sidebar
-- [ ] Add `model = st.selectbox("LLM Model", ["claude-sonnet-4-6", "claude-opus-4-6"])` in sidebar
-- [ ] Add `target_pages = st.slider("Target Pages", 25, 30, 28)` in sidebar
-- [ ] Add `run_btn = st.button("Generate Paper", type="primary")` in sidebar
-- [ ] Create two columns with `col1, col2 = st.columns([2, 1])`
-- [ ] In col1: add `st.subheader("Agent Progress")`
-- [ ] Add progress placeholders for each agent (use `st.empty()`)
-- [ ] In col2: add `st.subheader("Download Files")`
-- [ ] Add download button placeholders
-- [ ] When `run_btn` is clicked: wrap in `with st.spinner("Agents working...")`
-- [ ] Call `validate_config()` inside the button handler
-- [ ] Call `build_research_crew(topic)`
-- [ ] Call `crew.kickoff(inputs={"topic": topic})`
-- [ ] After completion: show `st.success("Paper generated!")`
-- [ ] After completion: scan `latex/figures/` and add download buttons for each PNG
-- [ ] After completion: add download button for each `.tex` file in `latex/chapters/`
-- [ ] After completion: add download button for `latex/references.bib`
-- [ ] In log area: read and display `outputs/crew_log.txt` with `st.text_area`
-- [ ] Add `st.image` previews for each generated PNG graph
-- [ ] Add `st.code` for preview of `latex/main.tex`
-- [ ] Test: `streamlit run app.py` — confirm browser opens without errors [SCREENSHOT]
-- [ ] Test: UI layout looks correct with all components visible
-- [ ] Test: Click run button — confirm spinner appears
+- [ ] `st.set_page_config(page_title="NavigatorCrew", layout="wide", page_icon="🦇")`
+- [ ] `st.title("🦇 NavigatorCrew — Biomimetic Navigation Research Platform")`
+- [ ] Sidebar: topic text_input (default: "Bat-Inspired Drone Navigation via Bio-Mimetic Sensor Fusion")
+- [ ] Sidebar: model selectbox (`claude-sonnet-4-6`, `claude-opus-4-6`)
+- [ ] Sidebar: target pages slider (25–30)
+- [ ] Sidebar: "Generate Paper" button
+- [ ] Main area: 5 agent progress indicators (st.empty() placeholders)
+- [ ] Main area: figure preview gallery (st.image for each generated PNG)
+- [ ] Main area: LaTeX preview (st.code for main.tex)
+- [ ] Main area: download buttons for each .tex, .bib, each .png
+- [ ] Main area: scrollable agent log (st.text_area from crew_log.txt)
+- [ ] Test: `streamlit run app.py` — confirm browser opens [SS]
+- [ ] Test: all UI components render correctly in browser
 
-## 4.7 Agent Tests
+## 4.7 Run Full Research Phase
 
-- [ ] Create file `tests/test_agents.py`
-- [ ] Write `test_all_agents_instantiate()`: call all 5 factory functions, assert no exceptions
-- [ ] Write `test_research_director_has_delegation()`: assert `director.allow_delegation == True`
-- [ ] Write `test_researcher_has_correct_tools()`: assert len(researcher.tools) == 3
-- [ ] Write `test_visualizer_has_code_executor()`: assert PythonCodeExecutorTool in visualizer.tools
-- [ ] Write `test_latex_author_has_file_writer()`: assert SafeFileWriterTool in author.tools
-- [ ] Write `test_quality_editor_no_delegation()`: assert `editor.allow_delegation == False`
-- [ ] Run `pytest tests/test_agents.py -v` and confirm all pass [SCREENSHOT]
-
-## 4.8 Crew Integration Test
-
-- [ ] Create file `tests/test_crew.py`
-- [ ] Write `test_crew_builds_without_error()`: call `build_research_crew("test")`, assert Crew object returned
-- [ ] Write `test_crew_has_memory_enabled()`: assert `crew.memory == True`
-- [ ] Write `test_crew_has_correct_agent_count()`: assert `len(crew.agents) == 5`
-- [ ] Write `test_crew_has_correct_task_order()`: assert first task's agent is director
-- [ ] Run `pytest tests/test_crew.py -v` and confirm all pass [SCREENSHOT]
-
-## 4.9 Full Crew Execution
-
-- [ ] Run full crew on the research topic:
-  `python main.py --topic "AI Agent Architecture and Orchestration 2026"`
-- [ ] Monitor terminal for agent outputs
-- [ ] Confirm `outputs/paper_outline.md` is created
-- [ ] Confirm `outputs/research_ch01.md` through `outputs/research_ch07.md` are created
-- [ ] Open each research file and confirm it is at least 800 words
-- [ ] Confirm `latex/figures/fig_framework_comparison.png` exists
-- [ ] Confirm `latex/figures/fig_architecture.png` exists
-- [ ] Confirm `latex/figures/fig_security_heatmap.png` exists
-- [ ] Confirm `latex/figures/fig_deployment_radar.png` exists
-- [ ] Open each PNG and confirm it is a valid, readable graph [SCREENSHOT each one]
-- [ ] Confirm `latex/chapters/cover.tex` exists
-- [ ] Confirm `latex/chapters/abstract.tex` exists
-- [ ] Confirm `latex/chapters/ch01_intro.tex` through `ch09_conclusion.tex` exist
-- [ ] Confirm `latex/references.bib` exists
-- [ ] Confirm `outputs/quality_report.md` exists
-- [ ] Read `outputs/quality_report.md` and note any FAIL items
-- [ ] If QualityEditor found issues: fix them manually and re-run relevant tasks
+- [ ] Run: `python main.py --topic "Bat-Inspired Drone Navigation via Bio-Mimetic Sensor Fusion"`
+- [ ] Confirm `outputs/paper_outline.md` created — read and verify 7 sub-domains
+- [ ] Confirm `outputs/research_ch02.md` — biological basis, ≥800 words
+- [ ] Confirm `outputs/research_ch03.md` — sensor modalities, ≥800 words
+- [ ] Confirm `outputs/research_ch04.md` — SLAM algorithms, ≥800 words
+- [ ] Confirm `outputs/research_ch05.md` — sensor fusion architecture, ≥800 words
+- [ ] Confirm `outputs/research_ch06.md` — proposed algorithm, ≥800 words
+- [ ] Confirm `outputs/research_ch07.md` — NavigatorCrew system, ≥800 words
+- [ ] Confirm `outputs/research_ch08.md` — results and metrics, ≥800 words
+- [ ] Review each file for accuracy — flag any hallucinated equations or wrong citations
+- [ ] Manually verify EKF equations match Thrun (2005) textbook form
+- [ ] Manually verify matched-filter formula matches Rihaczek signal processing form
 
 ---
 
 # MODULE 5: LaTeX/IEEE Mastering
 
-## 5.1 Main LaTeX File
+## 5.1 main.tex Verification
 
-- [ ] Create file `latex/main.tex`
-- [ ] First line: `\documentclass[10pt, a4paper, journal]{IEEEtran}`
-- [ ] Add: `\usepackage[utf8]{inputenc}`
-- [ ] Add: `\usepackage[T1]{fontenc}`
-- [ ] Add Hebrew language support: `\usepackage[hebrew, english]{babel}` OR `\usepackage{polyglossia}` + `\setmainlanguage{hebrew}` + `\setotherlanguage{english}`
-- [ ] Add: `\usepackage{graphicx}`
-- [ ] Add: `\usepackage{booktabs}` (for professional tables)
-- [ ] Add: `\usepackage{amsmath}`
-- [ ] Add: `\usepackage{amssymb}`
-- [ ] Add: `\usepackage{hyperref}`
-- [ ] Add: `\usepackage{fancyhdr}`
-- [ ] Add: `\usepackage{listings}`
-- [ ] Add: `\usepackage{xcolor}`
-- [ ] Add: `\usepackage{caption}`
-- [ ] Add: `\usepackage{subcaption}`
-- [ ] Add: `\usepackage{float}`
-- [ ] Add: `\usepackage{geometry}` with margins: `\geometry{margin=2.5cm}`
-- [ ] Add: `\usepackage{microtype}` (for better text spacing)
-- [ ] Configure `listings` package for Python syntax highlighting:
-  - [ ] Set `language=Python`
-  - [ ] Set `basicstyle=\small\ttfamily`
-  - [ ] Set `keywordstyle=\color{blue}\bfseries`
-  - [ ] Set `commentstyle=\color{gray}`
-  - [ ] Set `stringstyle=\color{green!50!black}`
-  - [ ] Set `showstringspaces=false`
-  - [ ] Set `numbers=left`
-  - [ ] Set `numberstyle=\tiny`
-  - [ ] Set `frame=single`
-- [ ] Configure `fancyhdr`:
-  - [ ] `\pagestyle{fancy}`
-  - [ ] `\fancyhead[L]{AI Agent Orchestration 2026}`
-  - [ ] `\fancyhead[R]{\thepage}`
-  - [ ] `\fancyfoot[C]{Course: Orchestration of AI Agents | 2026}`
-  - [ ] `\renewcommand{\headrulewidth}{0.4pt}`
-- [ ] Add `\begin{document}` marker
-- [ ] Add `\selectlanguage{hebrew}` right after `\begin{document}`
-- [ ] Add: `\input{chapters/cover}`
-- [ ] Add IEEEtran abstract block: `\begin{abstract}\input{chapters/abstract}\end{abstract}`
-- [ ] Add: `\input{chapters/ch01_intro}`
-- [ ] Add: `\input{chapters/ch02_architecture}`
-- [ ] Add: `\input{chapters/ch03_frameworks}`
-- [ ] Add: `\input{chapters/ch04_protocols}`
-- [ ] Add: `\input{chapters/ch05_security}`
-- [ ] Add: `\input{chapters/ch06_deployment}`
-- [ ] Add: `\input{chapters/ch07_our_system}`
-- [ ] Add: `\input{chapters/ch08_results}`
-- [ ] Add: `\input{chapters/ch09_conclusion}`
-- [ ] Add: `\bibliographystyle{IEEEtran}`
-- [ ] Add: `\bibliography{references}`
-- [ ] Add: `\end{document}`
+- [ ] Confirm `\documentclass[10pt, a4paper, journal]{IEEEtran}` is first line
+- [ ] Confirm `\usepackage{fontspec}` present
+- [ ] Confirm `\usepackage{polyglossia}` present
+- [ ] Confirm `\setmainlanguage{hebrew}` present
+- [ ] Confirm `\setotherlanguage{english}` present
+- [ ] Confirm `\newfontfamily\hebrewfont[Script=Hebrew]{David CLM}` present
+- [ ] Confirm `\en{}` custom command is defined
+- [ ] Confirm `\figref{}`, `\tabref{}`, `\secref{}` custom commands defined
+- [ ] Confirm fancyhdr configured with Hebrew header text
+- [ ] Confirm hyperref package with Hebrew PDF metadata
+- [ ] Confirm `\selectlanguage{hebrew}` appears after `\begin{document}`
+- [ ] Confirm all 9 chapters are `\input{}` in correct order
+- [ ] [COMPILE] run full xelatex compile — confirm zero critical errors
 
-## 5.2 Cover Sheet
+## 5.2 Chapter 2: Biological Basis
 
-- [ ] Create/verify file `latex/chapters/cover.tex`
-- [ ] Add titlepage environment: `\begin{titlepage}`
-- [ ] Add `\centering`
-- [ ] Add institution name in Hebrew
-- [ ] Add course name in Hebrew: "קורס: אורקסטרציה של סוכני בינה מלאכותית"
-- [ ] Add assignment designation: "עבודה מס' 3"
-- [ ] Add paper title in Hebrew (the full title from PRD)
-- [ ] Add subtitle in English
-- [ ] Add student name line (fill in real names)
-- [ ] Add submission date: "20 יוני 2026"
-- [ ] Add `\vfill` for spacing
-- [ ] Add semester/year info
-- [ ] Close with `\end{titlepage}`
-- [ ] Test compile `main.tex` and confirm cover page renders correctly
+- [ ] Open `latex/chapters/ch02_architecture.tex` (rename to `ch02_bio_basis.tex` if needed)
+- [ ] Confirm filename matches `\input{chapters/ch02_bio_basis}` in main.tex — fix if needed
+- [ ] Add `\section{הבסיס הביולוגי: אקולוקציה של עטלפים}`
+- [ ] Add `\label{sec:bio_basis}`
+- [ ] Add `\subsection{ה-Chiroptera: המבנה הביולוגי}` — 3+ paragraphs on bat anatomy
+- [ ] Add `\subsection{פולסי CF/FM: המאפיינים האקוסטיים}` — CF and FM pulse types
+- [ ] Add `\subsection{ה-Cochleagram: עיבוד שמע ביולוגי}` — cochleagram analysis
+- [ ] Add `\subsection{עיבוד עצבי: ה-Inferior Colliculus}` — neural processing chain
+- [ ] Include `fig_cochleagram.png` figure with caption in Hebrew
+- [ ] Include `fig_range_doppler.png` figure with caption
+- [ ] Include table: FM pulse parameters for 5 bat species (frequency range, pulse duration, BW)
+  - [ ] Columns: מין | f₀ [kHz] | B [kHz] | T [ms] | Δr [mm]
+  - [ ] Use `\toprule`, `\midrule`, `\bottomrule` from booktabs
+- [ ] Include LFM pulse equation (Eq. already in ch01 — reference it)
+- [ ] Add equation: Doppler shift formula $\Delta f = 2v_r f_0 / c$
+- [ ] Add at least 4 `\cite{}` citations (Simmons 1979, Griffin bat book, Moss echolocation, etc.)
+- [ ] [COMPILE] confirm chapter compiles without errors
 
-## 5.3 Abstract
+## 5.3 Chapter 3: Sensor Modalities
 
-- [ ] Create/verify file `latex/chapters/abstract.tex`
-- [ ] Write Hebrew abstract (150-250 words) covering: topic, methodology, results, significance
-- [ ] Add English abstract (same content, 150-250 words)
-- [ ] Add Hebrew keywords list (5-7 keywords)
-- [ ] Add English keywords list
-- [ ] Confirm abstract mentions: CrewAI, multi-agent, IEEE, LaTeX
-- [ ] Test compile and confirm abstract appears correctly
+- [ ] Update stub `ch03_frameworks.tex` → rename reference in main.tex to `ch03_sensors`
+- [ ] Add `\section{מודאליות החישנים: LiDAR, סונאר ו-Vision-AI}`
+- [ ] Add `\label{sec:sensors}`
+- [ ] Add `\subsection{LiDAR — גילוי ומדידת מרחק בלייזר}` — 3+ paragraphs
+- [ ] Include LiDAR noise model equation: $z_{\text{LiDAR}} = d + \eta_L$, $\eta_L \sim \mathcal{N}(0, \sigma_L^2)$
+- [ ] Add `\subsection{סונאר אולטרה-סוני MEMS}` — 3+ paragraphs on ultrasonic array
+- [ ] Add `\subsection{Vision-AI — רשתות עצביות לאמידת עומק}` — DepthAnything, DPT, etc.
+- [ ] Include `fig_sensor_modalities.png` block diagram figure
+- [ ] Include sensor comparison table: LiDAR vs Sonar vs Vision (range, resolution, cost, power, weather robustness)
+- [ ] Add at least 4 citations
+- [ ] [COMPILE] confirm chapter compiles
 
-## 5.4 Chapter 1: Introduction (Hebrew LaTeX)
+## 5.4 Chapter 4: SLAM Algorithms
 
-- [ ] Open/create `latex/chapters/ch01_intro.tex`
-- [ ] Add: `\selectlanguage{hebrew}`
-- [ ] Add `\section{מבוא}` — Introduction
-- [ ] Add `\subsection{רקע}` — Background
-- [ ] Write 2-3 paragraphs in Hebrew on the evolution of AI agents
-- [ ] Add `\subsection{מוטיבציה}` — Motivation
-- [ ] Write 2 paragraphs explaining why this research matters
-- [ ] Add `\subsection{מבנה המאמר}` — Paper structure
-- [ ] Write 1 paragraph describing each chapter briefly
-- [ ] Add at least 2 `\cite{}` citations
-- [ ] Add a figure reference using `(ראו איור \ref{fig:timeline})`
-- [ ] Include a simple timeline figure or reference to one
-- [ ] Verify all Hebrew text is inside `\selectlanguage{hebrew}` scope
-- [ ] Verify English terms appear in `\textit{term}` or `\texttt{term}` format
-- [ ] Test compile and confirm chapter renders without errors
+- [ ] Update stub → `ch04_slam.tex`
+- [ ] Add `\section{אלגוריתמי SLAM ביומימטיים}`
+- [ ] Add `\label{sec:slam}`
+- [ ] Add `\subsection{EKF-SLAM}` — derive predict and update steps fully
+- [ ] Include EKF predict equations (Eq. already in ch01 — expand or reference)
+- [ ] Include EKF update equations (Kalman gain, state update, covariance update)
+- [ ] Add `\subsection{Graph-SLAM ואופטימיזציית גרף}` — factor graph, g2o, iSAM2
+- [ ] Include graph optimization objective: $\mathbf{x}^* = \arg\min_{\mathbf{x}} \sum_i \|e_i(\mathbf{x})\|^2_{\Sigma_i}$
+- [ ] Add `\subsection{Neural SLAM — גישות למידת עומק}` — survey of learning-based SLAM
+- [ ] Add `\subsection{ORB-SLAM3 — ניתוח השוואתי}` — ORB-SLAM3 as baseline
+- [ ] Include `fig_ekf_covariance.png` figure with caption
+- [ ] Include SLAM algorithm comparison table: EKF vs Graph vs Neural vs ORB-SLAM3
+- [ ] Add at least 5 citations (Thrun 2005 textbook, Mur-Artal ORB-SLAM3, Grisetti g2o, etc.)
+- [ ] [COMPILE] confirm chapter compiles
 
-## 5.5 Chapter 2: Agent Architecture (Hebrew LaTeX)
+## 5.5 Chapter 5: Sensor Fusion Architecture
 
-- [ ] Open/create `latex/chapters/ch02_architecture.tex`
-- [ ] Add `\section{ארכיטקטורת סוכן בינה מלאכותית}`
-- [ ] Add `\subsection{ה-Runtime של הסוכן}` — Agent Runtime
-- [ ] Write content covering: Planner, Memory, Tools, RAG components
-- [ ] Add `\subsection{מתכנן — Planner}` — subsection on planning
-- [ ] Write 2+ paragraphs with technical details
-- [ ] Add `\subsection{זיכרון — Memory}` — subsection on memory
-- [ ] Write 2+ paragraphs on short-term vs long-term memory
-- [ ] Add `\subsection{כלים — Tools}` — subsection on tools
-- [ ] Write 2+ paragraphs on tool types and API integration
-- [ ] Add `\subsection{RAG}` — subsection on retrieval-augmented generation
-- [ ] Write 2+ paragraphs on RAG architecture
-- [ ] Include architecture flowchart figure:
-  ```latex
-  \begin{figure}[h]
-  \centering
-  \includegraphics[width=0.9\columnwidth]{figures/fig_architecture.png}
-  \caption{ארכיטקטורת סוכן בינה מלאכותית — רכיבי ה-Runtime}
-  \label{fig:architecture}
-  \end{figure}
-  ```
-- [ ] Include a comparison table of memory types
-- [ ] Add at least 3 `\cite{}` citations
-- [ ] Test compile and confirm chapter renders
+- [ ] Update stub → `ch05_fusion.tex`
+- [ ] Add `\section{ארכיטקטורת היתוך החישנים}`
+- [ ] Add `\label{sec:fusion}`
+- [ ] Add `\subsection{היתוך בייזיאני — עקרונות}` — Bayesian fusion theory
+- [ ] Include Bayesian fusion formula: $p(\mathbf{x} | z_1, z_2, z_3) \propto p(z_1|\mathbf{x})\, p(z_2|\mathbf{x})\, p(z_3|\mathbf{x})\, p(\mathbf{x})$
+- [ ] Add `\subsection{היתוך מבוסס EKF מרובה-חיישנים}` — multi-sensor EKF formulation
+- [ ] Add noise covariance matrices: $R_{\text{LiDAR}}$, $R_{\text{sonar}}$, $R_{\text{vision}}$
+- [ ] Add `\subsection{ראשי היתוך מבוססי למידה עמוקה}` — DNN fusion heads
+- [ ] Include `fig_sensor_fusion_heatmap.png` with caption
+- [ ] Include table: fusion weight comparison per sensor type per environment
+- [ ] Add at least 4 citations
+- [ ] [COMPILE] confirm chapter compiles
 
-## 5.6 Chapter 3: Frameworks Comparison (Hebrew LaTeX)
+## 5.6 Chapter 6: Proposed Algorithm
 
-- [ ] Open/create `latex/chapters/ch03_frameworks.tex`
-- [ ] Add `\section{מסגרות עבודה לסוכנים}`
-- [ ] Add `\subsection{CrewAI}` with 3+ paragraphs
-- [ ] Add `\subsection{LangGraph}` with 3+ paragraphs
-- [ ] Add `\subsection{AutoGen / AG2}` with 2+ paragraphs
-- [ ] Add `\subsection{PydanticAI}` with 2+ paragraphs
-- [ ] Add `\subsection{השוואה}` — Comparison subsection
-- [ ] Include framework comparison bar chart figure:
-  ```latex
-  \begin{figure}[h]
-  \centering
-  \includegraphics[width=0.9\columnwidth]{figures/fig_framework_comparison.png}
-  \caption{השוואת מסגרות עבודה לפי קריטריונים מרכזיים}
-  \label{fig:frameworks}
-  \end{figure}
-  ```
-- [ ] Include comparison table (at least 5 rows, 4 columns) with `booktabs`:
-  ```latex
-  \begin{table}[h]
-  \centering
-  \begin{tabular}{lccc}
-  \toprule
-  קריטריון & CrewAI & LangGraph & AutoGen \\
-  \midrule
-  ...rows... \\
-  \bottomrule
-  \end{tabular}
-  \caption{השוואה מפורטת של מסגרות עבודה}
-  \label{tab:frameworks}
-  \end{table}
-  ```
-- [ ] Add at least 4 `\cite{}` citations
-- [ ] Test compile
+- [ ] Update stub → `ch06_algorithm.tex`
+- [ ] Add `\section{האלגוריתם הביומימטי המוצע}`
+- [ ] Add `\label{sec:algorithm}`
+- [ ] Add `\subsection{סקירה כללית של צינור ה-BioSLAM}` — system overview
+- [ ] Add `\subsection{שלב הפליטה: פולס FM סינתטי}` — synthetic FM pulse generation
+- [ ] Add formal pulse generation equation using LFM form
+- [ ] Add `\subsection{שלב הקבלה: מסנן-ההתאמה}` — matched filter processing
+- [ ] Add matched filter equation and range resolution formula (reference ch01)
+- [ ] Add `\subsection{שלב ה-SLAM: אינטגרציה עם EKF}` — how sonar feeds into EKF
+- [ ] Add pseudocode as `\begin{lstlisting}[language=Python]` block
+- [ ] Include `fig_bat_vs_artificial.png` as main figure for this chapter
+- [ ] Include algorithm complexity table: time/space complexity per module
+- [ ] Add at least 4 citations
+- [ ] [COMPILE] confirm chapter compiles
 
-## 5.7 Chapter 4: Protocols (Hebrew LaTeX)
+## 5.7 Chapter 7: NavigatorCrew System
 
-- [ ] Open/create `latex/chapters/ch04_protocols.tex`
-- [ ] Add `\section{פרוטוקולי תקשורת בין סוכנים}`
-- [ ] Add `\subsection{MCP — Model Context Protocol}` with 3+ paragraphs
-- [ ] Add `\subsection{A2A — Agent-to-Agent Protocol}` with 3+ paragraphs
-- [ ] Add `\subsection{השוואה בין MCP ל-A2A}` with 2+ paragraphs
-- [ ] Include a protocol sequence diagram figure
-- [ ] Include a comparison table of MCP vs A2A
-- [ ] Add at least 3 `\cite{}` citations
-- [ ] Test compile
+- [ ] Open `ch07_our_system.tex`
+- [ ] Add `\section{NavigatorCrew — עיצוב ומימוש הפלטפורמה}`
+- [ ] Add `\label{sec:oursystem}`
+- [ ] Add `\subsection{סקירת הארכיטקטורה}` — 5-agent system overview
+- [ ] Add `\subsection{הסוכנים — Agents}` — describe each of the 5 agents
+- [ ] Add `\subsection{הכלים — Tools}` — describe all 6 tools
+- [ ] Add `\subsection{הזיכרון — Memory}` — ChromaDB, short/long-term, entity memory
+- [ ] Add `\subsection{ממשק Streamlit}` — UI description
+- [ ] Include Python code listing: crew assembly (10–15 lines from `src/crew.py`)
+- [ ] Include Python code listing: PythonCodeExecutorTool security validation (AST check)
+- [ ] Include screenshot of Streamlit UI as a figure
+- [ ] Add `\subsection{אתגרים ופתרונות}` — challenges faced
+- [ ] Add at least 3 citations (CrewAI, Anthropic, relevant AI platform papers)
+- [ ] [COMPILE] confirm chapter compiles
 
-## 5.8 Chapter 5: Security (Hebrew LaTeX)
+## 5.8 Chapter 8: Results
 
-- [ ] Open/create `latex/chapters/ch05_security.tex`
-- [ ] Add `\section{אבטחת סוכני בינה מלאכותית}`
-- [ ] Add `\subsection{OWASP Top 10 לסוכני AI}` with 3+ paragraphs
-- [ ] Add subsections for each top threat:
-  - [ ] `\subsection{חטיפת מטרה — Goal Hijacking}`
-  - [ ] `\subsection{שימוש לרעה בכלים — Tool Misuse}`
-  - [ ] `\subsection{הרעלת זיכרון — Memory Poisoning}`
-  - [ ] `\subsection{ניצול זהות — Identity Abuse}`
-- [ ] Include security risk heatmap figure:
-  ```latex
-  \begin{figure}[h]
-  \centering
-  \includegraphics[width=0.9\columnwidth]{figures/fig_security_heatmap.png}
-  \caption{מפת חום של סיכוני אבטחה בסוכני AI}
-  \label{fig:security}
-  \end{figure}
-  ```
-- [ ] Include a threats-by-category table
-- [ ] Add at least 4 `\cite{}` citations
-- [ ] Test compile
+- [ ] Open `ch08_results.tex`
+- [ ] Add `\section{תוצאות סימולציה וניתוח}`
+- [ ] Add `\label{sec:results}`
+- [ ] Add `\subsection{הגדרת מדדי הביצוע}` — define RMSE, ATE, RPE formally
+- [ ] Include RMSE formula: $\text{RMSE} = \sqrt{\frac{1}{T}\sum_{t=1}^T \|\hat{\mathbf{p}}_t - \mathbf{p}_t^*\|^2}$
+- [ ] Include ATE and RPE definitions as equations
+- [ ] Add `\subsection{סביבת הסימולציה}` — describe synthetic tunnel environment
+- [ ] Add `\subsection{תוצאות ניווט — ניתוח נתיב}` — trajectory analysis
+- [ ] Include `fig_trajectory_3d.png` as main results figure
+- [ ] Include `fig_results_summary.png` as multi-panel results
+- [ ] Add results table: RMSE / ATE / RPE for EKF-SLAM, Graph-SLAM, ORB-SLAM3, BioSLAM
+  - [ ] Columns: שיטה | RMSE [cm] | ATE [cm] | RPE [cm/m] | CPU [%] | Power [W]
+  - [ ] BioSLAM row shows: 34% better RMSE, 28% less power
+- [ ] Add `\subsection{דיון בתוצאות}` — interpret results, explain improvements
+- [ ] Add at least 3 citations
+- [ ] [COMPILE] confirm chapter compiles
 
-## 5.9 Chapter 6: Deployment (Hebrew LaTeX)
+## 5.9 Chapter 9: Conclusion
 
-- [ ] Open/create `latex/chapters/ch06_deployment.tex`
-- [ ] Add `\section{מודלי פריסה ואובזרבביליות}`
-- [ ] Add `\subsection{פריסה מקומית — Local Deployment}` with 3+ paragraphs
-- [ ] Add `\subsection{פריסה בענן — Cloud Deployment}` with 3+ paragraphs
-- [ ] Add `\subsection{פריסה היברידית — Hybrid}` with 2+ paragraphs
-- [ ] Add `\subsection{אובזרבביליות — Observability}` with 2+ paragraphs
-- [ ] Include deployment radar chart figure
-- [ ] Include deployment comparison table (cost, latency, privacy, scalability)
-- [ ] Add at least 3 `\cite{}` citations
-- [ ] Test compile
+- [ ] Open `ch09_conclusion.tex`
+- [ ] Add `\section{סיכום, מגבלות ועתיד}`
+- [ ] Add `\label{sec:conclusion}`
+- [ ] Add `\subsection{תרומות המחקר}` — 3+ paragraphs
+- [ ] Add `\subsection{מגבלות}` — real-world hardware gap, simulation fidelity, noise models
+- [ ] Add `\subsection{כיוונים עתידיים}` — hardware implementation, neuromorphic chips, swarm SLAM
+- [ ] Add `\subsection{מסקנות סופיות}` — 1 paragraph summary
+- [ ] [COMPILE] confirm chapter compiles
 
-## 5.10 Chapter 7: Our System (Hebrew LaTeX)
+## 5.10 Bibliography — Final
 
-- [ ] Open/create `latex/chapters/ch07_our_system.tex`
-- [ ] Add `\section{המערכת שלנו: ResearchCrew}`
-- [ ] Add `\subsection{סקירה כללית}` — overview
-- [ ] Write 3+ paragraphs describing the system from a user perspective
-- [ ] Add `\subsection{ארכיטקטורת המערכת}` — system architecture
-- [ ] Include the system architecture diagram figure
-- [ ] Add `\subsection{הסוכנים — Agents}` — describe each agent
-- [ ] Add `\subsection{הכלים — Tools}` — describe each tool
-- [ ] Add `\subsection{הזיכרון — Memory}` — describe memory strategy
-- [ ] Add `\subsection{ממשק המשתמש}` — UI description
-- [ ] Include a code listing of the crew assembly (`src/crew.py` key section)
-- [ ] Include a code listing of the most interesting tool
-- [ ] Include a screenshot of Streamlit UI running (as a figure)
-- [ ] Add `\subsection{אתגרים ופתרונות}` — challenges faced and solutions
-- [ ] Add at least 3 `\cite{}` citations
-- [ ] Test compile
+- [ ] Open `latex/references.bib`
+- [ ] Confirm 5 seed entries already present
+- [ ] Add: `@book{Thrun2005ProbRobotics}` — Thrun, Burgard, Fox "Probabilistic Robotics"
+- [ ] Add: `@article{MurArtal2015ORB}` — ORB-SLAM3 paper (ArXiv ID or IEEE)
+- [ ] Add: `@article{Simmons1979BatSonar}` — Simmons bat echolocation Science paper
+- [ ] Add: `@book{GriffithBatEcholocation}` — Griffith "Listening in the Dark"
+- [ ] Add: `@article{Kalman1960}` — original Kalman filter paper
+- [ ] Add: `@inproceedings{Grisetti2010g2o}` — g2o graph optimization
+- [ ] Add: `@article{MossEcholocation}` — Moss & Surlykke bat sonar neuroethology
+- [ ] Add: `@misc{AnthropicClaude}` — Anthropic Claude model card
+- [ ] Add: `@inproceedings{ZhangORBSLAM2}` — benchmark evaluation paper
+- [ ] Add: `@misc{LiDARSpec}` — Velodyne or OUSTER LiDAR technical spec
+- [ ] Count total entries: confirm ≥ 15
+- [ ] Extract all citation keys used in .tex files: `grep -h "\\\\cite{" latex/chapters/*.tex | grep -oP "\\\\cite\{[^}]+\}" | sort -u`
+- [ ] For each key found: confirm it exists in references.bib
+- [ ] Fix any missing entries before proceeding
+- [ ] Run `bibtex main` — confirm zero errors [SS]
 
-## 5.11 Chapter 8: Results (Hebrew LaTeX)
+## 5.11 Mathematical Completeness Audit
 
-- [ ] Open/create `latex/chapters/ch08_results.tex`
-- [ ] Add `\section{תוצאות וניתוח}`
-- [ ] Add `\subsection{מדדי ביצועים}` — performance metrics
-- [ ] Create a results table: tokens used, time per phase, output quality scores
-- [ ] Add `\subsection{ניתוח המוצר הסופי}` — analysis of final paper output
-- [ ] Add `\subsection{מגבלות}` — limitations observed
-- [ ] Include a results bar chart figure (compare phases: research, writing, editing)
-- [ ] Add at least 2 `\cite{}` citations
-- [ ] Test compile
+- [ ] Count all `\begin{equation}` environments: `grep -c "begin{equation}" latex/chapters/*.tex`
+- [ ] Confirm count ≥ 8
+- [ ] Verify each equation has a `\label{eq:...}` tag
+- [ ] Verify each labeled equation is referenced in text with `\eqref{eq:...}` or equivalent
+- [ ] Confirm at least 2 matrix equations (EKF Jacobian, Bayesian fusion)
+- [ ] Confirm LFM pulse definition is present (Eq. 1 in ch01)
+- [ ] Confirm matched-filter correlation is present (Eq. 2)
+- [ ] Confirm range resolution formula is present (Eq. 3)
+- [ ] Confirm EKF predict step is present (Eq. 4)
+- [ ] Confirm EKF update / Kalman gain is present (Eq. 5)
+- [ ] Confirm Bayesian fusion formula is present (Eq. 6+)
+- [ ] Confirm RMSE formula is present (Eq. in ch08)
 
-## 5.12 Chapter 9: Conclusion (Hebrew LaTeX)
+## 5.12 Figure Completeness Audit
 
-- [ ] Open/create `latex/chapters/ch09_conclusion.tex`
-- [ ] Add `\section{סיכום}`
-- [ ] Add `\subsection{תרומות המחקר}` — research contributions (3+ paragraphs)
-- [ ] Add `\subsection{מגבלות ועבודה עתידית}` — limitations and future work (2+ paragraphs)
-- [ ] Add `\subsection{מסקנות סופיות}` — final conclusions (1-2 paragraphs)
-- [ ] Test compile
+- [ ] Run `ls latex/figures/` — list all PNG files [SS]
+- [ ] Confirm `fig_bat_vs_artificial.png` exists
+- [ ] Confirm `fig_trajectory_3d.png` exists
+- [ ] Confirm `fig_sensor_fusion_heatmap.png` exists
+- [ ] Confirm `fig_cochleagram.png` exists
+- [ ] Confirm `fig_range_doppler.png` exists
+- [ ] Confirm `fig_ekf_covariance.png` exists
+- [ ] Confirm `fig_framework_comparison.png` exists
+- [ ] Confirm `fig_sensor_modalities.png` exists
+- [ ] Confirm `fig_results_summary.png` exists
+- [ ] Open each PNG — confirm it is a clear, readable, labeled figure [SS each]
+- [ ] For each figure: confirm it is referenced in at least one .tex file with `\ref{fig:...}`
 
-## 5.13 Mathematical Formulas
-
-- [ ] In `ch02_architecture.tex`: add Transformer attention formula:
-  ```latex
-  \begin{equation}
-  \text{Attention}(Q, K, V) = \text{softmax}\left(\frac{QK^T}{\sqrt{d_k}}\right)V
-  \label{eq:attention}
-  \end{equation}
-  ```
-- [ ] Ensure equation is referenced in text: `(ראו משוואה \ref{eq:attention})`
-- [ ] In `ch05_security.tex`: add risk scoring formula:
-  ```latex
-  \begin{equation}
-  R = P \times I \times (1 - M)
-  \label{eq:risk}
-  \end{equation}
-  ```
-  where P = probability, I = impact, M = mitigation factor
-- [ ] Reference this formula in the text
-- [ ] In `ch08_results.tex`: add a performance efficiency formula or metric definition
-- [ ] Test compile and confirm all equations render correctly
-
-## 5.14 Bibliography (BibTeX)
-
-- [ ] Create/verify file `latex/references.bib`
-- [ ] Add entry 1: @misc for CrewAI official documentation
-- [ ] Add entry 2: @misc for LangGraph documentation
-- [ ] Add entry 3: @misc for Anthropic Claude documentation
-- [ ] Add entry 4: @article for a foundational multi-agent systems paper from ArXiv
-- [ ] Add entry 5: @article for a paper on LLM agent frameworks
-- [ ] Add entry 6: @article for OWASP AI security guidelines
-- [ ] Add entry 7: @inproceedings for a paper on RAG systems
-- [ ] Add entry 8: @article for a paper on agent memory systems
-- [ ] Add entry 9: @misc for MCP protocol specification
-- [ ] Add entry 10: @misc for AutoGen documentation
-- [ ] Add entry 11: @article for a benchmark comparison of LLM frameworks
-- [ ] Add entry 12: @article for a paper on tool-use in LLMs
-- [ ] Add entry 13: @inproceedings for a paper on agent orchestration
-- [ ] Add entry 14: @misc for Streamlit documentation
-- [ ] Add entry 15: @unpublished for course lecture notes (L06)
-- [ ] Verify each entry has: author, title, year, and url/journal/booktitle
-- [ ] Count entries: confirm minimum 15
-- [ ] Search all .tex files for `\cite{` and list every citation key used
-- [ ] Confirm every citation key in .tex files has a matching entry in references.bib
-- [ ] Fix any missing entries
-
-## 5.15 Full Compilation
+## 5.13 Full Compilation — Final
 
 - [ ] Open terminal in `latex/` folder
-- [ ] Run: `pdflatex main.tex`
-- [ ] Check terminal output for errors (lines starting with !)
-- [ ] Fix any LaTeX errors found before proceeding
-- [ ] Run: `bibtex main`
-- [ ] Check for BibTeX errors or warnings
-- [ ] Fix any missing .bib entries flagged by BibTeX
-- [ ] Run: `pdflatex main.tex` (second pass)
-- [ ] Run: `pdflatex main.tex` (third pass — needed for TOC and cross-references)
-- [ ] Open `main.pdf` in PDF viewer
-- [ ] Count pages: confirm 25-30 pages
-- [ ] Verify cover page is correct (Hebrew title, names, date)
-- [ ] Verify Table of Contents appears and is correct
-- [ ] Verify all chapter headings appear in TOC
-- [ ] Verify all figures render (no missing figure placeholders)
-- [ ] Verify all tables render correctly
-- [ ] Verify all equations render correctly
-- [ ] Verify bibliography appears at end with all 15+ references
-- [ ] Verify headers appear on every page
-- [ ] Verify footers appear on every page
-- [ ] Verify page numbers are correct
-- [ ] Verify Hebrew text flows right-to-left
-- [ ] Verify English technical terms appear correctly within Hebrew text
-- [ ] [SCREENSHOT]: terminal showing `pdflatex` with zero errors
-- [ ] [SCREENSHOT]: first page of compiled PDF (cover)
-- [ ] [SCREENSHOT]: Table of Contents page
-- [ ] [SCREENSHOT]: a page with a figure
-- [ ] [SCREENSHOT]: a page with a table
-- [ ] [SCREENSHOT]: bibliography page
+- [ ] Run `xelatex main.tex` — fix any remaining errors
+- [ ] Run `bibtex main`
+- [ ] Run `xelatex main.tex`
+- [ ] Run `xelatex main.tex` (third pass — resolves all cross-refs)
+- [ ] Open `main.pdf`
+- [ ] Count pages: confirm 25–30 [SS]
+- [ ] Verify cover page: Hebrew title, English subtitle, course name, date [SS]
+- [ ] Verify Table of Contents: all 9 chapters listed with correct page numbers [SS]
+- [ ] Verify page with equations: formulas render correctly [SS]
+- [ ] Verify page with 3D trajectory figure [SS]
+- [ ] Verify page with sensor fusion heatmap [SS]
+- [ ] Verify Hebrew text is RTL throughout [SS]
+- [ ] Verify English terms appear inline correctly within Hebrew sentences
+- [ ] Verify headers appear on every page (Hebrew paper title)
+- [ ] Verify footers appear on every page (course name + year)
+- [ ] Verify bibliography page with ≥ 15 entries [SS]
+- [ ] Verify all citation numbers appear in text
 
 ---
 
-# MODULE 6: Final Summary (20-Page Course Document)
+# MODULE 6: Course Summary (20-Page Document)
 
-## 6.1 Document Planning
+## 6.1 Structure Planning
 
-- [ ] Create file `docs/course_summary.md` (source for the 20-page summary)
-- [ ] Plan structure: one major section per previous task + overview + reflection
-- [ ] Estimate page budget: Overview (2p) + Task 1-5 (3p each) + Reflection (3p) = 20p
-- [ ] Identify which code files and screenshots to reference for each task
+- [ ] Create `docs/course_summary.md`
+- [ ] Plan 7 sections: Overview (2p), Tasks 1–5 (3p each), Reflection (3p) = 20p
+- [ ] Identify screenshots and GitHub links for each of the 5 previous tasks
 
-## 6.2 Course Overview Section
+## 6.2 Course Overview Section (≥2 pages)
 
-- [ ] Write section: "סקירת הקורס — Course Overview"
-- [ ] Write paragraph: course objectives and learning outcomes (Hebrew)
-- [ ] Write paragraph: technology stack used across all tasks
-- [ ] Write paragraph: key concepts: agents, orchestration, memory, tools
-- [ ] Write paragraph: evolution of your understanding from Task 1 to Task 5
-- [ ] Verify this section is at least 400 words
+- [ ] Write sub-section: course objectives and learning outcomes (Hebrew)
+- [ ] Write sub-section: technology stack used across all tasks
+- [ ] Write sub-section: key concepts — agents, orchestration, memory, tools, CrewAI, LangGraph
+- [ ] Write sub-section: how understanding evolved from Task 1 to Task 5
+- [ ] Verify section is ≥ 400 words
 
-## 6.3 Task 1 Summary Section
+## 6.3 Task 1–5 Sections (≥3 pages each, ≥600 words each)
 
-- [ ] Write section header: "משימה 1 — [Task 1 Name]"
-- [ ] Write sub-section: "תיאור המשימה" — describe what was required
-- [ ] Write sub-section: "הגישה שלנו" — describe what you built
-- [ ] Write sub-section: "טכנולוגיות בשימוש" — list technologies used
-- [ ] Write sub-section: "תוצאות" — describe outcomes/what was learned
-- [ ] Add: link to GitHub repository for Task 1
-- [ ] Add: code screenshot reference (add actual screenshot to docs/evidence/)
-- [ ] Verify this section is at least 600 words
+- [ ] **Task 1**: description, approach, tech used, outcomes, GitHub link, code screenshot
+- [ ] **Task 2**: description, approach, tech used, outcomes, GitHub link, code screenshot
+- [ ] **Task 3**: description, approach, tech used, outcomes, GitHub link, code screenshot
+- [ ] **Task 4**: description, approach, tech used, outcomes, GitHub link, code screenshot
+- [ ] **Task 5**: description, approach, tech used, outcomes, GitHub link, code screenshot
+- [ ] Each task section has ≥ 3 sub-sections
+- [ ] Each task section references at least one screenshot from `docs/evidence/`
 
-## 6.4 Task 2 Summary Section
+## 6.4 Reflection Section (≥3 pages)
 
-- [ ] Write section header: "משימה 2 — [Task 2 Name]"
-- [ ] Write sub-section: "תיאור המשימה"
-- [ ] Write sub-section: "הגישה שלנו"
-- [ ] Write sub-section: "טכנולוגיות בשימוש"
-- [ ] Write sub-section: "תוצאות"
-- [ ] Add: GitHub link for Task 2
-- [ ] Add: code screenshot reference
-- [ ] Verify this section is at least 600 words
+- [ ] Write: "מה למדתי" — personal technical learning (≥300 words)
+- [ ] Write: "אתגרים" — 3+ specific challenges with solutions
+- [ ] Write: "כישורים שרכשתי" — concrete skills list
+- [ ] Write: "שימוש עתידי" — future applications
+- [ ] Verify ≥ 600 words total
 
-## 6.5 Task 3 Summary Section
+## 6.5 Course Summary LaTeX Compilation
 
-- [ ] Write section header: "משימה 3 — [Task 3 Name]"
-- [ ] Write sub-section: "תיאור המשימה"
-- [ ] Write sub-section: "הגישה שלנו"
-- [ ] Write sub-section: "טכנולוגיות בשימוש"
-- [ ] Write sub-section: "תוצאות"
-- [ ] Add: GitHub link for Task 3
-- [ ] Add: code screenshot reference
-- [ ] Verify this section is at least 600 words
-
-## 6.6 Task 4 Summary Section
-
-- [ ] Write section header: "משימה 4 — [Task 4 Name]"
-- [ ] Write sub-section: "תיאור המשימה"
-- [ ] Write sub-section: "הגישה שלנו"
-- [ ] Write sub-section: "טכנולוגיות בשימוש"
-- [ ] Write sub-section: "תוצאות"
-- [ ] Add: GitHub link for Task 4
-- [ ] Add: code screenshot reference
-- [ ] Verify this section is at least 600 words
-
-## 6.7 Task 5 Summary Section
-
-- [ ] Write section header: "משימה 5 — [Task 5 Name]"
-- [ ] Write sub-section: "תיאור המשימה"
-- [ ] Write sub-section: "הגישה שלנו"
-- [ ] Write sub-section: "טכנולוגיות בשימוש"
-- [ ] Write sub-section: "תוצאות"
-- [ ] Add: GitHub link for Task 5
-- [ ] Add: code screenshot reference
-- [ ] Verify this section is at least 600 words
-
-## 6.8 Reflection Section
-
-- [ ] Write section: "סיכום ורפלקציה — Reflection"
-- [ ] Write sub-section: "מה למדתי" — what I learned (personal reflection)
-- [ ] Write sub-section: "אתגרים" — biggest challenges faced
-- [ ] Write sub-section: "כישורים שרכשתי" — skills acquired
-- [ ] Write sub-section: "שימוש עתידי" — how I will use this knowledge
-- [ ] Verify this section is at least 500 words
-
-## 6.9 Summary LaTeX Conversion
-
-- [ ] Create file `latex/course_summary_main.tex`
-- [ ] Set `\documentclass[12pt, a4paper]{article}` (not IEEEtran for this one)
-- [ ] Add same Hebrew/language packages as main.tex
-- [ ] Add same fancyhdr configuration
-- [ ] Add cover page with: "סיכום קורס", course name, student names, date
-- [ ] Add `\tableofcontents`
-- [ ] Add `\newpage`
+- [ ] Create `latex/course_summary_main.tex` — standalone document
+- [ ] Use `\documentclass[12pt, a4paper]{article}` (not IEEEtran)
+- [ ] Add same polyglossia/fontspec/fancyhdr config as main.tex
+- [ ] Add cover page with course summary title in Hebrew
+- [ ] Add `\tableofcontents` + `\newpage`
 - [ ] Create `latex/chapters/summary_ch01.tex` through `summary_ch07.tex`
-- [ ] Convert each markdown section to LaTeX chapter
-- [ ] Add `\input{}` for each chapter in course_summary_main.tex
-- [ ] Add `\usepackage{graphicx}` for screenshots
-- [ ] Add each code screenshot as a figure with caption
-- [ ] Run: `pdflatex course_summary_main.tex`
-- [ ] Run: `pdflatex course_summary_main.tex` (second pass for TOC)
-- [ ] Open `course_summary_main.pdf` and count pages
-- [ ] Confirm page count is ≥ 20 pages
-- [ ] Verify TOC is correct
-- [ ] Verify all sections appear
-- [ ] Verify Hebrew text renders correctly
-- [ ] [SCREENSHOT]: first page of course summary PDF
-- [ ] [SCREENSHOT]: Table of Contents of course summary
+- [ ] Convert each markdown section to LaTeX
+- [ ] Include screenshots as `\includegraphics` figures
+- [ ] Run `xelatex course_summary_main.tex` twice
+- [ ] Count pages: confirm ≥ 20 [SS]
 
 ---
 
@@ -1146,167 +951,139 @@
 
 ## 7.1 Security Audit
 
-- [ ] Run: `grep -r "ANTHROPIC_API_KEY=" src/` — confirm returns nothing
-- [ ] Run: `grep -r "sk-ant-" src/` — confirm returns nothing
-- [ ] Run: `grep -r "sk-ant-" tests/` — confirm returns nothing
-- [ ] Run: `grep -r "SERPER_API_KEY=" src/` — confirm returns nothing
-- [ ] Run: `grep -r "OPENAI_API_KEY=" src/` — confirm returns nothing
-- [ ] Run: `git ls-files .env` — confirm returns nothing (file not tracked)
-- [ ] Open `.gitignore` and confirm `.env` is listed
-- [ ] Run `git log --all --oneline` and confirm `.env` never appeared in any commit
-- [ ] Verify `PythonCodeExecutorTool` uses AST-based import validation (not string matching)
-- [ ] Verify `SafeFileWriterTool` validates path before writing
-- [ ] Verify `FileReaderTool` validates path before reading
-- [ ] [SCREENSHOT]: grep results showing no hardcoded keys
+- [ ] `grep -r "sk-ant" src/` — must return nothing [SS]
+- [ ] `grep -r "ANTHROPIC_API_KEY=" src/` — must return nothing
+- [ ] `grep -r "SERPER_API_KEY=" src/` — must return nothing
+- [ ] `grep -r "OPENAI_API_KEY=" src/` — must return nothing
+- [ ] `git ls-files .env` — must return nothing (file untracked)
+- [ ] Open `.gitignore` — confirm `.env` listed
+- [ ] `git log --all --oneline` — confirm `.env` never appeared in any commit
+- [ ] Confirm PythonCodeExecutorTool uses `ast.parse()` (AST-based, not string match)
+- [ ] Confirm SafeFileWriterTool uses `Path.resolve()` before path check
 
 ## 7.2 Full Requirements Checklist
 
-- [ ] **Modularity**: Open `src/agents/` — confirm each agent is in its own file
-- [ ] **Modularity**: Open `src/tools/` — confirm each tool is in its own file
-- [ ] **Modularity**: Open `src/tasks/` — confirm tasks are organized by phase
-- [ ] **Scalability**: Confirm adding a new agent requires only: new file + one line in crew.py
-- [ ] **Generic design**: Confirm topic is a parameter passed at runtime, not hardcoded
-- [ ] **2+ external tools**: Confirm SerperSearchTool works and returns real results
-- [ ] **2+ external tools**: Confirm ArxivSearchTool works and returns real results
-- [ ] **Memory**: Run crew, confirm `.chroma/` directory is created
-- [ ] **Memory**: Run crew twice, confirm second run is faster (memory hit)
-- [ ] **100% working code**: Run `pytest tests/ -v` — confirm 0 failures
-- [ ] **Paper 25-30 pages**: Run `pdfinfo latex/main.pdf | grep Pages` — confirm range
-- [ ] **IEEE format**: Confirm `\documentclass{IEEEtran}` is in main.tex
-- [ ] **Hebrew primary**: Open any chapter .tex file — confirm Hebrew text is the majority
-- [ ] **English terms**: Open any chapter — confirm technical terms are in English
-- [ ] **MikTeX/LaTeX used**: Confirm PDF was generated by `pdflatex` (not a Word export)
-- [ ] **Code screenshots**: Confirm docs/evidence/ contains screenshots for all components
-- [ ] **GitHub links**: Confirm README.md contains live GitHub URL
-- [ ] **Demo video**: Confirm video file exists and is ≤ 3 minutes
-- [ ] **20-page summary**: Run `pdfinfo latex/course_summary_main.pdf | grep Pages`
-- [ ] **Visuals**: Confirm ≥ 4 PNG files exist in `latex/figures/`
-- [ ] **Figures in paper**: Confirm each PNG is referenced in at least one .tex file
-- [ ] **Tables in paper**: Confirm at least 5 tables exist across all chapters
-- [ ] **Math formulas**: Confirm at least 2 `\begin{equation}` environments exist
-- [ ] **Code listings**: Confirm at least 2 `\begin{lstlisting}` environments exist
-- [ ] **BibTeX**: Confirm `latex/references.bib` has ≥ 15 entries
-- [ ] **All cited**: Confirm every key in .tex \cite{} commands exists in .bib
-- [ ] **Cover page**: Open PDF page 1, confirm all required fields are present
-- [ ] **Headers/footers**: Scroll through PDF, confirm they appear on every page
-- [ ] **TOC**: Confirm Table of Contents lists all 9 chapters
+- [ ] System is modular: each agent, tool, task in its own file
+- [ ] System is scalable: adding new agent = new file + one line in crew.py
+- [ ] System is generic: topic is a runtime parameter, not hardcoded
+- [ ] External tool #1 (Serper): confirm returns real Google search results
+- [ ] External tool #2 (ArXiv): confirm returns real academic papers
+- [ ] Memory active: `.chroma/` directory created after crew run
+- [ ] Code 100% working: `pytest tests/ -v` → 0 failures [SS]
+- [ ] Paper 25–30 pages: `pdfinfo latex/main.pdf | grep Pages` [SS]
+- [ ] IEEE format: `\documentclass{IEEEtran}` confirmed in main.tex
+- [ ] Hebrew primary: open any chapter, confirm Hebrew is majority text
+- [ ] XeLaTeX used: confirm `main.pdf` generated by xelatex (not Word/pdflatex)
+- [ ] Screenshots in docs/evidence/: ≥ 12 evidence screenshots saved
+- [ ] GitHub links: README.md contains live GitHub URL
+- [ ] Demo video: exists, ≤ 3 minutes
+- [ ] Course summary: ≥ 20 pages
+- [ ] ≥ 9 PNG figures in latex/figures/
+- [ ] ≥ 5 tables across all chapters
+- [ ] ≥ 8 numbered equations
+- [ ] ≥ 2 code listings (lstlisting environments)
+- [ ] ≥ 15 BibTeX entries, all cited
+- [ ] All \cite{} keys exist in references.bib
+- [ ] Cover page: correct title, names, date
+- [ ] Headers/footers on every page
+- [ ] 3D trajectory figure present and readable
+- [ ] Sensor fusion heatmap present and readable
+- [ ] Cochleagram/spectrogram figure present
+- [ ] Range-Doppler map present
 
-## 7.3 Demo Video Planning
+## 7.3 Demo Video (≤ 3 minutes)
 
-- [ ] Write video script (≤ 3 minutes):
-  - [ ] 0:00–0:20: Introduction — what ResearchCrew is
-  - [ ] 0:20–0:45: Show Streamlit UI — sidebar, topic input, agent list
-  - [ ] 0:45–1:30: Click "Generate Paper" — show agents running, verbose output
-  - [ ] 1:30–2:00: Show generated files: .tex chapters, .bib, PNG graphs
-  - [ ] 2:00–2:30: Show compiled PDF — cover, TOC, a chapter, bibliography
-  - [ ] 2:30–3:00: Show GitHub repo — code structure, README
-- [ ] Install screen recorder: OBS Studio (obsproject.com) or use Windows Game Bar (Win+G)
-- [ ] Set recording resolution: 1920x1080
-- [ ] Set recording frame rate: 30fps
-- [ ] Configure microphone if doing voice narration
-- [ ] Do a test recording of 10 seconds and confirm audio+video quality
-- [ ] Run the full demo workflow to have it ready before recording
-- [ ] Start recording
-- [ ] Follow the script, showing each component clearly
-- [ ] Stop recording
-- [ ] Review recording — confirm all sections are visible
-- [ ] Check duration — if > 3 minutes, trim with video editor
-- [ ] Export as MP4 (H.264 encoding)
+- [ ] Write script:
+  - [ ] 0:00–0:20: introduce NavigatorCrew, explain biomimetic topic
+  - [ ] 0:20–0:50: show Streamlit UI — sidebar, topic, agent list
+  - [ ] 0:50–1:40: run crew — show agents executing in real-time (verbose terminal)
+  - [ ] 1:40–2:10: show generated PNG figures (3D trajectory, heatmap, cochleagram)
+  - [ ] 2:10–2:40: show compiled PDF — cover, TOC, equations, figures, bibliography
+  - [ ] 2:40–3:00: show GitHub repo structure and README
+- [ ] Install OBS Studio or use Windows Game Bar (Win+G)
+- [ ] Set resolution: 1920×1080, 30fps
+- [ ] Test-record 10 seconds — confirm audio and video quality
+- [ ] Rehearse full workflow before recording
+- [ ] Record full demo
+- [ ] Review recording: all sections visible and audible
+- [ ] Trim to ≤ 3 minutes
+- [ ] Export as MP4 (H.264)
 - [ ] Save as `demo_video.mp4`
-- [ ] Confirm file size is reasonable (< 500MB)
-- [ ] Watch the final video from start to finish [SCREENSHOT: video thumbnail]
+- [ ] Watch complete video from start to finish [SS: thumbnail]
 
 ## 7.4 README.md
 
-- [ ] Open `README.md` in project root
-- [ ] Add project title: `# ResearchCrew — AI Research Paper Generator`
-- [ ] Add badge: Python version
-- [ ] Add badge: License
-- [ ] Write "About" section (3-5 sentences)
-- [ ] Write "Architecture" section with ASCII diagram
-- [ ] Write "Requirements" section listing Python 3.11+, MikTeX, API keys
-- [ ] Write "Installation" section with step-by-step commands
-- [ ] Write "Configuration" section explaining .env setup
-- [ ] Write "Usage — CLI" section: `python main.py --topic "..."`
-- [ ] Write "Usage — Web UI" section: `streamlit run app.py`
-- [ ] Add screenshots section with 3 embedded images:
-  - [ ] Screenshot of Streamlit UI
-  - [ ] Screenshot of agents running in terminal
-  - [ ] Screenshot of compiled PDF page
-- [ ] Write "Output Files" section listing what gets generated
+- [ ] Write title: `# NavigatorCrew — Biomimetic Navigation Research Platform`
+- [ ] Add Python version badge
+- [ ] Write "About" section: 4–5 sentences on what the system does
+- [ ] Write "Research Topic" section: paper title, abstract summary
+- [ ] Write "Architecture" section: ASCII diagram of 5 agents + tools
+- [ ] Write "Requirements" section: Python 3.11+, MikTeX + XeLaTeX, Hebrew fonts, API keys
+- [ ] Write "Installation" section: step-by-step with exact commands
+- [ ] Write "Configuration" section: explain .env setup for each key
+- [ ] Write "Usage — CLI" section: `python main.py --topic "..."` example
+- [ ] Write "Usage — Web" section: `streamlit run app.py` with screenshot
+- [ ] Write "Generated Figures" section: list all 9 figures with descriptions
 - [ ] Write "Running Tests" section: `pytest tests/ -v`
-- [ ] Add link to compiled paper PDF (upload to GitHub releases or Google Drive)
-- [ ] Add link to demo video (upload to YouTube unlisted or GitHub)
-- [ ] Add "Course" section: course name, assignment number, student names
-- [ ] Verify all links in README work
-- [ ] [SCREENSHOT]: README as rendered on GitHub
+- [ ] Embed 4 screenshots: Streamlit UI, terminal agents running, compiled PDF page, 3D trajectory figure
+- [ ] Add link to compiled paper PDF
+- [ ] Add link to demo video
+- [ ] Add "Course" section: course name, assignment #3, student names, date
+- [ ] Verify all markdown links work
 
 ## 7.5 GitHub Final Push
 
-- [ ] Run `git status` — review all changed/new files
-- [ ] Run `git add src/`
-- [ ] Run `git add tests/`
-- [ ] Run `git add latex/chapters/`
-- [ ] Run `git add latex/figures/`
-- [ ] Run `git add latex/references.bib`
-- [ ] Run `git add latex/main.tex`
-- [ ] Run `git add latex/course_summary_main.tex`
-- [ ] Run `git add app.py main.py requirements.txt README.md`
-- [ ] Run `git add docs/`
-- [ ] Run `git add .env.example`
-- [ ] Run `git status` — confirm `.env` is NOT staged
-- [ ] Run `git commit -m "feat: complete ResearchCrew implementation with LaTeX paper"`
-- [ ] Run `git push origin main`
-- [ ] Open GitHub in browser and verify all files appear [SCREENSHOT]
-- [ ] Click on `src/agents/research_director.py` — confirm content is visible
-- [ ] Click on `latex/main.tex` — confirm content is visible
-- [ ] Click on `README.md` — confirm it renders correctly with images
+- [ ] `git add src/ tests/ latex/chapters/ latex/figures/ latex/references.bib latex/main.tex`
+- [ ] `git add app.py main.py requirements.txt README.md .env.example .gitignore`
+- [ ] `git add docs/`
+- [ ] `git status` — confirm `.env` NOT staged, `.chroma/` NOT staged
+- [ ] `git commit -m "feat: NavigatorCrew complete — biomimetic SLAM paper with 9 figures"`
+- [ ] `git push origin main`
+- [ ] Verify GitHub shows all files [SS]
+- [ ] Verify `src/agents/navigation_director.py` visible on GitHub
+- [ ] Verify `latex/main.tex` visible on GitHub
+- [ ] Verify `latex/figures/` shows PNG files
 
-## 7.6 Submission Package Assembly
+## 7.6 Submission Assembly
 
-- [ ] Create folder `submission/`
+- [ ] `mkdir submission/`
 - [ ] Copy `latex/main.pdf` → `submission/paper.pdf`
 - [ ] Copy `latex/course_summary_main.pdf` → `submission/course_summary.pdf`
 - [ ] Copy `demo_video.mp4` → `submission/demo_video.mp4`
-- [ ] Create `submission/README.md` with:
-  - [ ] GitHub repository URL
-  - [ ] Instructions to run the code
-  - [ ] Description of what each submitted file is
-- [ ] Verify `submission/paper.pdf` opens correctly
-- [ ] Verify `submission/course_summary.pdf` opens correctly
-- [ ] Verify `submission/demo_video.mp4` plays correctly
-- [ ] Create zip: `assignment3_final_submission.zip` containing the `submission/` folder
-- [ ] Verify zip file opens correctly
-- [ ] Verify zip file size is reasonable
+- [ ] Create `submission/README.md` with GitHub URL and file descriptions
+- [ ] Verify `paper.pdf` opens and shows 25–30 pages
+- [ ] Verify `course_summary.pdf` opens and shows ≥ 20 pages
+- [ ] Verify `demo_video.mp4` plays correctly
+- [ ] Create `assignment3_final_submission.zip` from `submission/` folder
+- [ ] Open zip — confirm all files present
 
-## 7.7 Final Pre-Submission Checklist
+## 7.7 Final Pre-Submission Verification
 
-- [ ] Page count of paper.pdf is between 25 and 30
-- [ ] Page count of course_summary.pdf is 20 or more
-- [ ] Demo video is 3 minutes or less
-- [ ] GitHub repository is publicly accessible
-- [ ] All tests pass: `pytest tests/ -v` shows 0 failures
-- [ ] No API keys in any committed file
-- [ ] All figures appear in the paper PDF
-- [ ] All tables appear in the paper PDF
-- [ ] At least 2 math formulas appear
-- [ ] At least 2 code listings appear
-- [ ] Bibliography has 15+ references
-- [ ] Cover page has correct student names and date
-- [ ] Headers/footers appear on every page
-- [ ] Hebrew text is the primary language throughout
-- [ ] English technical terms appear correctly
-- [ ] Submission zip is complete and accessible
-- [ ] Submit before 2026-06-20 23:59 local time
+- [ ] Paper page count: 25–30 ✓
+- [ ] Course summary page count: ≥ 20 ✓
+- [ ] Demo video: ≤ 3 minutes ✓
+- [ ] GitHub repository: publicly accessible ✓
+- [ ] pytest: 0 failures ✓
+- [ ] No secrets in git ✓
+- [ ] All 9 figures in paper ✓
+- [ ] All 5 tables in paper ✓
+- [ ] All ≥ 8 equations in paper ✓
+- [ ] Bibliography: ≥ 15 entries ✓
+- [ ] Hebrew RTL throughout ✓
+- [ ] XeLaTeX compiled cleanly ✓
+- [ ] Submission zip complete ✓
+- [ ] **Submit before 2026-06-20 23:59** ✓
 
 ---
 
-## Quick Stats
-- **Module 1** (Environment): ~95 tasks
-- **Module 2** (Agent Brain): ~80 tasks
-- **Module 3** (Tools): ~80 tasks
-- **Module 4** (Content Generation): ~90 tasks
-- **Module 5** (LaTeX/IEEE): ~110 tasks
-- **Module 6** (Course Summary): ~55 tasks
-- **Module 7** (Validation): ~85 tasks
-- **TOTAL**: ~595 micro-tasks
+## Task Count by Module
+| Module | Tasks |
+|---|---|
+| 1 — Environment & Setup | ~85 |
+| 2 — Agent Development | ~75 |
+| 3 — Tool Implementation | ~80 |
+| 4 — Research & Content | ~75 |
+| 5 — LaTeX/IEEE Mastering | ~120 |
+| 6 — Course Summary | ~45 |
+| 7 — Validation & Submission | ~70 |
+| **Total** | **~550** |

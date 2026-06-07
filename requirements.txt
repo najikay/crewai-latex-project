@@ -1,0 +1,45 @@
+# =============================================================================
+# ResearchCrew — Python Dependencies
+# Assignment 3: Personal AI Agent
+# =============================================================================
+# Install: pip install -r requirements.txt
+# Requires: Python 3.11+
+
+# --- Core AI Framework ---
+crewai>=0.80.0
+crewai-tools>=0.15.0
+
+# --- LLM Providers ---
+anthropic>=0.40.0
+openai>=1.35.0                  # Used only for text-embedding-3-small
+
+# --- Memory / Vector Store ---
+chromadb>=0.5.0
+langchain-openai>=0.1.0         # Provides OpenAI embeddings interface for CrewAI memory
+
+# --- Research Tools ---
+arxiv>=2.1.0                    # ArXiv paper search
+requests>=2.32.0                # HTTP client (used internally by tools)
+beautifulsoup4>=4.12.0          # HTML parsing for web scraper tool
+
+# --- Data & Visualization ---
+numpy>=1.26.0
+pandas>=2.2.0
+matplotlib>=3.9.0
+plotly>=5.22.0
+scipy>=1.13.0                   # For scientific graph data generation
+
+# --- Web Interface ---
+streamlit>=1.35.0
+
+# --- Environment & Configuration ---
+python-dotenv>=1.0.0
+
+# --- Code Quality & Testing ---
+pytest>=8.0.0
+pytest-cov>=5.0.0               # Coverage reports
+
+# --- Utilities ---
+pydantic>=2.7.0                 # Data validation (used by CrewAI internally)
+tenacity>=8.3.0                 # Retry logic with exponential backoff
+loguru>=0.7.0                   # Structured logging (replaces stdlib logging)

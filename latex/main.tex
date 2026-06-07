@@ -1,0 +1,220 @@
+% =============================================================================
+% main.tex — ResearchCrew IEEE Paper (Master File)
+% =============================================================================
+%
+% COMPILER: XeLaTeX (NOT pdflatex)
+%   Run sequence:
+%     xelatex main.tex
+%     bibtex  main
+%     xelatex main.tex
+%     xelatex main.tex
+%
+% WHY XeLaTeX?
+%   pdflatex cannot handle Unicode Hebrew + right-to-left text reliably.
+%   XeLaTeX + polyglossia is the standard for Hebrew academic documents in 2026.
+%
+% MikTeX quick-install for required packages:
+%   Open MikTeX Console → Packages → search & install:
+%   IEEEtran, polyglossia, fontspec, bidi, listings, xcolor,
+%   booktabs, amsmath, amssymb, graphicx, hyperref, fancyhdr,
+%   caption, subcaption, float, geometry, microtype
+% =============================================================================
+
+\documentclass[10pt, a4paper, journal]{IEEEtran}
+
+% -----------------------------------------------------------------------
+% ENCODING & LANGUAGE  (XeLaTeX path)
+% -----------------------------------------------------------------------
+\usepackage{fontspec}           % system font access (XeLaTeX only)
+\usepackage{polyglossia}        % modern multilingual support
+
+% Primary language: Hebrew (RTL)
+\setmainlanguage{hebrew}
+% Secondary language: English (LTR — used for technical terms)
+\setotherlanguage{english}
+
+% Font configuration
+%   'David CLM' and 'Frank Ruehl CLM' are open Hebrew fonts included with
+%   many Linux/WSL distros. On Windows with MikTeX, use 'David' or 'Arial'.
+%   Fallback: comment out \setmainfont and let XeLaTeX choose a default.
+%
+% Windows MikTeX recommended fonts (install via MikTeX Package Manager):
+%   - culmus (David CLM, Frank Ruehl CLM, Miriam CLM)
+%
+\newfontfamily\hebrewfont[Script=Hebrew]{David CLM}
+\newfontfamily\hebrewfontsf[Script=Hebrew]{Miriam CLM}
+\newfontfamily\hebrewfonttt[Script=Hebrew]{Miriam Mono CLM}
+%
+% English font (Latin script)
+\setmainfont{Times New Roman}   % IEEE standard serif font
+\setsansfont{Arial}
+\setmonofont{Courier New}
+
+% -----------------------------------------------------------------------
+% MATHEMATICS
+% -----------------------------------------------------------------------
+\usepackage{amsmath}            % align, equation, gather environments
+\usepackage{amssymb}            % mathematical symbols
+\usepackage{mathtools}          % dcases, coloneqq, etc.
+
+% -----------------------------------------------------------------------
+% GRAPHICS & FIGURES
+% -----------------------------------------------------------------------
+\usepackage{graphicx}           % \includegraphics
+\usepackage{caption}            % \caption formatting
+\usepackage{subcaption}         % \begin{subfigure}
+\usepackage{float}              % [H] figure placement
+
+% -----------------------------------------------------------------------
+% TABLES
+% -----------------------------------------------------------------------
+\usepackage{booktabs}           % \toprule, \midrule, \bottomrule
+\usepackage{tabularx}           % auto-width columns
+\usepackage{multirow}           % \multirow{n}{*}{text}
+
+% -----------------------------------------------------------------------
+% CODE LISTINGS
+% -----------------------------------------------------------------------
+\usepackage{listings}
+\usepackage{xcolor}
+
+% Python syntax highlighting style
+\definecolor{codebg}{RGB}{248, 248, 248}
+\definecolor{codeframe}{RGB}{200, 200, 200}
+\definecolor{codekw}{RGB}{0, 0, 200}        % keywords: blue
+\definecolor{codecomment}{RGB}{106, 153, 85} % comments: green
+\definecolor{codestring}{RGB}{163, 21, 21}   % strings: red
+
+\lstdefinestyle{pythonstyle}{
+    language=Python,
+    backgroundcolor=\color{codebg},
+    frame=single,
+    rulecolor=\color{codeframe},
+    basicstyle=\small\ttfamily,
+    keywordstyle=\color{codekw}\bfseries,
+    commentstyle=\color{codecomment}\itshape,
+    stringstyle=\color{codestring},
+    numberstyle=\tiny\color{gray},
+    numbers=left,
+    numbersep=8pt,
+    showstringspaces=false,
+    breaklines=true,
+    breakatwhitespace=true,
+    tabsize=4,
+    captionpos=b,
+}
+\lstset{style=pythonstyle}      % apply globally
+
+% -----------------------------------------------------------------------
+% PAGE LAYOUT & HEADERS/FOOTERS
+% -----------------------------------------------------------------------
+\usepackage{geometry}
+\geometry{
+    a4paper,
+    top=2.5cm,
+    bottom=2.5cm,
+    left=2.0cm,
+    right=2.0cm,
+}
+
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}                                      % clear all fields
+\fancyhead[LE,RO]{\thepage}                     % page number: outer edge
+\fancyhead[RE]{\small ארכיטקטורת סוכני AI ואורקסטרציה — 2026}
+\fancyhead[LO]{\small ResearchCrew}
+\fancyfoot[C]{\small קורס: אורקסטרציה של סוכני בינה מלאכותית | 2026}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+
+% Remove header/footer from the cover page
+\fancypagestyle{coverpage}{
+    \fancyhf{}
+    \renewcommand{\headrulewidth}{0pt}
+    \renewcommand{\footrulewidth}{0pt}
+}
+
+% -----------------------------------------------------------------------
+% HYPERLINKS & PDF METADATA
+% -----------------------------------------------------------------------
+\usepackage[
+    colorlinks=true,
+    linkcolor=blue!70!black,
+    citecolor=green!50!black,
+    urlcolor=blue,
+    pdftitle={AI Agent Architecture and Multi-Agent Orchestration 2026},
+    pdfauthor={ResearchCrew},
+    pdflang={he},
+]{hyperref}
+
+% -----------------------------------------------------------------------
+% MISCELLANEOUS
+% -----------------------------------------------------------------------
+\usepackage{microtype}          % better text justification
+\usepackage{enumitem}           % fine-grained list control
+
+% -----------------------------------------------------------------------
+% CUSTOM COMMANDS (helpers for bilingual text)
+% -----------------------------------------------------------------------
+% Inline English technical term inside Hebrew paragraph
+\newcommand{\en}[1]{\textlatin{\textit{#1}}}
+
+% Inline code snippet
+\newcommand{\code}[1]{\texttt{#1}}
+
+% Section reference in Hebrew
+\newcommand{\secref}[1]{סעיף~\ref{#1}}
+\newcommand{\figref}[1]{איור~\ref{#1}}
+\newcommand{\tabref}[1]{טבלה~\ref{#1}}
+\newcommand{\eqref[1]}{משוואה~(\ref{#1})}
+
+% =============================================================================
+% DOCUMENT BEGIN
+% =============================================================================
+\begin{document}
+\selectlanguage{hebrew}         % all text defaults to Hebrew (RTL)
+
+% -----------------------------------------------------------------------
+% COVER PAGE (title, authors, date)
+% -----------------------------------------------------------------------
+\thispagestyle{coverpage}
+\input{chapters/cover}
+\newpage
+
+% -----------------------------------------------------------------------
+% ABSTRACT
+% -----------------------------------------------------------------------
+\begin{IEEEkeywords}
+  סוכני בינה מלאכותית, אורקסטרציה, CrewAI, LangGraph, MCP, A2A, OWASP, LaTeX
+\end{IEEEkeywords}
+
+\begin{abstract}
+\input{chapters/abstract}
+\end{abstract}
+
+% -----------------------------------------------------------------------
+% TABLE OF CONTENTS  (remove for strict single-column IEEE; keep for "book" style)
+% -----------------------------------------------------------------------
+\tableofcontents
+\newpage
+
+% -----------------------------------------------------------------------
+% CHAPTERS
+% -----------------------------------------------------------------------
+\input{chapters/ch01_intro}
+\input{chapters/ch02_architecture}
+\input{chapters/ch03_frameworks}
+\input{chapters/ch04_protocols}
+\input{chapters/ch05_security}
+\input{chapters/ch06_deployment}
+\input{chapters/ch07_our_system}
+\input{chapters/ch08_results}
+\input{chapters/ch09_conclusion}
+
+% -----------------------------------------------------------------------
+% BIBLIOGRAPHY
+% -----------------------------------------------------------------------
+\bibliographystyle{IEEEtran}
+\bibliography{references}
+
+\end{document}
