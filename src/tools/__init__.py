@@ -7,7 +7,7 @@ Public API for the NavigatorCrew tool suite.
 from src.tools.code_executor import PythonCodeExecutorTool
 from src.tools.file_tools import FileReaderTool, SafeFileWriterTool
 from src.tools.search_tools import ArxivSearchTool, SerperDevSearchTool
-from src.tools.web_scraper import WebScraperTool
+from src.tools.web_scraper import NavigatorWebScraperTool
 
 __all__ = [
     "PythonCodeExecutorTool",
@@ -15,5 +15,5 @@ __all__ = [
     "ArxivSearchTool",
     "SafeFileWriterTool",
     "FileReaderTool",
-    "WebScraperTool",
+    "NavigatorWebScraperTool",
 ]

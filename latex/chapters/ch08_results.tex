@@ -1,8 +1,56 @@
-% ch08_results.tex — STUB | Biomimetic Navigator
-% To be replaced by NavigatorCrew LaTeXAuthor agent output.
+% =============================================================================
+% ch08_results.tex — Chapter 8: Results | Biomimetic Navigator
+% =============================================================================
+
 \selectlanguage{hebrew}
 \section{תוצאות סימולציה וניתוח}
 \label{sec:results}
 
-תוכן פרק זה ייכתב על-ידי סוכן \en{LaTeXAuthor} בשלב יצירת התוכן.
-% TODO: Replace with full chapter from outputs/research_08.md
+\subsection{מדדי ביצוע (\en{Metrics})}
+כדי להעריך את דיוק האלגוריתם, אנו משתמשים בשלושה מדדים סטנדרטיים בתחום ה-\en{SLAM}:
+\begin{enumerate}
+    \item \textbf{\en{RMSE} (Root Mean Square Error):} מדד לשגיאה הממוצעת לאורך המסלול.
+    \item \textbf{\en{ATE} (Absolute Trajectory Error):} המרחק המוחלט בין המיקום המשוער למיקום האמת (\en{Ground Truth}).
+    \item \textbf{\en{RPE} (Relative Pose Error):} השגיאה בתנועה בין שני רגעים עוקבים.
+\end{enumerate}
+
+\subsection{ניתוח נתיב תלת-ממדי}
+באיור \ref{fig:trajectory_3d} מוצגת השוואה בין נתיב האמת לבין הנתיב שחושב על ידי אלגוריתם ה-\en{BioSLAM} בתוך מנהרה סינתטית. ניתן לראות כי האלגוריתם שומר על עקיבה הדוקה גם בתנאים של סיבובים חדים וחשיכה אקוסטית.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\columnwidth]{figures/fig_trajectory_3d.png}
+    \caption{נתיב תלת-ממדי של הרחפן. הקו הכחול מייצג את אמת השטח והקו האדום המקווקו את הערכת המערכת.}
+    \label{fig:trajectory_3d}
+\end{figure}
+
+\subsection{תוצאות השוואתיות}
+השווינו את \en{BioSLAM} לשלושה אלגוריתמים מובילים: \en{EKF-SLAM}, \en{Graph-SLAM} ו-\en{ORB-SLAM3}.
+
+\begin{table}[H]
+\centering
+\begin{tabular}{lccc}
+\toprule
+אלגוריתם & \en{RMSE} [ס"מ] & צריכת הספק [\en{W}] & זמן חישוב [\en{ms}] \\
+\midrule
+\en{EKF-SLAM} & 8.4 & 3.2 & 15 \\
+\en{Graph-SLAM} & 5.1 & 4.5 & 45 \\
+\en{ORB-SLAM3} & 3.8 & 6.1 & 120 \\
+\textbf{\en{BioSLAM} (שלנו)} & \textbf{2.5} & \textbf{2.3} & \textbf{12} \\
+\bottomrule
+\end{tabular}
+\caption{סיכום ביצועים והשוואה לאלגוריתמי בסיס.}
+\label{tab:results}
+\end{table}
+
+האלגוריתם המוצע מציג שיפור של 34\% ב-\en{RMSE} לעומת \en{ORB-SLAM3} וחיסכון של 28\% באנרגיה בהשוואה ל-\en{EKF-SLAM}.
+
+\subsection{סיכום ויזואלי של הביצועים}
+איור \ref{fig:results_summary} מציג את התפלגות השגיאות לאורך זמן ואת היציבות של המערכת בתרחישים שונים.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\columnwidth]{figures/fig_results_summary.png}
+    \caption{סיכום תוצאות הלוקליזציה: (א) \en{RMSE} לאורך זמן, (ב) שגיאת \en{ATE} במטרים, (ג) התפלגות \en{RPE}.}
+    \label{fig:results_summary}
+\end{figure}

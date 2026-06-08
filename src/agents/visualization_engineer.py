@@ -30,7 +30,7 @@ from typing import Any
 
 from crewai import Agent
 
-from src.config import AGENT_MAX_ITER, LLM_IDENTIFIER, logger
+from src.config import AGENT_MAX_ITER, SONNET_LLM, logger
 
 
 # ---------------------------------------------------------------------------
@@ -200,7 +200,7 @@ def create_visualization_engineer(tools: list[Any] | None = None) -> Agent:
         )
 
     logger.debug(
-        f"Creating VisualizationEngineer | LLM={LLM_IDENTIFIER} "
+        f"Creating VisualizationEngineer | LLM={SONNET_LLM} "
         f"| tools={[type(t).__name__ for t in tools]} "
         f"| max_iter={AGENT_MAX_ITER['data_visualizer']}"
     )
@@ -210,7 +210,7 @@ def create_visualization_engineer(tools: list[Any] | None = None) -> Agent:
         goal=_GOAL,
         backstory=_BACKSTORY,
         tools=tools,
-        llm=LLM_IDENTIFIER,
+        llm=SONNET_LLM,
         verbose=True,
         allow_delegation=False,
         max_iter=AGENT_MAX_ITER["data_visualizer"],

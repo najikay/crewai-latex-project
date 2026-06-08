@@ -1,0 +1,32 @@
+% =============================================================================
+% ch07_oursystem.tex — Chapter 7: NavigatorCrew System | Biomimetic Navigator
+% =============================================================================
+
+\selectlanguage{hebrew}
+\section{\en{NavigatorCrew} — עיצוב ומימוש הפלטפורמה}
+\label{sec:oursystem}
+
+\subsection{סקירת הארכיטקטורה}
+פלטפורמת ה-\en{NavigatorCrew} היא מערכת מרובת-סוכנים (\en{Multi-Agent System}) המבוססת על פריימוורק ה-\en{CrewAI}. המערכת נועדה לבצע מחקר, סימולציה וכתיבה של תכנים מדעיים בתחום הניווט האוטונומי בצורה אוטונומית לחלוטין.
+
+\subsection{הסוכנים במערכת}
+המערכת מורכבת מחמישה סוכנים מומחים:
+\begin{itemize}
+    \item \textbf{מנהל המחקר (\en{Research Director}):} אחראי על פירוק נושא המחקר לפרקים והנחיית שאר הסוכנים.
+    \item \textbf{חוקר ה-\en{SLAM} והיתוך חיישנים:} מבצע חיפוש אקדמי ב-\en{ArXiv} ו-\en{Serper} ומחלץ אלגוריתמים ונוסחאות.
+    \item \textbf{מהנדס הויזואליזציה:} יוצר את הגרפים והדיאגרמות באמצעות קוד \en{Python}.
+    \item \textbf{סופר ה-\en{LaTeX}:} מתרגם את ממצאי המחקר לקבצי \en{XeLaTeX} תקניים בעברית ובאנגלית.
+    \item \textbf{עורך האיכות:} מבצע ביקורת עמיתים על המאמר, בודק עקביות מתמטית ודיוק בציטוטים.
+\end{itemize}
+
+\subsection{הכלים (\en{Tools}) והזיכרון}
+הסוכנים מצוידים במערכת כלים המאפשרת להם אינטראקציה עם העולם החיצוני:
+\begin{itemize}
+    \item \textbf{\en{Search Tools}:} חיפוש ב-\en{ArXiv} ו-\en{Serper.dev}.
+    \item \textbf{\en{Code Executor}:} הרצת קוד \en{Python} בסביבה מאובטחת ליצירת גרפים.
+    \item \textbf{\en{File Tools}:} קריאה וכתיבה של קבצי טקסט ו-\en{LaTeX}.
+\end{itemize}
+המערכת משתמשת בזיכרון מבוסס \en{Vector DB} (\en{ChromaDB}) כדי לשמור על עקביות המידע בין הסוכנים לאורך כל שלבי המחקר. \cite{CrewAIDocs}
+
+\subsection{מימוש טכני ודיאגרמת המערכת}
+איור \ref{fig:sensor_modalities} (שנמצא בפרק \ref{sec:sensors}) מציג את זרימת המידע, בעוד שאיור \ref{fig:results_summary} בפרק הבא יציג את תוצאות הריצה של המערכת. התשתית ממומשת ב-\en{Python} ורצה על גבי מעבדי \en{NVIDIA Jetson} עבור יישומי זמן-אמת ברחפנים.

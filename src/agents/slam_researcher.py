@@ -7,11 +7,6 @@ Persona:    Prof. Amir Ben-David
 Role:       SLAM, Sensor Fusion & Signal Processing Research Specialist
 Tools:      SerperSearchTool, ArxivSearchTool, WebScraperTool
             (injected at crew-assembly time by crew.py)
-
-Design note:
-    Tool instances are injected via parameter. In test environments
-    (pytest tests/test_agents.py), pass mock or stub tools. The live
-    crew.py will inject real instances from src/tools/.
 """
 
 from __future__ import annotations
@@ -20,7 +15,7 @@ from typing import Any
 
 from crewai import Agent
 
-from src.config import AGENT_MAX_ITER, LLM_IDENTIFIER, logger
+from src.config import AGENT_MAX_ITER, HAIKU_LLM, logger
 
 
 # ---------------------------------------------------------------------------
@@ -90,14 +85,6 @@ His working rule: "An equation without a citation is a hypothesis.
 A hypothesis without an experiment is a guess. We do not publish guesses."
 """.strip()
 
-# Tools this agent will use — documented here for clarity.
-# Actual instances are injected by crew.py from src/tools/.
-_EXPECTED_TOOLS = [
-    "SerperSearchTool    — web search: IEEE, ArXiv, robotics blogs",
-    "ArxivSearchTool     — academic paper lookup (cs.RO, eess.SP, cs.CV)",
-    "WebScraperTool      — scrape specific IEEE/ArXiv paper pages",
-]
-
 
 # ---------------------------------------------------------------------------
 # Factory function
@@ -106,24 +93,14 @@ _EXPECTED_TOOLS = [
 def create_slam_researcher(tools: list[Any] | None = None) -> Agent:
     """
     Instantiate the SLAMAndFusionResearcher agent.
-
-    Args:
-        tools: [SerperSearchTool(), ArxivSearchTool(), WebScraperTool()]
-               Pass [] or None only in test/dry-run contexts.
-
-    Returns:
-        A configured CrewAI Agent.
+    Uses HAIKU_LLM for cost-effective high-volume research.
     """
     if tools is None:
         tools = []
-        logger.warning(
-            "SLAMAndFusionResearcher created with NO tools. "
-            "Expected tools: SerperSearchTool, ArxivSearchTool, WebScraperTool. "
-            "This is acceptable for unit tests but will fail in a live crew run."
-        )
+        logger.warning("SLAMAndFusionResearcher created with NO tools.")
 
     logger.debug(
-        f"Creating SLAMAndFusionResearcher | LLM={LLM_IDENTIFIER} "
+        f"Creating SLAMAndFusionResearcher | LLM={HAIKU_LLM} "
         f"| tools={[type(t).__name__ for t in tools]} "
         f"| max_iter={AGENT_MAX_ITER['deep_researcher']}"
     )
@@ -133,25 +110,14 @@ def create_slam_researcher(tools: list[Any] | None = None) -> Agent:
         goal=_GOAL,
         backstory=_BACKSTORY,
         tools=tools,
-        llm=LLM_IDENTIFIER,
+        llm=HAIKU_LLM,
         verbose=True,
         allow_delegation=False,
         max_iter=AGENT_MAX_ITER["deep_researcher"],
-        memory=True,                    # reads long-term memory to skip re-research
+        memory=False,
     )
-
-
-# ---------------------------------------------------------------------------
-# Self-test
-# ---------------------------------------------------------------------------
 
 if __name__ == "__main__":
     agent = create_slam_researcher()
     print(f"Role    : {agent.role}")
     print(f"LLM     : {agent.llm}")
-    print(f"Delegate: {agent.allow_delegation}")
-    print(f"Max iter: {agent.max_iter}")
-    print(f"Tools   : {agent.tools} (empty — expected in self-test)")
-    print("\nExpected live tools:")
-    for t in _EXPECTED_TOOLS:
-        print(f"  • {t}")

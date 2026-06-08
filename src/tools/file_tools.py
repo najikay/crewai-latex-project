@@ -41,6 +41,8 @@ class SafeFileWriterTool(BaseTool):
 
         resolved.parent.mkdir(parents=True, exist_ok=True)
         resolved.write_text(content, encoding="utf-8")
+        size_kb = resolved.stat().st_size // 1024
+        logger.info(f"SafeFileWriterTool: wrote {resolved.name} ({size_kb} KB)")
         return f"SUCCESS: wrote to {resolved}"
 
 

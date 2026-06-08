@@ -1,24 +1,16 @@
-# Project Materials (Homework and Study Material)
+# ===========================================================================
+# NavigatorCrew .gitignore
+# ===========================================================================
+
+# --- Sensitive / Personal ---
+.env                        # API keys — NEVER commit
+
+# --- Submission materials (not part of code review) ---
 homework/
 material/
 software_submission_guidelines-V3.pdf
 
-# Sensitive Information
-.env
-
-# LaTeX Build Junk (MikTeX)
-*.aux
-*.log
-*.out
-*.toc
-*.bbl
-*.blg
-*.fdb_latexmk
-*.fls
-*.synctex.gz
-*.pdf
-
-# Python Junk
+# --- Python ---
 __pycache__/
 *.py[cod]
 *$py.class
@@ -26,3 +18,35 @@ __pycache__/
 venv/
 env/
 .env/
+.pytest_cache/
+*.egg-info/
+dist/
+build/
+
+# --- LaTeX build artifacts ---
+*.aux
+*.log
+*.toc
+*.out
+*.bbl
+*.blg
+*.fdb_latexmk
+*.fls
+*.synctex.gz
+
+# --- Keep the final PDF (deliverable), exclude intermediates ---
+# outputs/NavigatorCrew_paper.pdf  ← kept (tracked)
+# latex/main.pdf                   ← excluded (rebuilt by pipeline)
+latex/main.pdf
+latex/venv/
+
+# --- Runtime / test artifacts ---
+outputs/smoke_test.txt
+outputs/run_log.txt
+outputs/researchcrew.log
+
+# --- Editor / OS ---
+.DS_Store
+Thumbs.db
+*.swp
+*.swo

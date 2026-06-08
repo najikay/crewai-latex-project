@@ -18,15 +18,24 @@ class WebScraperInput(BaseModel):
     url: str = Field(..., description="URL to scrape.")
 
 
-class WebScraperTool(BaseTool):
-    name: str = "WebScraperTool"
+class NavigatorWebScraperTool(BaseTool):
+    name: str = "NavigatorWebScraperTool"
     description: str = "Fetch the text content of a web page."
     args_schema: Type[BaseModel] = WebScraperInput
 
     def _run(self, url: str, **kwargs: Any) -> str:
-        logger.debug(f"WebScraperTool: fetching {url}")
+        logger.debug(f"NavigatorWebScraperTool: fetching {url}")
         try:
-            from crewai_tools import ScrapeWebsiteTool
-            return ScrapeWebsiteTool().run(url)
+            import requests
+            from bs4 import BeautifulSoup
+            headers = {"User-Agent": "Mozilla/5.0 (compatible; NavigatorCrew/1.0)"}
+            resp = requests.get(url, headers=headers, timeout=15)
+            resp.raise_for_status()
+            soup = BeautifulSoup(resp.text, "html.parser")
+            # Remove scripts/styles, return readable text
+            for tag in soup(["script", "style", "nav", "footer"]):
+                tag.decompose()
+            text = soup.get_text(separator="\n", strip=True)
+            return text[:8000]  # cap at 8 KB to avoid context overflow
         except Exception as exc:
             return f"ERROR: Scraper failed: {exc}"

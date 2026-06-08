@@ -1,64 +1,132 @@
-% =============================================================================
-% references.bib — BibTeX Bibliography
-% ResearchCrew | Assignment 3 | 2026
-%
-% Minimum required: 15 entries (currently: 4 stubs — expand in Module 4).
-% The DeepResearcher agent will populate this file with real citations.
-% Each entry below is a verified placeholder to allow compilation.
-% =============================================================================
+% references.bib — NavigatorCrew IEEE Paper
+
+@book{Thrun2005ProbRobotics,
+  author    = {Thrun, Sebastian and Burgard, Wolfram and Fox, Dieter},
+  title     = {Probabilistic Robotics},
+  publisher = {MIT Press},
+  year      = {2005},
+  isbn      = {0-262-20162-3}
+}
+
+@article{Simmons1979BatSonar,
+  author    = {Simmons, James A.},
+  title     = {Perception of echo phase information in bat sonar},
+  journal   = {Science},
+  volume    = {204},
+  number    = {4399},
+  pages     = {1336--1338},
+  year      = {1979},
+  doi       = {10.1126/science.451543}
+}
+
+@article{Schnitzler1968DSC,
+  author    = {Schnitzler, Hans-Ulrich},
+  title     = {Die {U}ltraschall-{O}rientierungslaute der {H}ufeisenflederm{\"a}use ({C}hiroptera, {R}hinolophidae) in verschiedenen {O}rientierungssituationen},
+  journal   = {Zeitschrift f{\"u}r vergleichende Physiologie},
+  volume    = {57},
+  number    = {4},
+  pages     = {376--408},
+  year      = {1968},
+  doi       = {10.1007/BF00303062}
+}
+
+@article{Schuller1974DSC,
+  author    = {Schuller, G. and Beuter, K. and Schnitzler, H.-U.},
+  title     = {Response to frequency shifted artificial echoes in the bat \emph{{R}hinolophus ferrumequinum}},
+  journal   = {Journal of Comparative Physiology},
+  volume    = {89},
+  number    = {3},
+  pages     = {275--286},
+  year      = {1974},
+  doi       = {10.1007/BF00695351}
+}
+
+@book{GriffinBatEcholocation,
+  author    = {Griffin, Donald R.},
+  title     = {Listening in the Dark: The Acoustic Orientation of Bats and Men},
+  publisher = {Yale University Press},
+  address   = {New Haven, CT},
+  year      = {1958}
+}
+
+@book{GriffithBatEcholocation,
+  author    = {Griffin, Donald R.},
+  title     = {Listening in the Dark: The Acoustic Orientation of Bats and Men},
+  publisher = {Yale University Press},
+  address   = {New Haven, CT},
+  year      = {1958}
+}
+
+@book{MossEcholocation,
+  author    = {Moss, Cynthia F. and Shettleworth, Sara J.},
+  title     = {Neuroethological Studies of Cognitive and Perceptual Processes},
+  publisher = {Westview Press},
+  address   = {Boulder, CO},
+  year      = {1996}
+}
+
+@article{MurArtal2015ORB,
+  author    = {Mur-Artal, Ra{\'u}l and Montiel, J. M. M. and Tard{\'o}s, Juan D.},
+  title     = {{ORB-SLAM}: A Versatile and Accurate Monocular {SLAM} System},
+  journal   = {IEEE Transactions on Robotics},
+  volume    = {31},
+  number    = {5},
+  pages     = {1147--1163},
+  year      = {2015},
+  doi       = {10.1109/TRO.2015.2463671}
+}
+
+@article{Kalman1960,
+  author    = {Kalman, Rudolf E.},
+  title     = {A New Approach to Linear Filtering and Prediction Problems},
+  journal   = {Journal of Basic Engineering},
+  volume    = {82},
+  number    = {1},
+  pages     = {35--45},
+  year      = {1960},
+  doi       = {10.1115/1.3662552}
+}
+
+@article{Grisetti2010g2o,
+  author    = {Grisetti, Giorgio and K{\"u}mmerle, Rainer and Stachniss, Cyrill and Burgard, Wolfram},
+  title     = {A Tutorial on Graph-Based {SLAM}},
+  journal   = {IEEE Intelligent Transportation Systems Magazine},
+  volume    = {2},
+  number    = {4},
+  pages     = {31--43},
+  year      = {2010},
+  doi       = {10.1109/MITS.2010.939925}
+}
+
+@inproceedings{Julier1997CovarianceIntersection,
+  author    = {Julier, Simon J. and Uhlmann, Jeffrey K.},
+  title     = {A Non-divergent Estimation Algorithm in the Presence of Unknown Correlations},
+  booktitle = {Proceedings of the American Control Conference},
+  pages     = {2369--2373},
+  year      = {1997},
+  doi       = {10.1109/ACC.1997.609105}
+}
+
+@book{Rihaczek1969MatchedFilter,
+  author    = {Rihaczek, August W.},
+  title     = {Principles of High-Resolution Radar},
+  publisher = {McGraw-Hill},
+  address   = {New York, NY},
+  year      = {1969}
+}
 
 @misc{CrewAIDocs,
   author       = {{CrewAI Inc.}},
-  title        = {{CrewAI Documentation: Multi-Agent Framework}},
+  title        = {{CrewAI} Framework Documentation},
   year         = {2025},
-  url          = {https://docs.crewai.com},
+  howpublished = {\url{https://docs.crewai.com}},
   note         = {Accessed: June 2026}
 }
 
-@misc{LangGraphDocs,
-  author       = {{LangChain Inc.}},
-  title        = {{LangGraph: Build Stateful, Multi-Actor Applications with LLMs}},
+@misc{AnthropicClaude,
+  author       = {{Anthropic}},
+  title        = {Claude: A Large Language Model for Helpfulness, Harmlessness, and Honesty},
   year         = {2025},
-  url          = {https://langchain-ai.github.io/langgraph/},
+  howpublished = {\url{https://www.anthropic.com/claude}},
   note         = {Accessed: June 2026}
 }
-
-@misc{AutoGenDocs,
-  author       = {{Microsoft Research}},
-  title        = {{AutoGen: Enabling Next-Gen LLM Applications via Multi-Agent Conversation}},
-  year         = {2024},
-  url          = {https://microsoft.github.io/autogen/},
-  note         = {Accessed: June 2026}
-}
-
-@article{VaswaniAttention,
-  author       = {Vaswani, Ashish and Shazeer, Noam and Parmar, Niki and
-                  Uszkoreit, Jakob and Jones, Llion and Gomez, Aidan N. and
-                  Kaiser, Lukasz and Polosukhin, Illia},
-  title        = {Attention Is All You Need},
-  journal      = {Advances in Neural Information Processing Systems},
-  volume       = {30},
-  year         = {2017},
-  url          = {https://arxiv.org/abs/1706.03762}
-}
-
-@misc{AgentArchitecture2026,
-  author       = {{Course Lecture Notes}},
-  title        = {{AI Agent Architecture in 2026: Runtime, Memory, Tools, and Observability}},
-  year         = {2026},
-  note         = {Lecture L06, Course: Orchestration of AI Agents. Unpublished.}
-}
-
-% =============================================================================
-% TODO (Module 4 — DeepResearcher will add entries here):
-%   @article for LangGraph stateful agents
-%   @article for multi-agent benchmark paper
-%   @misc   for MCP protocol spec
-%   @misc   for A2A protocol spec
-%   @article for OWASP AI security 2026
-%   @article for RAG systems survey
-%   @article for agent memory systems
-%   @misc   for Anthropic Claude documentation
-%   @misc   for Serper.dev API
-%   @misc   for Streamlit documentation
-% =============================================================================

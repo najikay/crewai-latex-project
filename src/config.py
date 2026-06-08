@@ -55,12 +55,62 @@ ANTHROPIC_API_KEY: str = os.getenv("ANTHROPIC_API_KEY", "")
 SERPER_API_KEY:    str = os.getenv("SERPER_API_KEY", "")
 OPENAI_API_KEY:    str = os.getenv("OPENAI_API_KEY", "")
 
+# If OPENAI_API_KEY is a placeholder (not a real key), remove it from the
+# process environment entirely so CrewAI's internal subsystems (memory.analyze,
+# etc.) cannot accidentally pick it up and make failing API calls.
+if OPENAI_API_KEY and not OPENAI_API_KEY.startswith("sk-"):
+    os.environ.pop("OPENAI_API_KEY", None)
+    OPENAI_API_KEY = ""
+
 # ---------------------------------------------------------------------------
-# 4. Model Constants
+# 4. Model Constants & LLM Initialization
 # ---------------------------------------------------------------------------
-MODEL_NAME: str = os.getenv("CREWAI_MODEL", "claude-sonnet-4-6")
-# Full LLM identifier expected by CrewAI's LiteLLM backend:
-LLM_IDENTIFIER: str = f"anthropic/{MODEL_NAME}"
+from crewai import LLM as CrewLLM
+
+# ---------------------------------------------------------------------------
+# MODEL PROVIDER SWITCH
+# Set ACTIVE_PROVIDER to "anthropic" or "deepseek".
+# DeepSeek is OpenAI-compatible, very cheap (~$0.27/M input), and highly capable.
+# To use DeepSeek: set DEEPSEEK_API_KEY in .env, set ACTIVE_PROVIDER="deepseek"
+# ---------------------------------------------------------------------------
+ACTIVE_PROVIDER: str = os.getenv("ACTIVE_PROVIDER", "anthropic")
+DEEPSEEK_API_KEY: str = os.getenv("DEEPSEEK_API_KEY", "")
+
+if ACTIVE_PROVIDER == "deepseek" and DEEPSEEK_API_KEY:
+    # DeepSeek V3 — GPT-4 class quality, ~$0.27/M input tokens
+    # Uses OpenAI-compatible API. CrewAI routes via "openai/" provider + base_url override.
+    # Both tiers share the same model — DeepSeek is cheap enough not to need tiering.
+    _DS_KWARGS = dict(
+        model="openai/deepseek-chat",
+        api_key=DEEPSEEK_API_KEY,
+        base_url="https://api.deepseek.com/v1",
+        max_tokens=8192,
+    )
+    SONNET_LLM: CrewLLM = CrewLLM(**_DS_KWARGS, temperature=0.3)
+    HAIKU_LLM:  CrewLLM = CrewLLM(**_DS_KWARGS, temperature=0.1)
+    MODEL_NAME: str = "openai/deepseek-chat"
+else:
+    # Anthropic — Sonnet quota blown, use Haiku for ALL agents.
+    # Haiku 4.5 is fast and cheap. Sonnet can be re-enabled once quota resets.
+    # Confirmed working model IDs (pinned, not rolling -latest aliases):
+    HAIKU_MODEL_ID:  str = "anthropic/claude-haiku-4-5-20251001"
+    SONNET_MODEL_ID: str = "anthropic/claude-haiku-4-5-20251001"  # override: use Haiku
+
+    SONNET_LLM: CrewLLM = CrewLLM(
+        model=SONNET_MODEL_ID,
+        api_key=ANTHROPIC_API_KEY,
+        temperature=0.3,
+        max_tokens=8192,
+    )
+    HAIKU_LLM: CrewLLM = CrewLLM(
+        model=HAIKU_MODEL_ID,
+        api_key=ANTHROPIC_API_KEY,
+        temperature=0.1,
+        max_tokens=4096,
+    )
+    MODEL_NAME: str = SONNET_MODEL_ID
+
+LLM_IDENTIFIER: CrewLLM = SONNET_LLM
 
 # Embedding model (used by ChromaDB memory layer)
 EMBEDDING_MODEL: str = "text-embedding-3-small"
@@ -71,7 +121,7 @@ EMBEDDING_FALLBACK_MODEL: str = "all-MiniLM-L6-v2"
 # ---------------------------------------------------------------------------
 # 5. Agent / Crew Runtime Constants
 # ---------------------------------------------------------------------------
-# Pricing per 1M tokens (Claude 3.5 Sonnet: $3.00 input / $15.00 output)
+# Pricing per 1M tokens (Claude Sonnet 4: $3.00 input / $15.00 output)
 PRICE_PER_1M_INPUT_TOKENS: float = 3.00
 PRICE_PER_1M_OUTPUT_TOKENS: float = 15.00
 
@@ -80,11 +130,11 @@ EMBEDDING_PRICE_PER_1M: float = 0.02
 
 # Maximum LLM iterations per agent before CrewAI raises MaxIterationsError
 AGENT_MAX_ITER: dict[str, int] = {
-    "research_director": 5,
-    "deep_researcher":   12,   # PRD: SLAMAndFusionResearcher max_iter=12
-    "data_visualizer":   10,   # PRD: VisualizationEngineer max_iter=10
+    "research_director": 10,
+    "deep_researcher":   15,
+    "data_visualizer":   10,
     "latex_author":      15,
-    "quality_editor":    5,
+    "quality_editor":    10,
 }
 
 # Target paper length used in agent prompts
@@ -148,15 +198,25 @@ logger.info(f"ResearchCrew starting. PROJECT_ROOT={PROJECT_ROOT}")
 # 8. Embedder Configuration  (used by src/crew.py when building the Crew)
 # ---------------------------------------------------------------------------
 
-def get_embedder_config() -> dict:
+def _openai_key_is_real() -> bool:
+    """Return True only if OPENAI_API_KEY looks like an actual key, not a placeholder."""
+    return bool(OPENAI_API_KEY) and OPENAI_API_KEY.startswith("sk-")
+
+
+def get_embedder_config() -> dict | None:
     """
-    Return the ChromaDB embedder config for CrewAI memory.
+    Return the ChromaDB embedder config for CrewAI memory, or None if no
+    valid embedder is available.
 
     Strategy:
-      - If OPENAI_API_KEY is present → use text-embedding-3-small (cloud, best quality)
-      - Otherwise                    → use all-MiniLM-L6-v2 via HuggingFace (local, no key needed)
+      - If OPENAI_API_KEY is a real key (starts with 'sk-') → text-embedding-3-small
+      - Otherwise → None (caller should set memory=False on the Crew)
+
+    Note: CrewAI 1.14+ requires CHROMA_HUGGINGFACE_API_KEY for the HuggingFace
+    provider, making it no longer a free local fallback. Until that key is
+    configured, we skip memory rather than crash.
     """
-    if OPENAI_API_KEY:
+    if _openai_key_is_real():
         logger.info("Embedder: OpenAI text-embedding-3-small")
         return {
             "provider": "openai",
@@ -167,15 +227,11 @@ def get_embedder_config() -> dict:
         }
     else:
         logger.warning(
-            "OPENAI_API_KEY not set — falling back to local HuggingFace embedder. "
-            "Memory quality will be slightly lower."
+            "No valid embedder available (OPENAI_API_KEY not set or is a placeholder). "
+            "Crew memory will be disabled for this run. "
+            "Set a real OPENAI_API_KEY in .env to enable long-term memory."
         )
-        return {
-            "provider": "huggingface",
-            "config": {
-                "model": EMBEDDING_FALLBACK_MODEL,
-            },
-        }
+        return None
 
 
 # ---------------------------------------------------------------------------
@@ -215,9 +271,9 @@ def validate_config() -> None:
         )
 
     # Optional key — warn but do not abort
-    if not OPENAI_API_KEY:
+    if not _openai_key_is_real():
         logger.warning(
-            "OPENAI_API_KEY is not set. "
+            "OPENAI_API_KEY is not set or is a placeholder. "
             "Memory will use a local HuggingFace embedding model instead of OpenAI. "
             "This is fine for development but may reduce research recall quality."
         )
