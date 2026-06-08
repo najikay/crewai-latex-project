@@ -90,6 +90,40 @@ BIBLIOGRAPHY RULES:
     • @misc      — for online resources (include url, note="Accessed: June 2026")
     • Minimum 15 entries; maximum 1 entry per URL.
 
+CONTENT DEPTH CONTRACT (target: 25–30 printed pages total):
+    Each chapter (ch02–ch09) must contain:
+    • Minimum 600 words of Hebrew prose (not counting equations/tables/captions)
+    • Minimum 4 subsections
+    • Minimum 3 numbered equations, each derived and explained in text
+    • Minimum 2 figures (\\includegraphics — real PNG from figures/)
+    • Minimum 1 table (booktabs style)
+    • Minimum 4 \\cite{} references
+    Chapters ch06 (Algorithm) and ch08 (Results) must be especially detailed:
+    at least 900 words each, with algorithm pseudocode (listings environment)
+    and comparative results tables.
+
+EM DASH PROHIBITION:
+    The character — (U+2014, em dash) is FORBIDDEN in Hebrew prose.
+    It is an AI writing marker that will cause editorial rejection.
+    Replacements by context:
+    • Introducing a term or clause  → use a colon (:) or comma (,)
+    • Parenthetical aside           → use parentheses (...)
+    • List item descriptor          → use colon (:) after \\textbf{...}
+    • Abbreviation expansion in \\en{} → allowed only inside \\en{},
+      e.g., \\en{UAV — Unmanned Aerial Vehicles} is acceptable
+    NEVER write: "NavigatorCrew — פלטפורמת" or "מפת הסביבה — ייצוג"
+    Write instead: "NavigatorCrew: פלטפורמת" or "מפת הסביבה, ייצוג"
+
+REQUIRED BIBTEX KEYS (references.bib MUST define exactly these keys):
+    Thrun2005ProbRobotics, Kalman1960, Grisetti2010g2o, MurArtal2015ORB,
+    Julier1997CovarianceIntersection, GriffinBatEcholocation,
+    GriffithBatEcholocation, Simmons1979BatSonar, Schnitzler1968DSC,
+    Schuller1974DSC, MossEcholocation, Rihaczek1969MatchedFilter,
+    CrewAIDocs, AnthropicClaude
+    These exact keys are cited in ch01_intro.tex and ch04_slam.tex.
+    Do NOT invent different keys — BibTeX undefined-citation warnings
+    will propagate to the final PDF as [?] markers.
+
 FORBIDDEN PATTERNS (will cause compilation failure or editorial rejection):
     • \\begin{center}...\\end{center} inside figure/table (use \\centering instead)
     • Raw URLs in text — use \\cite{} or \\url{} from hyperref
@@ -98,6 +132,13 @@ FORBIDDEN PATTERNS (will cause compilation failure or editorial rejection):
     • \\caption after \\end{tabular} for tables (caption goes ABOVE tabular)
     • Missing \\end{document} if you write a standalone file
     • Mixing pdflatex and XeLaTeX packages (\\usepackage{inputenc} is pdflatex only)
+    • Placeholder boxes: \\fbox{\\parbox{...PLACEHOLDER...}} — use \\includegraphics
+    • Em dashes in Hebrew prose (see EM DASH PROHIBITION above)
+    • \\begin{center}...\\end{center} at document level (outside figures/tables):
+      in XeLaTeX + bidi this triggers \\@ifnextchar infinite recursion →
+      TeX capacity overflow → zero pages of output. Use \\centering inside floats.
+    • \\begin{abstract} inside abstract.tex — main.tex already wraps it
+    • Rewriting cover.tex — it is PROTECTED and managed separately
 """.strip()
 
 _BACKSTORY = """
@@ -132,14 +173,14 @@ _EXPECTED_TOOLS = [
 
 # Chapters this agent will write, in order, with their labels
 CHAPTER_MANIFEST: list[dict] = [
-    {"num": "cover",    "file": "cover.tex",              "label": None,             "title_he": "דף שער"},
+    # cover.tex is PROTECTED — do not write it (managed manually)
     {"num": "abstract", "file": "abstract.tex",            "label": None,             "title_he": "תקציר"},
     {"num": "ch02",     "file": "ch02_bio_basis.tex",      "label": "sec:bio_basis",  "title_he": "הבסיס הביולוגי: אקולוקציה של עטלפים"},
     {"num": "ch03",     "file": "ch03_sensors.tex",        "label": "sec:sensors",    "title_he": "מודאליות החישנים: LiDAR, סונאר ו-Vision-AI"},
     {"num": "ch04",     "file": "ch04_slam.tex",           "label": "sec:slam",       "title_he": "אלגוריתמי SLAM ביומימטיים"},
     {"num": "ch05",     "file": "ch05_fusion.tex",         "label": "sec:fusion",     "title_he": "ארכיטקטורת היתוך החישנים"},
     {"num": "ch06",     "file": "ch06_algorithm.tex",      "label": "sec:algorithm",  "title_he": "האלגוריתם הביומימטי המוצע"},
-    {"num": "ch07",     "file": "ch07_our_system.tex",     "label": "sec:oursystem",  "title_he": "NavigatorCrew — עיצוב ומימוש"},
+    {"num": "ch07",     "file": "ch07_oursystem.tex",      "label": "sec:oursystem",  "title_he": "NavigatorCrew: עיצוב ומימוש הפלטפורמה"},
     {"num": "ch08",     "file": "ch08_results.tex",        "label": "sec:results",    "title_he": "תוצאות סימולציה וניתוח"},
     {"num": "ch09",     "file": "ch09_conclusion.tex",     "label": "sec:conclusion", "title_he": "סיכום, מגבלות ועתיד"},
     {"num": "bib",      "file": "references.bib",          "label": None,             "title_he": "ביבליוגרפיה"},

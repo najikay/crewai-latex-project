@@ -12,7 +12,6 @@ from src.agents import (
     create_slam_researcher,
     create_visualization_engineer,
     create_latex_author,
-    create_quality_editor,
 )
 from src.config import logger, validate_config
 from src.tasks import create_all_tasks
@@ -42,20 +41,21 @@ def build_crew(topic: str = _DEFAULT_TOPIC) -> tuple[Crew, TokenAccountant]:
     writer   = SafeFileWriterTool()
     reader   = FileReaderTool()
 
-    # Instantiate agents (Model Tiering is handled inside factories)
-    director    = create_navigation_director(tools=[writer]) # Director needs writer for outline
-    researcher  = create_slam_researcher(tools=[serper, arxiv, scraper])
-    visualizer  = create_visualization_engineer(tools=[executor, writer])
-    author      = create_latex_author(tools=[writer, reader])
-    editor      = create_quality_editor(tools=[reader])
+    # Instantiate agents (model tiering handled inside factories)
+    director   = create_navigation_director(tools=[writer])
+    researcher = create_slam_researcher(tools=[serper, arxiv, scraper])
+    visualizer = create_visualization_engineer(tools=[executor, writer])
+    author     = create_latex_author(tools=[writer, reader])
+    # Note: quality_editor is intentionally excluded from the main crew.
+    # Quality checking is done programmatically in the LangGraph quality gate
+    # (src/graph/nodes.py:run_quality_gate) to avoid LLM infinite-loop issues.
 
-    # Build tasks
+    # Build tasks (4-task pipeline: outline → research → figures → latex)
     tasks = create_all_tasks(
         director=director,
         researcher=researcher,
         visualizer=visualizer,
         author=author,
-        editor=editor,
         topic=topic,
     )
 
@@ -63,20 +63,19 @@ def build_crew(topic: str = _DEFAULT_TOPIC) -> tuple[Crew, TokenAccountant]:
     accountant = TokenAccountant()
     accountant.install()
 
-    # Assemble crew
-    # Process.sequential is chosen for maximum stability and to prevent manager loops.
+    # Assemble crew — sequential process for maximum stability
     crew = Crew(
-        agents=[director, researcher, visualizer, author, editor],
+        agents=[director, researcher, visualizer, author],
         tasks=tasks,
         process=Process.sequential,
         verbose=True,
-        memory=False, # Disabled for stability
+        memory=False,
         step_callback=accountant.step_callback,
         task_callback=accountant.task_callback,
     )
 
     logger.info(
-        "NavigatorCrew v4.0 assembled: "
-        f"process=sequential | agents=5 | tasks={len(tasks)}"
+        "NavigatorCrew v5.0 assembled: "
+        f"process=sequential | agents=4 | tasks={len(tasks)}"
     )
     return crew, accountant

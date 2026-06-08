@@ -15,23 +15,38 @@ from crewai import Crew, Process
 from src.agents import (
     create_slam_researcher,
     create_latex_author,
-    create_quality_editor,
 )
 from src.graph.state import PipelineState
 from src.tasks.research_tasks import (
     create_task_research,
     create_task_latex,
-    create_task_review,
-    create_remediation_task,        # new factory — see research_tasks.py changes
+    create_remediation_task,
 )
 from src.tools import (
     ArxivSearchTool, FileReaderTool,
     NavigatorWebScraperTool, SafeFileWriterTool, SerperDevSearchTool,
 )
-from src.config import logger
+from src.config import logger, PROJECT_ROOT
 
 QUALITY_THRESHOLD = 75   # score below this triggers remediation
 MAX_REMEDIATIONS  = 2    # hard cap — prevents infinite loops
+
+# Required BibTeX keys that must exist in references.bib
+REQUIRED_CITE_KEYS = {
+    "Thrun2005ProbRobotics", "Kalman1960", "Grisetti2010g2o", "MurArtal2015ORB",
+    "Julier1997CovarianceIntersection", "GriffinBatEcholocation",
+    "GriffithBatEcholocation", "Simmons1979BatSonar", "Schnitzler1968DSC",
+    "Schuller1974DSC", "MossEcholocation", "Rihaczek1969MatchedFilter",
+    "CrewAIDocs", "AnthropicClaude",
+}
+
+# Chapters the agent is responsible for writing
+AGENT_CHAPTERS = [
+    "abstract.tex",
+    "ch02_bio_basis.tex", "ch03_sensors.tex", "ch04_slam.tex",
+    "ch05_fusion.tex", "ch06_algorithm.tex", "ch07_oursystem.tex",
+    "ch08_results.tex", "ch09_conclusion.tex",
+]
 
 
 # ---------------------------------------------------------------------------
@@ -39,75 +54,174 @@ MAX_REMEDIATIONS  = 2    # hard cap — prevents infinite loops
 # ---------------------------------------------------------------------------
 def run_main_pipeline(state: PipelineState) -> dict:
     """
-    Runs the existing 4-task CrewAI pipeline (outline → research → figures → latex).
-    The QualityEditor is NOT included here; it runs as a separate LangGraph node
-    so its verdict can control routing.
+    Runs the full CrewAI pipeline (outline → research → figures → latex).
     """
     from src.crew import build_crew  # lazy import avoids circular deps
 
     logger.info("[Graph] NODE: run_main_pipeline")
-    # For now, we'll just run the full crew since build_crew builds all 5 agents.
-    # In a perfect world, build_crew would take `include_editor=False`.
-    # We'll use the existing build_crew to avoid breaking the user's setup too much.
     crew, accountant = build_crew(topic=state["topic"])
     crew.kickoff()
     return {"quality_verdict": "PENDING"}
 
 
 # ---------------------------------------------------------------------------
-# Node 2: run_quality_gate
+# Node 2: run_quality_gate  (programmatic — no LLM loop risk)
 # ---------------------------------------------------------------------------
 def run_quality_gate(state: PipelineState) -> dict:
     """
-    Runs only the QualityEditor. Parses its structured JSON verdict from
-    outputs/quality_report.md to populate quality_verdict, quality_score,
-    and failed_sections in the state.
+    Programmatic quality check of generated LaTeX files.
+    Scores the paper based on structural completeness and correctness,
+    without relying on an LLM agent that can loop indefinitely.
     """
-    logger.info("[Graph] NODE: run_quality_gate")
+    logger.info("[Graph] NODE: run_quality_gate (programmatic)")
 
-    editor  = create_quality_editor(tools=[FileReaderTool()])
-    t_review = create_task_review(editor, context=[])   # context is files on disk
+    chapters_dir = PROJECT_ROOT / "latex" / "chapters"
+    bib_path     = PROJECT_ROOT / "latex" / "references.bib"
 
-    Crew(
-        agents=[editor],
-        tasks=[t_review],
-        process=Process.sequential,
-        verbose=True,
-    ).kickoff()
+    issues: list[str] = []
+    failed_sections: list[str] = []
+    score = 100
 
-    # --- Parse the structured verdict from the report ---
-    report_path = Path("outputs/quality_report.md")
-    verdict, score, failed = _parse_quality_report(report_path)
+    # ── 1. Check all chapter files exist ─────────────────────────────────
+    missing_files = []
+    for fname in AGENT_CHAPTERS:
+        fpath = chapters_dir / fname
+        if not fpath.exists() or fpath.stat().st_size < 200:
+            missing_files.append(fname)
+            score -= 8
+    if missing_files:
+        issues.append(f"Missing or empty chapter files: {missing_files}")
+        failed_sections.extend(["introduction", "methodology", "algorithms"])
 
-    logger.info(f"[Graph] Quality verdict={verdict} score={score} failed={failed}")
+    # ── 2. Check structural elements per chapter ──────────────────────────
+    content_chapters = [f for f in AGENT_CHAPTERS if f not in ("abstract.tex",)]
+    for fname in content_chapters:
+        fpath = chapters_dir / fname
+        if not fpath.exists():
+            continue
+        text = fpath.read_text(encoding="utf-8", errors="replace")
+        section_name = fname.replace(".tex", "").replace("ch0", "ch").replace("ch", "")
+
+        eq_count  = len(re.findall(r"\\begin\{equation\}", text))
+        fig_count = len(re.findall(r"\\includegraphics", text))
+        tab_count = len(re.findall(r"\\begin\{table\}", text))
+        sub_count = len(re.findall(r"\\subsection\{", text))
+        cite_count = len(re.findall(r"\\cite\{", text))
+        word_est  = len(text.split())
+
+        chapter_issues = []
+        if eq_count < 2:
+            chapter_issues.append(f"equations={eq_count}<2")
+            score -= 3
+        if fig_count < 1:
+            chapter_issues.append(f"figures={fig_count}<1")
+            score -= 3
+        if sub_count < 3:
+            chapter_issues.append(f"subsections={sub_count}<3")
+            score -= 2
+        if cite_count < 2:
+            chapter_issues.append(f"citations={cite_count}<2")
+            score -= 2
+        if word_est < 300:
+            chapter_issues.append(f"words≈{word_est}<300")
+            score -= 4
+            failed_sections.append("methodology")
+
+        if chapter_issues:
+            issues.append(f"{fname}: " + ", ".join(chapter_issues))
+
+    # ── 3. Check references.bib has required keys ────────────────────────
+    if bib_path.exists():
+        bib_text = bib_path.read_text(encoding="utf-8", errors="replace")
+        defined_keys = set(re.findall(r"@\w+\{(\w+),", bib_text))
+        missing_keys = REQUIRED_CITE_KEYS - defined_keys
+        if missing_keys:
+            issues.append(f"references.bib missing keys: {sorted(missing_keys)}")
+            score -= 5 * len(missing_keys)
+            failed_sections.append("references")
+    else:
+        issues.append("references.bib does not exist")
+        score -= 20
+        failed_sections.append("references")
+
+    # ── 4. Check for forbidden patterns ──────────────────────────────────
+    all_tex = list(chapters_dir.glob("*.tex"))
+    placeholder_files, emdash_files, center_files = [], [], []
+    for fpath in all_tex:
+        text = fpath.read_text(encoding="utf-8", errors="replace")
+        if "PLACEHOLDER" in text or r"\fbox{\parbox" in text:
+            placeholder_files.append(fpath.name)
+        # em dash outside \en{} blocks (rough heuristic)
+        clean = re.sub(r"\\en\{[^}]*\}", "", text)
+        if "\u2014" in clean:
+            emdash_files.append(fpath.name)
+        if r"\begin{center}" in text and fpath.name not in ("cover.tex",):
+            center_files.append(fpath.name)
+
+    if placeholder_files:
+        issues.append(f"Placeholder boxes found in: {placeholder_files}")
+        score -= 5
+        failed_sections.append("figures")
+    if emdash_files:
+        issues.append(f"Em dashes in Hebrew prose: {emdash_files}")
+        score -= 3
+    if center_files:
+        issues.append(f"\\begin{{center}} at document level (bidi crash risk): {center_files}")
+        score -= 10
+        failed_sections.append("methodology")
+
+    # ── 5. Clamp score and deduplicate failed sections ────────────────────
+    score = max(0, min(100, score))
+    failed_sections = sorted(set(failed_sections))
+    verdict = "PASS" if score >= QUALITY_THRESHOLD else "FAIL"
+
+    # ── 6. Write quality report ───────────────────────────────────────────
+    report_path = PROJECT_ROOT / "outputs" / "quality_report.md"
+    issue_lines = "\n".join(f"- {i}" for i in issues) if issues else "- None"
+    report_content = f"""# Quality Gate Report
+
+**Verdict:** {verdict}
+**Score:** {score}/100
+**Threshold:** {QUALITY_THRESHOLD}
+**Failed Sections:** {failed_sections or 'none'}
+
+## Issues Found
+
+{issue_lines}
+
+## Checks Performed
+
+- Chapter file existence and minimum size
+- Equations per chapter (≥2 required)
+- Figures per chapter (≥1 required)
+- Subsections per chapter (≥3 required)
+- Citations per chapter (≥2 required)
+- Word count estimate per chapter (≥300 required)
+- Required BibTeX keys ({len(REQUIRED_CITE_KEYS)} keys checked)
+- Placeholder figure boxes
+- Em dashes in Hebrew prose
+- \\begin{{center}} at document level (XeLaTeX crash risk)
+
+```json
+{{
+  "verdict": "{verdict}",
+  "score": {score},
+  "failed_sections": {json.dumps(failed_sections)}
+}}
+```
+"""
+    report_path.write_text(report_content, encoding="utf-8")
+
+    logger.info(f"[Graph] Quality verdict={verdict} score={score} failed={failed_sections}")
+    if issues:
+        for issue in issues[:5]:  # log first 5 to avoid log spam
+            logger.warning(f"[Graph] Quality issue: {issue}")
+
     return {
         "quality_verdict": verdict,
         "quality_score": score,
-        "failed_sections": failed,
+        "failed_sections": failed_sections,
     }
-
-
-def _parse_quality_report(report_path: Path) -> tuple[str, int, list[str]]:
-    """
-    Extracts the machine-readable JSON block the editor embeds in its report.
-    """
-    try:
-        text = report_path.read_text(encoding="utf-8")
-        # Extract the first ```json ... ``` block in the report
-        match = re.search(r"```json\s*(\{.*?\})\s*```", text, re.DOTALL)
-        if not match:
-            logger.warning("[Graph] No JSON verdict block found — defaulting to PASS")
-            return "PASS", 100, []
-
-        data = json.loads(match.group(1))
-        score  = int(data.get("score", 100))
-        failed = data.get("failed_sections", [])
-        verdict = "PASS" if score >= QUALITY_THRESHOLD else "FAIL"
-        return verdict, score, failed
-
-    except Exception as exc:
-        logger.error(f"[Graph] Failed to parse quality report: {exc} — defaulting to PASS")
-        return "PASS", 100, []
 
 
 # ---------------------------------------------------------------------------
@@ -124,7 +238,6 @@ def run_remediation(state: PipelineState) -> dict:
 
     failed = state["failed_sections"]
 
-    # --- Determine which agents are needed ---
     agents, tasks = [], []
 
     # Researcher is needed if content/algorithm sections failed
@@ -142,7 +255,7 @@ def run_remediation(state: PipelineState) -> dict:
         agents.append(researcher)
         tasks.append(t_research)
 
-    # LaTeX Author is always needed to re-render any fixed content
+    # LaTeX author re-renders any fixed content
     author = create_latex_author(tools=[SafeFileWriterTool(), FileReaderTool()])
     t_latex = create_remediation_task(
         agent=author,
@@ -163,5 +276,5 @@ def run_remediation(state: PipelineState) -> dict:
 
     return {
         "remediation_count": count,
-        "quality_verdict": "PENDING",  # reset — gate will re-evaluate
+        "quality_verdict": "PENDING",
     }

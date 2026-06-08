@@ -128,13 +128,15 @@ PRICE_PER_1M_OUTPUT_TOKENS: float = 15.00
 # Pricing for OpenAI Embeddings (text-embedding-3-small: $0.02 per 1M)
 EMBEDDING_PRICE_PER_1M: float = 0.02
 
-# Maximum LLM iterations per agent before CrewAI raises MaxIterationsError
+# Maximum LLM iterations per agent before CrewAI raises MaxIterationsError.
+# quality_editor is higher because it reads multiple files before writing the report.
+# latex_author is highest — it writes 10 files, each requiring a separate tool call.
 AGENT_MAX_ITER: dict[str, int] = {
-    "research_director": 10,
-    "deep_researcher":   15,
-    "data_visualizer":   10,
-    "latex_author":      15,
-    "quality_editor":    10,
+    "research_director": 12,
+    "deep_researcher":   18,
+    "data_visualizer":   12,
+    "latex_author":      25,
+    "quality_editor":    20,
 }
 
 # Target paper length used in agent prompts
@@ -152,12 +154,17 @@ ARXIV_MAX_RESULTS: int     = 5                  # default ArXiv results per quer
 # Directories agents are allowed to write into (relative to PROJECT_ROOT)
 WRITABLE_DIRS: tuple[str, ...] = ("latex", "outputs", "docs")
 
-# Files that must never be overwritten by an agent
+# Files that must never be overwritten by an agent.
+# cover.tex is protected because \begin{center} in bidi mode crashes XeLaTeX.
 PROTECTED_FILES: tuple[str, ...] = (
     ".env",
     ".gitignore",
     "requirements.txt",
     "src/config.py",
+    "cover.tex",
+    "main.tex",
+    "ch01_intro.tex",
+    "ch04_slam.tex",
 )
 
 # ---------------------------------------------------------------------------

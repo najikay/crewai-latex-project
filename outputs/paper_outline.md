@@ -1,3 +1,0 @@
-```
-OUTLINE COMPLETE
-```

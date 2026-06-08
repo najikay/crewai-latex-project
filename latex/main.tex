@@ -1,209 +1,71 @@
-% =============================================================================
-% main.tex — ResearchCrew IEEE Paper (Master File)
-% =============================================================================
-%
-% COMPILER: XeLaTeX (NOT pdflatex)
-%   Run sequence:
-%     xelatex main.tex
-%     bibtex  main
-%     xelatex main.tex
-%     xelatex main.tex
-%
-% WHY XeLaTeX?
-%   pdflatex cannot handle Unicode Hebrew + right-to-left text reliably.
-%   XeLaTeX + polyglossia is the standard for Hebrew academic documents in 2026.
-%
-% MikTeX quick-install for required packages:
-%   Open MikTeX Console → Packages → search & install:
-%   IEEEtran, polyglossia, fontspec, bidi, listings, xcolor,
-%   booktabs, amsmath, amssymb, graphicx, hyperref, fancyhdr,
-%   caption, subcaption, float, geometry, microtype
-% =============================================================================
+% !TEX program = xelatex
+% Main file for bat-inspired drone navigation paper
+% Dr. Yael Mizrahi - IEEE LaTeX Technical Author
 
-\documentclass[10pt, a4paper, journal]{IEEEtran}
+\documentclass[conference]{IEEEtran}
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{float}
+\usepackage{hyperref}
+\usepackage{cite}
+\usepackage{fontspec}
+\usepackage{polyglossia}
+\usepackage{bidi}
+\usepackage{multirow}
+\usepackage{url}
 
-% =======================================================================
-% PREAMBLE — PACKAGE LOAD ORDER IS CRITICAL FOR bidi/polyglossia
-% Rule: ALL packages must be loaded BEFORE \setmainlanguage{hebrew}
-%       because that call triggers bidi to load, and bidi requires to be
-%       the last package loaded.
-% =======================================================================
-
-% -----------------------------------------------------------------------
-% MATHEMATICS  (load before bidi)
-% -----------------------------------------------------------------------
-\usepackage{amsmath}            % align, equation, gather environments
-\usepackage{amssymb}            % mathematical symbols
-\usepackage{mathtools}          % dcases, coloneqq, etc.
-\DeclareMathOperator{\rect}{rect}  % \rect used in LFM pulse equation
-
-% -----------------------------------------------------------------------
-% GRAPHICS & FIGURES  (load before bidi)
-% -----------------------------------------------------------------------
-\usepackage{graphicx}           % \includegraphics
-\usepackage{caption}            % \caption formatting
-\usepackage{subcaption}         % \begin{subfigure}
-\usepackage{float}              % [H] figure placement
-
-% -----------------------------------------------------------------------
-% TABLES  (load before bidi)
-% -----------------------------------------------------------------------
-\usepackage{booktabs}           % \toprule, \midrule, \bottomrule
-\usepackage{tabularx}           % auto-width columns
-\usepackage{multirow}           % \multirow{n}{*}{text}
-
-% -----------------------------------------------------------------------
-% CODE LISTINGS  (load before bidi)
-% -----------------------------------------------------------------------
-\usepackage{listings}
-\usepackage{xcolor}
-
-% Python syntax highlighting style
-\definecolor{codebg}{RGB}{248, 248, 248}
-\definecolor{codeframe}{RGB}{200, 200, 200}
-\definecolor{codekw}{RGB}{0, 0, 200}
-\definecolor{codecomment}{RGB}{106, 153, 85}
-\definecolor{codestring}{RGB}{163, 21, 21}
-
-\lstdefinestyle{pythonstyle}{
-    language=Python,
-    backgroundcolor=\color{codebg},
-    frame=single,
-    rulecolor=\color{codeframe},
-    basicstyle=\small\ttfamily,
-    keywordstyle=\color{codekw}\bfseries,
-    commentstyle=\color{codecomment}\itshape,
-    stringstyle=\color{codestring},
-    numberstyle=\tiny\color{gray},
-    numbers=left,
-    numbersep=8pt,
-    showstringspaces=false,
-    breaklines=true,
-    breakatwhitespace=true,
-    tabsize=4,
-    captionpos=b,
-}
-\lstset{style=pythonstyle}
-
-% -----------------------------------------------------------------------
-% PAGE LAYOUT  (load before bidi)
-% -----------------------------------------------------------------------
-\usepackage{geometry}
-\geometry{a4paper, top=2.5cm, bottom=2.5cm, left=2.0cm, right=2.0cm}
-
-\usepackage{fancyhdr}
-
-% -----------------------------------------------------------------------
-% MISCELLANEOUS  (load before bidi)
-% -----------------------------------------------------------------------
-\usepackage{microtype}
-\usepackage{enumitem}
-
-% -----------------------------------------------------------------------
-% HYPERREF  (load before bidi, but after most others)
-% -----------------------------------------------------------------------
-\usepackage[
-    colorlinks=true,
-    linkcolor=blue!70!black,
-    citecolor=green!50!black,
-    urlcolor=blue,
-    pdftitle={AI Agent Architecture and Multi-Agent Orchestration 2026},
-    pdfauthor={NavigatorCrew},
-    pdflang={he},
-]{hyperref}
-
-% -----------------------------------------------------------------------
-% ENCODING & LANGUAGE — fontspec + polyglossia LAST (triggers bidi)
-% -----------------------------------------------------------------------
-\usepackage{fontspec}           % system font access (XeLaTeX only)
-\usepackage{polyglossia}        % modern multilingual support
-
-% Font configuration (Windows fonts registered via fontconfig)
-\newfontfamily\hebrewfont[Script=Hebrew]{David}
-\newfontfamily\hebrewfontsf[Script=Hebrew]{Miriam}
-\newfontfamily\hebrewfonttt[Script=Hebrew]{Miriam Fixed}
-\setmainfont{Times New Roman}
-\setsansfont{Arial}
-\setmonofont{Courier New}
-
-% Set languages AFTER fonts — this call loads bidi (must be last)
+% Set up Hebrew as main language
 \setmainlanguage{hebrew}
 \setotherlanguage{english}
+\newfontfamily\hebrewfont[Script=Hebrew]{Arial}
+\newfontfamily\englishfont[Script=Latin]{Times New Roman}
 
-% -----------------------------------------------------------------------
-% PAGE STYLE (must come after fancyhdr and after bidi)
-% -----------------------------------------------------------------------
-\pagestyle{fancy}
-\fancyhf{}
-\fancyhead[LE,RO]{\thepage}
-\fancyhead[RE]{\small ארכיטקטורת סוכני AI ואורקסטרציה — 2026}
-\fancyhead[LO]{\small NavigatorCrew}
-\fancyfoot[C]{\small קורס: אורקסטרציה של סוכני בינה מלאכותית | 2026}
-\renewcommand{\headrulewidth}{0.4pt}
-\renewcommand{\footrulewidth}{0.4pt}
+% Custom command for English terms in Hebrew text
+\newcommand{\en}[1]{\textenglish{#1}}
 
-\fancypagestyle{coverpage}{
-    \fancyhf{}
-    \renewcommand{\headrulewidth}{0pt}
-    \renewcommand{\footrulewidth}{0pt}
-}
+% Figure reference command
+\newcommand{\figref}[1]{\figurename~\ref{#1}}
 
-% -----------------------------------------------------------------------
-% CUSTOM COMMANDS
-% -----------------------------------------------------------------------
-\newcommand{\en}[1]{\foreignlanguage{english}{\textit{#1}}}
-\newcommand{\code}[1]{\texttt{#1}}
-\newcommand{\secref}[1]{סעיף~\ref{#1}}
-\newcommand{\figref}[1]{איור~\ref{#1}}
-\newcommand{\tabref}[1]{טבלה~\ref{#1}}
-\renewcommand{\eqref}[1]{משוואה~(\ref{#1})}
-
-% =============================================================================
-% DOCUMENT BEGIN
-% =============================================================================
 \begin{document}
-\selectlanguage{hebrew}         % all text defaults to Hebrew (RTL)
 
-% -----------------------------------------------------------------------
-% COVER PAGE (title, authors, date)
-% -----------------------------------------------------------------------
-\thispagestyle{coverpage}
-\input{chapters/cover}
-\newpage
+\title{\LARGE ניווט רחפנים בהשראת עטלפים: \\ שילוב חיישנים ביומימטי ומיפוי \en{SLAM} בזמן אמת}
 
-% -----------------------------------------------------------------------
-% ABSTRACT
-% -----------------------------------------------------------------------
-\begin{IEEEkeywords}
-  סוכני בינה מלאכותית, אורקסטרציה, CrewAI, אקולוקציה, סונאר, SLAM, UAV
-\end{IEEEkeywords}
+\author{\IEEEauthorblockN{ד"ר יעל מזרחי}
+\IEEEauthorblockA{המחלקה להנדסת חשמל,\n אוניברסיטת בן-גוריון בנגב\n \texttt{yaelmi@bgu.ac.il}}}
 
-\begin{abstract}
-\input{chapters/abstract}
-\end{abstract}
+\maketitle
 
-% -----------------------------------------------------------------------
-% TABLE OF CONTENTS  (remove for strict single-column IEEE; keep for "book" style)
-% -----------------------------------------------------------------------
-\tableofcontents
-\newpage
+\selectlanguage{hebrew}
 
-% -----------------------------------------------------------------------
-% CHAPTERS
-% -----------------------------------------------------------------------
-\input{chapters/ch01_intro}
-\input{chapters/ch02_bio_basis}
-\input{chapters/ch03_sensors}
-\input{chapters/ch04_slam}
-\input{chapters/ch05_fusion}
-\input{chapters/ch06_algorithm}
-\input{chapters/ch07_oursystem}
-\input{chapters/ch08_results}
-\input{chapters/ch09_conclusion}
+% ===== CHAPTER 1: Introduction =====
+\input{chapters/chapter01_introduction}
 
-% -----------------------------------------------------------------------
-% BIBLIOGRAPHY
-% -----------------------------------------------------------------------
+% ===== CHAPTER 2: Biological Inspiration =====
+\input{chapters/chapter02_biological_inspiration}
+
+% ===== CHAPTER 3: Sensor Fusion Architecture =====
+\input{chapters/chapter03_sensor_fusion}
+
+% ===== CHAPTER 4: Acoustic Signal Processing =====
+\input{chapters/chapter04_acoustic_processing}
+
+% ===== CHAPTER 5: Range-Doppler Mapping =====
+\input{chapters/chapter05_range_doppler}
+
+% ===== CHAPTER 6: Extended Kalman Filter for SLAM =====
+\input{chapters/chapter06_ekf_slam}
+
+% ===== CHAPTER 7: BioSLAM Framework =====
+\input{chapters/chapter07_bioslam_framework}
+
+% ===== CHAPTER 8: Multi-Modal Sensor Integration =====
+\input{chapters/chapter08_multi_modal}
+
+% ===== CHAPTER 9: Experimental Results =====
+\input{chapters/chapter09_results}
+
+% Bibliography
 \bibliographystyle{IEEEtran}
 \bibliography{references}
 

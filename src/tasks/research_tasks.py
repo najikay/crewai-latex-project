@@ -11,16 +11,49 @@ from src.config import logger
 
 def create_task_outline(director: Agent, topic: str) -> Task:
     return Task(
-        description=f"Decompose the topic '{topic}' into 7 sub-domains and create outputs/paper_outline.md.",
-        expected_output="Detailed paper outline in Markdown format. Confirmation: 'OUTLINE COMPLETE'.",
+        description=f"""
+Decompose the topic '{topic}' into 8 sub-domains and create outputs/paper_outline.md.
+
+TARGET: The final paper must be 25–30 printed A4 pages (IEEEtran, 10pt).
+Each sub-domain chapter should contain at least 4 subsections, 3 equations,
+2 figures, and 1 table — scaffold the outline to enforce this depth.
+
+Sub-domains to cover:
+  1. Biological basis: bat echolocation and acoustic fovea
+  2. Sensor modalities: LiDAR, MEMS sonar, Vision-AI depth
+  3. SLAM algorithms: EKF-SLAM, Graph-SLAM, ORB-SLAM3, AF-AFC controller
+  4. Sensor fusion architecture: covariance intersection, EKF update
+  5. Biomimetic algorithm design: full system pipeline
+  6. NavigatorCrew AI system: agents, tools, LangGraph orchestration
+  7. Simulation results and performance analysis
+  8. Conclusion, limitations, future work
+
+For each chapter specify: title (Hebrew), section label, 4+ subsection titles,
+required equations, required figures (with filenames from latex/figures/),
+required table topics.
+""".strip(),
+        expected_output="Detailed chapter-by-chapter outline in outputs/paper_outline.md specifying subsections, equations, figures, and tables per chapter. Confirmation: 'OUTLINE COMPLETE'.",
         agent=director,
         output_file="outputs/paper_outline.md"
     )
 
 def create_task_research(researcher: Agent, context: list[Task]) -> Task:
     return Task(
-        description="Produce 7 technical research briefs (summary, algorithms, equations, bibtex) based on outputs/paper_outline.md.",
-        expected_output="Structured research briefs in outputs/research_briefs.md. Confirmation: 'RESEARCH COMPLETE'.",
+        description="""
+Produce 8 detailed technical research briefs based on outputs/paper_outline.md.
+Each brief must provide enough material for a 3–4 page chapter (600+ words of content).
+
+For each sub-domain include:
+  • 2–3 paragraph technical summary (Hebrew-language prose ready to paste)
+  • All relevant equations with full variable definitions
+  • Algorithm descriptions (pseudocode if applicable)
+  • 3–5 specific BibTeX citations with author, title, year
+  • Figure descriptions (what to plot and why)
+  • A comparison table (at least 3 alternatives compared on 3+ criteria)
+
+Write to outputs/research_briefs.md.
+""".strip(),
+        expected_output="8 structured research briefs in outputs/research_briefs.md, each providing ≥600 words of technical content. Confirmation: 'RESEARCH COMPLETE'.",
         agent=researcher,
         context=context,
         output_file="outputs/research_briefs.md"
@@ -37,11 +70,59 @@ def create_task_figures(visualizer: Agent, context: list[Task]) -> Task:
 
 def create_task_latex(author: Agent, context: list[Task]) -> Task:
     return Task(
-        description="Write 11 LaTeX files (chapters + bib) based on briefs and figures. Ensure XeLaTeX compatibility.",
-        expected_output="All .tex and .bib files in latex/ folder.",
+        description="""
+Write 10 LaTeX chapter files + references.bib based on the research briefs and figures manifest.
+Target: 25–30 printed pages total (A4, IEEEtran, 10pt).
+
+FILES TO WRITE (exact paths):
+    latex/chapters/abstract.tex
+    latex/chapters/ch02_bio_basis.tex
+    latex/chapters/ch03_sensors.tex
+    latex/chapters/ch04_slam.tex
+    latex/chapters/ch05_fusion.tex
+    latex/chapters/ch06_algorithm.tex
+    latex/chapters/ch07_oursystem.tex
+    latex/chapters/ch08_results.tex
+    latex/chapters/ch09_conclusion.tex
+    latex/references.bib
+
+CONTENT DEPTH — each of ch02–ch09 must have:
+    • Minimum 600 words of Hebrew prose
+    • Minimum 4 \\subsection{} blocks
+    • Minimum 3 numbered equations with derivation text
+    • Minimum 2 \\includegraphics{} figures (using PNGs from the manifest)
+    • Minimum 1 booktabs table
+    ch06 (algorithm) and ch08 (results) must have ≥ 900 words each.
+
+CITATION KEYS — references.bib MUST define ALL of these keys (and may add more):
+    Thrun2005ProbRobotics, Kalman1960, Grisetti2010g2o, MurArtal2015ORB,
+    Julier1997CovarianceIntersection, GriffinBatEcholocation,
+    GriffithBatEcholocation, Simmons1979BatSonar, Schnitzler1968DSC,
+    Schuller1974DSC, MossEcholocation, Rihaczek1969MatchedFilter,
+    CrewAIDocs, AnthropicClaude
+    These keys are cited in ch01_intro.tex and ch04_slam.tex — if they are
+    missing from references.bib the PDF will have [?] markers.
+
+EM DASH RULE — the character — is FORBIDDEN in Hebrew prose.
+    Use colon (:) or comma (,) instead. Em dash is only permitted inside
+    \\en{} abbreviation expansions, e.g., \\en{UAV — Unmanned Aerial Vehicles}.
+
+FIGURES — use ONLY filenames confirmed in the figures manifest.
+    Never write \\fbox{\\parbox{...PLACEHOLDER...}} boxes.
+    Use: \\includegraphics[width=0.92\\columnwidth]{figures/fig_name.png}
+
+COMPILER: XeLaTeX. Every file must compile without errors.
+""".strip(),
+        expected_output=(
+            "10 .tex files and references.bib written to latex/. "
+            "Each chapter ≥ 600 words, ≥ 4 subsections, ≥ 3 equations. "
+            "references.bib contains all 14 required citation keys. "
+            "No em dashes in Hebrew prose. No placeholder figure boxes. "
+            "Confirmation: 'LATEX COMPLETE'."
+        ),
         agent=author,
         context=context,
-        output_file="latex/references.bib" # Using references.bib as the completion sentinel
+        output_file="latex/references.bib"
     )
 
 def create_task_review(editor: Agent, context: list[Task]) -> Task:
@@ -95,10 +176,10 @@ REMEDIATION TASK. You are fixing specific quality failures identified by the Qua
         output_file=output_file,
     )
 
-def create_all_tasks(director, researcher, visualizer, author, editor, topic) -> list[Task]:
+def create_all_tasks(director, researcher, visualizer, author, topic) -> list[Task]:
+    """4-task pipeline. Quality review is handled programmatically by the LangGraph gate."""
     t_outline  = create_task_outline(director, topic)
     t_research = create_task_research(researcher, [t_outline])
     t_figures  = create_task_figures(visualizer, [t_research])
     t_latex    = create_task_latex(author, [t_research, t_figures])
-    t_review   = create_task_review(editor, [t_latex])
-    return [t_outline, t_research, t_figures, t_latex, t_review]
+    return [t_outline, t_research, t_figures, t_latex]

@@ -21,7 +21,7 @@
 (\en{Doppler Shift Compensation — DSC}) \cite{Schnitzler1968DSC}.
 קליפת-השבלול שלהם מכילה אזור יֶתֶר-ייצוג עצבי צר-תדר
 סביב תדר ה-\en{CF} של הקריאה ($f_0 \approx 83\,\text{kHz}$)
-המכסה כ-30\% מהממברנה הבזאלית — ה\textbf{\en{acoustic fovea}}.
+המכסה כ-30\% מהממברנה הבזאלית, הנקרא ה\textbf{\en{acoustic fovea}}.
 
 בזמן טיסה, תנועת העטלף כלפי מטרה מוסיפה תזוזת-דופלר $\Delta f_D > 0$
 לתדר ההד (\en{echo}), וכתוצאה מכך ההד מתרחק מאזור הפוביה.
@@ -56,7 +56,7 @@
 ו-$\hat{\mathbf{v}}_{\mathrm{ego}}(t)$ מחולץ מוקטור-המצב האחורי
 $\hat{\mathbf{x}}_{t|t}$ של ה-\en{EKF} (משוואה~\ref{eq:ekf_update}).
 
-שגיאת הפוביה (\en{foveal error}) — סטיית תדר ההד מ-$f_0$ —
+שגיאת הפוביה (\en{foveal error}), כלומר סטיית תדר ההד מ-$f_0$,
 מוגדרת כ:
 \begin{equation}
     \varepsilon_k(t) = f_{\mathrm{echo},k}(t) - f_0
@@ -100,7 +100,7 @@ $\hat{\mathbf{x}}_{t|t}$ של ה-\en{EKF} (משוואה~\ref{eq:ekf_update}).
     \label{eq:range_comp}
 \end{equation}
 כלומר, בגבול $\varepsilon_k \to 0$ הרזולוציה חוזרת לגבול-הרייקלי
-(\en{Rayleigh limit}) $\Delta r = c/2B$, ללא תלות במהירות הרחפן —
+(\en{Rayleigh limit}) $\Delta r = c/2B$, ללא תלות במהירות הרחפן,
 בדיוק כפי שה\en{acoustic fovea} מספקת לעטלף רזולוציה קבועה
 על-פני טווח מהירויות $0$–$9\,\text{m/s}$. \cite{Simmons1979BatSonar}
 % ────────────────────────────────────────────────────────────────────────────
@@ -126,7 +126,7 @@ $\hat{\mathbf{x}}_{t|t}$ של ה-\en{EKF} (משוואה~\ref{eq:ekf_update}).
 \end{figure}
 
 \subsection{אופטימיזציית גרף (\en{Graph-SLAM})}
-בעוד ש-\en{EKF} שומר רק על המצב הנוכחי, \en{Graph-SLAM} שומר על כל היסטוריית המצבים כצמתים בגרף. הקשרים בין הצמתים (מגבלות — \en{constraints}) מיוצגים על ידי קשתות. מטרת האלגוריתם היא למצוא את מערך המצבים $\mathbf{x}^*$ שממזער את שגיאת הריבועים המינימלית:
+בעוד ש-\en{EKF} שומר רק על המצב הנוכחי, \en{Graph-SLAM} שומר על כל היסטוריית המצבים כצמתים בגרף. הקשרים בין הצמתים (מגבלות, \en{constraints}) מיוצגים על ידי קשתות. מטרת האלגוריתם היא למצוא את מערך המצבים $\mathbf{x}^*$ שממזער את שגיאת הריבועים המינימלית:
 \begin{equation}
     \mathbf{x}^* = \arg\min_{\mathbf{x}} \sum_{i} e_i(\mathbf{x})^\top \Omega_i e_i(\mathbf{x})
     \label{eq:graph_opt}
