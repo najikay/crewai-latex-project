@@ -40,6 +40,8 @@ pytest>=8.0.0
 pytest-cov>=5.0.0               # Coverage reports
 
 # --- Utilities ---
+litellm>=1.40.0                 # Success callback for token accounting
 pydantic>=2.7.0                 # Data validation (used by CrewAI internally)
 tenacity>=8.3.0                 # Retry logic with exponential backoff
 loguru>=0.7.0                   # Structured logging (replaces stdlib logging)
+langgraph>=0.2.0
