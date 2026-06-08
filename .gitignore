@@ -9,7 +9,7 @@
 # --- Course materials (large PDFs, not part of source code) ---
 homework/
 material/
-# Note: software_submission_guidelines-V3.pdf is KEPT (used to verify submission requirements)
+software_submission_guidelines-V3.pdf
 
 # --- Python ---
 __pycache__/
