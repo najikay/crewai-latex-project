@@ -1,0 +1,46 @@
+NavigatorCrew Run Archive
+=========================
+Folder : bat-inspired-drone-navigation-via-bio-mi-2026-06-11-v2
+
+LaTeX source: /mnt/c/Users/נאגי/Desktop/SemB2026/Orchestration of AI agents/HW/3/outputs/runs/bat-inspired-drone-navigation-via-bio-mi-2026-06-11-v2/latex/
+  chapters/  ← static + agent-written .tex files
+  figures/   ← 12 agent-generated PNG(s)
+    fig_bat_brain.png
+    fig_echo_processing.png
+    fig_ekf_architecture.png
+    fig_error_metrics.png
+    fig_optical_flow.png
+    fig_slam_pipeline.png
+    fig_snn_architecture.png
+    fig_sonar_hardware.png
+    fig_stub.png
+    fig_system_overview.png
+    fig_system_overview_ch07.png
+    fig_trajectory_comparison.png
+  references.bib
+
+Agent outputs (22 files): /mnt/c/Users/נאגי/Desktop/SemB2026/Orchestration of AI agents/HW/3/outputs/runs/bat-inspired-drone-navigation-via-bio-mi-2026-06-11-v2/outputs/
+  domain_aerospace.md
+  domain_algorithms.md
+  domain_biology.md
+  domain_control_systems.md
+  domain_ml.md
+  domain_physics.md
+  domain_signal_processing.md
+  domain_vision_ai.md
+  figures_manifest.md
+  figures_status.md
+  hebrew_prose.md
+  hebrew_prose_part1.md
+  hebrew_prose_part2.md
+  hebrew_prose_part3.md
+  hebrew_prose_status.md
+  latex_status.md
+  latex_status_a.md
+  latex_status_b.md
+  latex_status_c.md
+  paper_outline.md
+  quality_report.md
+  research_briefs.md
+
+PDF: paper.pdf

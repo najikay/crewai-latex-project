@@ -1,0 +1,43 @@
+NavigatorCrew Run Archive
+=========================
+Folder : octopus-inspired-soft-robotic-drone-navi-2026-06-11
+
+LaTeX source: /mnt/c/Users/נאגי/Desktop/SemB2026/Orchestration of AI agents/HW/3/outputs/runs/octopus-inspired-soft-robotic-drone-navi-2026-06-11/latex/
+  chapters/  ← static + agent-written .tex files
+  figures/   ← 10 agent-generated PNG(s)
+    fig_distributed_factor_graph.png
+    fig_occupancy_grid_comparison.png
+    fig_octopus_biological_inspiration.png
+    fig_reinforcement_learning_architecture.png
+    fig_sensor_fusion_architecture.png
+    fig_soft_arm_kinematics.png
+    fig_stub.png
+    fig_system_overview.png
+    fig_tactile_sensor_array.png
+    fig_trajectory_comparison.png
+  references.bib
+
+Agent outputs (21 files): /mnt/c/Users/נאגי/Desktop/SemB2026/Orchestration of AI agents/HW/3/outputs/runs/octopus-inspired-soft-robotic-drone-navi-2026-06-11/outputs/
+  domain_aerospace.md
+  domain_algorithms.md
+  domain_biology.md
+  domain_control_systems.md
+  domain_ml.md
+  domain_physics.md
+  domain_vision_ai.md
+  figures_manifest.md
+  figures_status.md
+  hebrew_prose.md
+  hebrew_prose_part1.md
+  hebrew_prose_part2.md
+  hebrew_prose_part3.md
+  hebrew_prose_status.md
+  latex_status.md
+  latex_status_a.md
+  latex_status_b.md
+  latex_status_c.md
+  paper_outline.md
+  quality_report.md
+  research_briefs.md
+
+PDF: paper.pdf
