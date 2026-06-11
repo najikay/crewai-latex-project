@@ -1,0 +1,51 @@
+NavigatorCrew Run Archive
+=========================
+Folder : pit-viper-inspired-infrared-thermal-and-2026-06-11
+
+LaTeX source: C:\Courses\ai_agents\crewai-latex-project\outputs\runs\pit-viper-inspired-infrared-thermal-and-2026-06-11/latex/
+  chapters/  ← static + agent-written .tex files
+  figures/   ← 20 agent-generated PNG(s)
+    fig_adaptive_fusion_example.png
+    fig_adaptive_fusion_example_ch08.png
+    fig_algorithm_flowchart.png
+    fig_bat_echolocation_signal.png
+    fig_calibration_pattern.png
+    fig_computational_perf.png
+    fig_concept_overview.png
+    fig_fusion_architecture.png
+    fig_navigation_success_rate.png
+    fig_nocturnal_uav_scenario.png
+    fig_pit_organ_anatomy.png
+    fig_pit_viper_anatomy.png
+    fig_registration_comparison.png
+    fig_sensor_architecture.png
+    fig_slam_trajectory_comparison.png
+    fig_slam_trajectory_comparison_ch08.png
+    fig_stub.png
+    fig_system_architecture.png
+    fig_thermal_saliency_map.png
+    fig_tunnel_results.png
+  references.bib
+
+Agent outputs (19 files): C:\Courses\ai_agents\crewai-latex-project\outputs\runs\pit-viper-inspired-infrared-thermal-and-2026-06-11/outputs/
+  domain_aerospace.md
+  domain_algorithms.md
+  domain_biology.md
+  domain_control_systems.md
+  domain_ml.md
+  domain_physics.md
+  domain_signal_processing.md
+  domain_vision_ai.md
+  figures_manifest.md
+  figures_status.md
+  hebrew_prose_status.md
+  latex_status.md
+  latex_status_a.md
+  latex_status_b.md
+  latex_status_c.md
+  latex_status_part1.md
+  paper_outline.md
+  quality_report.md
+  research_briefs.md
+
+PDF: paper.pdf
