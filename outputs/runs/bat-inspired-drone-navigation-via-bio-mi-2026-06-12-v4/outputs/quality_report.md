@@ -1,5 +1,6 @@
 # Quality Gate Report
 
+<<<<<<< HEAD
 **Verdict:** PASS
 **Score:** 98/100
 **Threshold:** 90
@@ -8,6 +9,24 @@
 ## Issues Found
 
 - ch07_oursystem.tex: citations=1<2
+=======
+**Verdict:** FAIL
+**Score:** 52/100
+**Threshold:** 90
+**Failed Sections:** ['methodology']
+
+## Issues Found
+
+- ch01_intro.tex: subsections=2<3, words≈488<1400
+- ch02_bio_basis.tex: words≈753<1400
+- ch03_sensors.tex: words≈753<1400
+- ch04_slam.tex: words≈753<1400
+- ch05_fusion.tex: words≈753<1400
+- ch06_algorithm.tex: subsections=3<5, citations=2<3, words≈753<1800
+- ch07_oursystem.tex: subsections=3<4, words≈753<1600
+- ch08_results.tex: subsections=3<5, citations=2<3, words≈753<1800
+- ch09_conclusion.tex: words≈359<700
+>>>>>>> d28438e746e968070f910361040b7f6540bdd144
 
 ## Per-Chapter Thresholds
 
@@ -23,8 +42,14 @@
 
 ```json
 {
+<<<<<<< HEAD
   "verdict": "PASS",
   "score": 98,
   "failed_sections": []
+=======
+  "verdict": "FAIL",
+  "score": 52,
+  "failed_sections": ["methodology"]
+>>>>>>> d28438e746e968070f910361040b7f6540bdd144
 }
 ```

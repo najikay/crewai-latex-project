@@ -2,6 +2,7 @@ NavigatorCrew Run Archive
 =========================
 Folder : bat-inspired-drone-navigation-via-bio-mi-2026-06-12-v4
 
+<<<<<<< HEAD
 LaTeX source: C:\Courses\ai_agents\crewai-latex-project\outputs\runs\bat-inspired-drone-navigation-via-bio-mi-2026-06-12-v4/latex/
   chapters/  ← static + agent-written .tex files
   figures/   ← 16 agent-generated PNG(s)
@@ -44,5 +45,22 @@ Agent outputs (20 files): C:\Courses\ai_agents\crewai-latex-project\outputs\runs
   latex_status_c.md
   quality_report.md
   research_briefs.md
+=======
+LaTeX source: /mnt/c/Users/נאגי/Desktop/SemB2026/Orchestration of AI agents/HW/3/outputs/runs/bat-inspired-drone-navigation-via-bio-mi-2026-06-12-v4/latex/
+  chapters/  <- static + agent-written .tex files
+  figures/   <- 8 agent-generated PNG(s)
+    fig_ch02_auto.png
+    fig_ch03_auto.png
+    fig_ch04_auto.png
+    fig_ch05_auto.png
+    fig_ch06_auto.png
+    fig_ch07_auto.png
+    fig_ch08_auto.png
+    fig_stub.png
+  references.bib
+
+Agent outputs (1 files): /mnt/c/Users/נאגי/Desktop/SemB2026/Orchestration of AI agents/HW/3/outputs/runs/bat-inspired-drone-navigation-via-bio-mi-2026-06-12-v4/outputs/
+  quality_report.md
+>>>>>>> d28438e746e968070f910361040b7f6540bdd144
 
 PDF: paper.pdf
