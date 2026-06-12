@@ -1,0 +1,39 @@
+NavigatorCrew Run Archive
+=========================
+Folder : bat-inspired-drone-navigation-via-bio-mi-2026-06-12-v3
+
+LaTeX source: C:\Courses\ai_agents\crewai-latex-project\outputs\runs\bat-inspired-drone-navigation-via-bio-mi-2026-06-12-v3/latex/
+  chapters/  ← static + agent-written .tex files
+  figures/   ← 15 agent-generated PNG(s)
+    fig_algorithm_flowchart.png
+    fig_bat_echolocation_signal.png
+    fig_ch02_auto.png
+    fig_ch03_auto.png
+    fig_ch04_auto.png
+    fig_ch05_auto.png
+    fig_ch06_auto.png
+    fig_ch07_auto.png
+    fig_ch08_auto.png
+    fig_computational_perf.png
+    fig_concept_overview.png
+    fig_fusion_architecture.png
+    fig_stub.png
+    fig_system_architecture.png
+    fig_tunnel_results.png
+  references.bib
+
+Agent outputs (12 files): C:\Courses\ai_agents\crewai-latex-project\outputs\runs\bat-inspired-drone-navigation-via-bio-mi-2026-06-12-v3/outputs/
+  bat_inspired_navigation_research_brief.md
+  domain_aerospace.md
+  domain_algorithms.md
+  domain_biology.md
+  domain_control_systems.md
+  domain_ml.md
+  domain_physics.md
+  domain_signal_processing.md
+  domain_vision_ai.md
+  paper_outline.md
+  quality_report.md
+  research_briefs.md
+
+PDF: paper.pdf

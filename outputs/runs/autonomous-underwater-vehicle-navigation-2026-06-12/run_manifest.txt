@@ -1,0 +1,53 @@
+NavigatorCrew Run Archive
+=========================
+Folder : autonomous-underwater-vehicle-navigation-2026-06-12
+
+LaTeX source: C:\Courses\ai_agents\crewai-latex-project\outputs\runs\autonomous-underwater-vehicle-navigation-2026-06-12/latex/
+  chapters/  ← static + agent-written .tex files
+  figures/   ← 24 agent-generated PNG(s)
+    fig_algorithm_flowchart.png
+    fig_auv_navigation.png
+    fig_bat_echolocation.png
+    fig_bat_echolocation_signal.png
+    fig_bioslam_flow.png
+    fig_computational_perf.png
+    fig_concept_overview.png
+    fig_ekf_slam_architecture.png
+    fig_error_metrics_boxplot.png
+    fig_factor_graph_underwater.png
+    fig_feature_extraction_pipeline.png
+    fig_field_results.png
+    fig_fusion_architecture.png
+    fig_rbpf_slam_particles.png
+    fig_sensor_configuration.png
+    fig_sensor_models.png
+    fig_slam_block_diagram.png
+    fig_slam_comparison.png
+    fig_sonar_raw_denoised.png
+    fig_stub.png
+    fig_system_architecture.png
+    fig_trajectory_comparison.png
+    fig_trajectory_results.png
+    fig_tunnel_results.png
+  references.bib
+
+Agent outputs (17 files): C:\Courses\ai_agents\crewai-latex-project\outputs\runs\autonomous-underwater-vehicle-navigation-2026-06-12/outputs/
+  domain_aerospace.md
+  domain_biology.md
+  domain_control_systems.md
+  domain_ml.md
+  domain_physics.md
+  domain_signal_processing.md
+  figures_manifest.md
+  figures_status.md
+  hebrew_prose_status.md
+  latex_status.md
+  latex_status_a.md
+  latex_status_b.md
+  latex_status_c.md
+  paper_outline.md
+  quality_report.md
+  research_briefs.md
+  research_briefs_part1.md
+
+PDF: paper.pdf
