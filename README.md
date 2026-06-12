@@ -19,20 +19,12 @@ A full run takes a single `--topic` argument and produces a compiled, bilingual 
 
 ### Pipeline run
 
-<<<<<<< HEAD
 ![alt text](docs/screenshots/new_terminal_started.PNG)
 
 ![alt text](docs/screenshots/new_terminal_in_progress3.PNG)
 
 ![alt text](docs/screenshots/new_terminal_in_progress2.PNG)
 
-=======
-![Terminal at start](docs/screenshots/terminal_start.PNG)
-
-![Terminal in progress](docs/screenshots/terminal_in_progress.PNG)
-
-![Terminal finished](docs/screenshots/terminal_finished.PNG)
->>>>>>> d28438e746e968070f910361040b7f6540bdd144
 
 ### Generated output
 
@@ -47,16 +39,7 @@ A full run takes a single `--topic` argument and produces a compiled, bilingual 
 
 ### Latest Results
 
-<<<<<<< HEAD
 ![alt text](docs/screenshots/new_terminal_finished.PNG)
-=======
-| Run | Topic | Score | PDF | Remediation |
-|---|---|---|---|---|
-| pit-viper-inspired-2026-06-11 | Pit Viper Inspired Infrared Thermal and Acoustic Navigation | 90/100 (PASS) | 5.3 MB | 1 cycle |
-| autonomous-underwater-2026-06-12 | Autonomous Underwater Vehicle Navigation Using Acoustic SLAM | 74/100 | 3.1 MB | 2 cycles |
-| swarm-intelligence-2026-06-11 | Swarm Intelligence Based Search and Rescue | 76/100 | 3.6 MB | 2 cycles |
-
->>>>>>> d28438e746e968070f910361040b7f6540bdd144
 ---
 
 ## Architecture
