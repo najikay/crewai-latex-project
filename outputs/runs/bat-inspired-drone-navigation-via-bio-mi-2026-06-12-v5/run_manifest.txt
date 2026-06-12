@@ -1,0 +1,55 @@
+NavigatorCrew Run Archive
+=========================
+Folder : bat-inspired-drone-navigation-via-bio-mi-2026-06-12-v5
+
+LaTeX source: C:\Courses\ai_agents\crewai-latex-project\outputs\runs\bat-inspired-drone-navigation-via-bio-mi-2026-06-12-v5/latex/
+  chapters/  ← static + agent-written .tex files
+  figures/   ← 21 agent-generated PNG(s)
+    fig_acoustic_processing_pipeline.png
+    fig_acoustic_slam_architecture.png
+    fig_acoustic_slam_pipeline.png
+    fig_algorithm_flowchart.png
+    fig_bat_echolocation_anatomy.png
+    fig_bat_echolocation_signal.png
+    fig_bat_echolocation_system.png
+    fig_bat_sonar_beam_pattern.png
+    fig_computational_perf.png
+    fig_concept_overview.png
+    fig_echo_spectrogram_examples.png
+    fig_ekf_fusion_block_diagram.png
+    fig_experimental_flight_path.png
+    fig_fusion_architecture.png
+    fig_rrt_star_path_comparison.png
+    fig_sensor_fusion_architecture.png
+    fig_simulation_environments.png
+    fig_stub.png
+    fig_system_architecture.png
+    fig_system_architecture_block.png
+    fig_tunnel_results.png
+  references.bib
+
+Agent outputs (22 files): C:\Courses\ai_agents\crewai-latex-project\outputs\runs\bat-inspired-drone-navigation-via-bio-mi-2026-06-12-v5/outputs/
+  domain_aerospace.md
+  domain_algorithms.md
+  domain_biology.md
+  domain_control_systems.md
+  domain_ml.md
+  domain_physics.md
+  domain_signal_processing.md
+  domain_vision_ai.md
+  figures_manifest.md
+  figures_status.md
+  hebrew_prose.md
+  hebrew_prose_part1.md
+  hebrew_prose_part2.md
+  hebrew_prose_part3.md
+  hebrew_prose_status.md
+  latex_status.md
+  latex_status_a.md
+  latex_status_b.md
+  latex_status_c.md
+  paper_outline.md
+  quality_report.md
+  research_briefs.md
+
+PDF: paper.pdf

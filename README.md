@@ -15,26 +15,27 @@ A full run takes a single `--topic` argument and produces a compiled, bilingual 
 
 | Cover page | Content + figure |
 |:---:|:---:|
-| ![Cover page: אוניברסיטת חיפה, faculty, both author names](docs/screenshots/cover_.PNG) | ![A chapter page with Hebrew prose, a numbered equation, and an embedded figure](docs/screenshots/1_.PNG) |
+| ![Cover page: אוניברסיטת חיפה, faculty, both author names](docs/screenshots/new_cover.PNG) | ![A chapter page with Hebrew prose, a numbered equation, and an embedded figure](docs/screenshots/new_content.PNG) ![A chapter page with Hebrew prose, a numbered equation, and an embedded figure](docs/screenshots/new_content1.PNG) |
 
 ### Pipeline run
 
-![alt text](docs/screenshots/terminal_start.PNG)
+![alt text](docs/screenshots/new_terminal_started.PNG)
 
-![alt text](terminal_in_progress.PNG)
+![alt text](docs/screenshots/new_terminal_in_progress3.PNG)
 
-![alt text](docs/screenshots/terminal_finished.PNG)
+![alt text](docs/screenshots/new_terminal_in_progress2.PNG)
+
 
 ### Generated output
 
-![alt text](docs/screenshots/tree.PNG)
+![alt text](docs/screenshots/new_tree.PNG)
 
 
 ### Sample generated figures
 
 | Figure 1 | Figure 2 | Figure 3 |
 |:---:|:---:|:---:|
-| ![Generated figure 1](outputs/runs/autonomous-underwater-vehicle-navigation-2026-06-12/latex/figures/fig_sensor_models.png) | ![Generated figure 2](outputs/runs/autonomous-underwater-vehicle-navigation-2026-06-12/latex/figures/fig_feature_extraction_pipeline.png) | ![Generated figure 3](outputs/runs/autonomous-underwater-vehicle-navigation-2026-06-12/latex/figures/fig_bioslam_flow.png) |
+| ![Generated figure 1](outputs/runs/bat-inspired-drone-navigation-via-bio-mi-2026-06-12-v4/latex/figures/fig_occupancy_confidence.png) | ![Generated figure 2](outputs/runs/bat-inspired-drone-navigation-via-bio-mi-2026-06-12-v4/latex/figures/fig_results_summary.png) | ![Generated figure 3](outputs/runs/bat-inspired-drone-navigation-via-bio-mi-2026-06-12-v4/latex/figures/fig_uncertainty_estimation.png) |
 
 ### 📸 Screenshot capture checklist
 
@@ -51,10 +52,7 @@ All files go in `docs/screenshots/` as `.png`:
 
 ### Latest Results
 
-<!-- Fill this row from your run's completion banner / outputs/quality_report.md -->
-| Run | Topic | Score | Pages | PDF | Remediation |
-|---|---|---|---|---|---|
-| _your run_ | _your topic_ | _NN/100_ | _NN_ | _N.N MB_ | _N cycles_ |
+![alt text](docs/screenshots/new_terminal_finished.PNG)
 ---
 
 ## Architecture
@@ -414,4 +412,3 @@ python3 -m pytest --cov=src --cov=main --cov-report=term-missing
 | Development tooling (Claude Sonnet 4.6) | ~$25.35 |
 | **Grand total** | **~$27.48** |
 
-See [docs/BUDGET.md](docs/BUDGET.md) for full token breakdown.
